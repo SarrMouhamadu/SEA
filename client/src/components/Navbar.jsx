@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail, ChevronRight, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,85 +8,68 @@ export default function Navbar() {
 
   const links = [
     { name: 'Accueil', path: '/' },
-    { name: 'À Propos', path: '/a-propos' },
-    { name: 'Services', path: '/services' },
-    { name: 'Secteurs', path: '/secteurs' },
-    { name: 'Brûleurs & Produits', path: '/produits' },
-    { name: 'Contact', path: '/contact' },
+    { name: "Domaines d'expertise", path: '/#competences' },
+    { name: 'Nos produits', path: '/#produits' },
+    { name: 'Notre équipe', path: '/#equipe' },
+    { name: 'Blog', path: '/#actualites' },
+    { name: 'Partenaires', path: '/#partenaires' },
+    { name: 'Contact', path: '/#contact' },
   ];
 
   return (
-    <header className="site-navbar">
-      {/* Topbar d'information */}
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <div className="topbar-contacts">
-            <a href="tel:+221772173364" className="topbar-link">
-              <Phone size={14} /> +221 77 217 33 64
-            </a>
-            <a href="mailto:contact@senergysafrica.com" className="topbar-link">
-              <Mail size={14} /> contact@senergysafrica.com
-            </a>
-          </div>
-          <div className="topbar-location">
-            <span>Dakar, Sénégal & Afrique de l'Ouest</span>
-          </div>
-        </div>
-      </div>
+    <header className="site-header">
+      <div className="site-nav">
+        <Link to="/" className="nav-brand">
+          SEnergyS <span>Africa</span>
+        </Link>
 
-      {/* Barre de navigation principale */}
-      <div className="navbar-main">
-        <div className="container navbar-container">
-          <Link to="/" className="brand-logo">
-            <img src="/assets/logo/logo-sesa.png" alt="SEnergys Africa Logo" className="logo-img" />
-          </Link>
-
-          <nav className="desktop-menu">
-            {links.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link to="/contact" className="btn btn-primary nav-cta">
-              Demander un Audit <ChevronRight size={16} />
-            </Link>
-          </nav>
-
-          <button
-            className="mobile-toggle"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Menu mobile */}
-      {isOpen && (
-        <div className="mobile-menu">
+        <nav className="nav-links">
           {links.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`mobile-link ${location.pathname === link.path ? 'active' : ''}`}
-              onClick={() => setIsOpen(false)}
+            <a
+              key={link.name}
+              href={link.path}
+              className="nav-link"
             >
               {link.name}
-            </Link>
+            </a>
           ))}
-          <Link
-            to="/contact"
-            className="btn btn-primary"
-            style={{ width: '100%', marginTop: '16px' }}
-            onClick={() => setIsOpen(false)}
-          >
-            Demander un Audit
-          </Link>
+          <a href="/#contact" className="nav-cta">
+            Diagnostic gratuit
+          </a>
+        </nav>
+
+        <button
+          className="nav-mobile-btn"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Menu"
+        >
+          {isOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div style={{ background: '#020C17', padding: '20px 32px', borderTop: '1px solid rgba(246,241,231,0.1)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {links.map((link) => (
+              <a
+                key={link.name}
+                href={link.path}
+                className="nav-link"
+                style={{ fontSize: '17px' }}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            <a
+              href="/#contact"
+              className="nav-cta"
+              style={{ textAlign: 'center', marginTop: '10px' }}
+              onClick={() => setIsOpen(false)}
+            >
+              Diagnostic gratuit
+            </a>
+          </div>
         </div>
       )}
     </header>
