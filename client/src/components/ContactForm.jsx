@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 
-export default function ContactForm() {
+export default function ContactForm({ onSuccess, defaultSubject = "demande d'étude" }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     company: '',
-    subject: 'Demande de diagnostic énergétique',
+    subject: defaultSubject,
     message: ''
   });
   const [status, setStatus] = useState({ loading: false, success: false, message: '' });
@@ -34,9 +34,10 @@ export default function ContactForm() {
           email: '',
           phone: '',
           company: '',
-          subject: 'Demande de diagnostic énergétique',
+          subject: "demande d'étude",
           message: ''
         });
+        if (onSuccess) onSuccess();
       } else {
         setStatus({ loading: false, success: false, message: data.message || 'Erreur lors de l\'envoi' });
       }
@@ -44,8 +45,9 @@ export default function ContactForm() {
       setStatus({
         loading: false,
         success: true,
-        message: 'Votre message a bien été transmis. Nous vous contacterons sous 24h.'
+        message: 'Votre message a bien été transmis. Notre équipe vous recontactera rapidement.'
       });
+      if (onSuccess) onSuccess();
     }
   };
 
@@ -91,7 +93,7 @@ export default function ContactForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            placeholder="+221 77 ..."
+            placeholder="+221 77 000 00 00"
           />
         </div>
         <div className="form-group">
@@ -107,29 +109,27 @@ export default function ContactForm() {
       </div>
 
       <div className="form-group">
-        <label>Objet de votre demande</label>
-        <select name="subject" value={formData.subject} onChange={handleChange}>
-          <option value="Demande de diagnostic énergétique">Demande de diagnostic énergétique</option>
-          <option value="Devis Brûleurs Industriels (Gaz / Fioul)">Devis Brûleurs Industriels (Gaz / Fioul)</option>
-          <option value="Accompagnement Finance Climat & ESG">Accompagnement Finance Climat & ESG</option>
-          <option value="Formations Techniques">Formations Techniques</option>
-          <option value="Autre demande">Autre demande</option>
+        <label>Objet de la demande *</label>
+        <select name="subject" value={formData.subject} onChange={handleChange} required>
+          <option value="demande d'étude">Demande d'étude</option>
+          <option value="demande d'accompagnement">Demande d'accompagnement</option>
+          <option value="autre">Autre</option>
         </select>
       </div>
 
       <div className="form-group">
-        <label>Message / Détails du projet *</label>
+        <label>Message / Précisions *</label>
         <textarea
           name="message"
-          rows={5}
+          rows={4}
           required
           value={formData.message}
           onChange={handleChange}
-          placeholder="Décrivez vos besoins, caractéristiques des installations (chaudière, combustible, etc.)..."
+          placeholder="Décrivez votre besoin, vos équipements actuels ou les spécificités de votre demande..."
         ></textarea>
       </div>
 
-      <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%' }} disabled={status.loading}>
+      <button type="submit" className="btn-pill btn-pill-orange" style={{ width: '100%', padding: '16px 24px', fontSize: '16px' }} disabled={status.loading}>
         {status.loading ? 'Envoi en cours...' : <><Send size={18} /> Envoyer la demande</>}
       </button>
     </form>
