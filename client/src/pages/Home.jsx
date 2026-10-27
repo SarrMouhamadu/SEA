@@ -447,8 +447,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div style={{ background: '#FFFFFF', padding: '36px', borderRadius: '20px', boxShadow: 'var(--shadow-lg)', color: 'var(--color-text-dark)' }}>
-              <h3 style={{ fontSize: '24px', marginBottom: '20px', color: 'var(--color-forest)' }}>
+            <div className="contact-card-box">
+              <h3 className="contact-card-title">
                 Envoyer un message
               </h3>
               <ContactForm />

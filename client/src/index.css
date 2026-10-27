@@ -2,7 +2,7 @@
   --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
   --font-display: 'Fraunces', serif;
 
-  /* Palette officielle validée SEnergyS Africa */
+  /* Palette de marque SEnergyS Africa */
   --color-forest: #123B2E;
   --color-forest-dark: #020C17;
   --color-orange: #E8712B;
@@ -16,14 +16,40 @@
   --color-text-muted: #E6DFD0;
   --color-white: #FFFFFF;
 
+  /* Variables dynamiques de Thème - LIGHT (Par défaut) */
+  --theme-bg: #F6F1E7;
+  --theme-bg-alt: #EADFC9;
+  --theme-surface: #FFFFFF;
+  --theme-surface-alt: #F1E8D9;
+  --theme-text: #2B1B10;
+  --theme-text-muted: #64554A;
+  --theme-border: #E0D3BE;
+  --theme-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
   --radius-full: 999px;
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.22);
+}
+
+/* Variables dynamiques de Thème - DARK */
+[data-theme="dark"] {
+  --theme-bg: #09121C;
+  --theme-bg-alt: #0E1B2A;
+  --theme-surface: #142335;
+  --theme-surface-alt: #1A2D42;
+  --theme-text: #F6F1E7;
+  --theme-text-muted: #A3B2C3;
+  --theme-border: rgba(246, 241, 231, 0.12);
+  --theme-card-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+
+  --color-sand: #F6F1E7;
+  --color-sand-dark: #0E1B2A;
+  --color-text-dark: #F6F1E7;
 }
 
 * {
@@ -34,11 +60,12 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-sand);
-  color: var(--color-text-dark);
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -86,7 +113,7 @@ img {
 
 .btn-pill-orange {
   background-color: var(--color-orange);
-  color: var(--color-forest);
+  color: var(--color-forest-dark);
 }
 
 .btn-pill-orange:hover {

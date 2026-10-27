@@ -1,5 +1,5 @@
 /* ========================================================
-   SEnergys Africa - Design Validé Client (Styles Principaux)
+   SEnergys Africa - Design System (Mode Light & Dark)
    ======================================================== */
 
 /* En-tête / Navigation */
@@ -116,11 +116,29 @@
   color: var(--color-orange);
 }
 
-/* Boutons d'Appel à l'Action Permanents */
+/* Boutons d'Appel à l'Action & Theme Toggle */
 .nav-ctas-group {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.theme-toggle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(246, 241, 231, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.06);
 }
 
 .nav-btn-diag {
@@ -311,7 +329,7 @@
    ======================================================== */
 .marquee-bar {
   background: var(--color-gold);
-  color: var(--color-forest);
+  color: var(--color-forest-dark);
   padding: 22px 0;
   overflow: hidden;
   display: flex;
@@ -347,20 +365,96 @@
 }
 
 /* ========================================================
-   Section Domaines d'Expertise
+   Section À Propos
    ======================================================== */
-.expertise-section {
-  background: var(--color-sand-dark);
+.about-section {
+  background: var(--theme-bg);
+  color: var(--theme-text);
   padding: 100px 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 56px;
+  align-items: center;
+}
+
+.about-photo-wrapper {
+  position: relative;
+}
+
+.about-photo {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  display: block;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  box-shadow: var(--theme-card-shadow);
+  border: 1px solid var(--theme-border);
+}
+
+.about-circle-accent {
+  position: absolute;
+  right: -16px;
+  bottom: -24px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  z-index: 0;
 }
 
 .section-label {
   margin: 0 0 14px;
   font-size: 13px;
   letter-spacing: 2px;
-  color: var(--color-orange-dark);
+  color: var(--color-orange);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.about-title {
+  margin: 0 0 32px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.05;
+  color: var(--theme-text);
+}
+
+.about-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+  font-size: 18px;
+  color: var(--theme-text);
+}
+
+.about-list li {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.about-list i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* ========================================================
+   Section Domaines d'Expertise
+   ======================================================== */
+.expertise-section {
+  background: var(--theme-bg-alt);
+  color: var(--theme-text);
+  padding: 100px 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .section-heading {
@@ -369,6 +463,7 @@
   font-weight: 400;
   font-size: 54px;
   line-height: 1.05;
+  color: var(--theme-text);
 }
 
 .expertise-grid {
@@ -382,8 +477,9 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--color-forest);
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  transition: transform 0.5s ease, box-shadow 0.5s ease, border-color 0.3s ease;
   aspect-ratio: 3/4;
+  border: 1px solid var(--theme-border);
 }
 
 .ph img {
@@ -398,6 +494,7 @@
 .ph:hover {
   transform: perspective(900px) rotateY(-6deg) rotateX(3deg) translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  border-color: var(--color-orange);
 }
 
 .ph:hover img {
@@ -407,7 +504,7 @@
 .sc {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(18, 59, 46, 0.95), rgba(18, 59, 46, 0) 60%);
+  background: linear-gradient(to top, rgba(9, 18, 28, 0.95), rgba(9, 18, 28, 0) 60%);
 }
 
 .ph-text {
@@ -499,9 +596,9 @@
 }
 
 .ref-filter-btn {
-  background: #ffffff;
-  border: 1px solid var(--color-sand-dark);
-  color: var(--color-text-dark);
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
   padding: 10px 18px;
   border-radius: var(--radius-full);
   font-size: 14px;
@@ -512,14 +609,16 @@
 
 .ref-filter-btn.active,
 .ref-filter-btn:hover {
-  background: var(--color-forest);
-  color: var(--color-sand);
-  border-color: var(--color-forest);
+  background: var(--color-orange);
+  color: #fff;
+  border-color: var(--color-orange);
 }
 
 .products-section {
-  background: var(--color-sand);
+  background: var(--theme-bg);
+  color: var(--theme-text);
   padding: 100px 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .products-grid {
@@ -533,14 +632,16 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.3s ease;
+  box-shadow: var(--theme-card-shadow);
+  border: 1px solid var(--theme-border);
   text-decoration: none;
 }
 
 .prod:hover {
   transform: perspective(800px) rotateX(4deg) translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  border-color: var(--color-orange);
 }
 
 .pv {
@@ -593,12 +694,16 @@
 }
 
 /* ========================================================
-   Section Accès à l'Autodiagnostic (Bannière CTA 3 étapes)
+   Section Accès à l'Autodiagnostic
    ======================================================== */
 .autodiag-cta-section {
   background: var(--color-forest);
   padding: 90px 0;
   color: var(--color-sand);
+}
+
+[data-theme="dark"] .autodiag-cta-section {
+  background: #11261F;
 }
 
 .autodiag-card {
@@ -640,6 +745,7 @@
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mini-step .step-num {
@@ -659,8 +765,10 @@
    Section Partenaires
    ======================================================== */
 .partners-section {
-  background: #FFFFFF;
+  background: var(--theme-surface);
+  color: var(--theme-text);
   padding: 100px 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .partners-subheading {
@@ -668,7 +776,7 @@
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 30px;
-  color: var(--color-text-dark);
+  color: var(--theme-text);
 }
 
 .partners-cat-grid {
@@ -678,7 +786,8 @@
 }
 
 .partner-box {
-  background: var(--color-sand);
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-lg);
   padding: 24px;
 }
@@ -690,9 +799,13 @@
   margin-bottom: 16px;
 }
 
+.partner-box-header b {
+  color: var(--theme-text);
+}
+
 .lg {
   aspect-ratio: 2/1;
-  border: 1px solid var(--color-sand-dark);
+  border: 1px solid var(--theme-border);
   border-radius: 12px;
   background-color: #fff;
   background-image: url("/assets/claude/partner-logos-sprite.jpg");
@@ -708,24 +821,24 @@
 .lt {
   aspect-ratio: 2/1;
   border-radius: 12px;
-  background: #fff;
-  border: 1px solid var(--color-sand-dark);
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 22px;
-  color: var(--color-forest);
+  color: var(--theme-text);
   letter-spacing: 1px;
 }
 
 /* ========================================================
-   Section Contact CTA
+   Section Contact CTA & Card
    ======================================================== */
 .cta-banner {
   background: var(--color-orange);
-  color: var(--color-forest);
+  color: #fff;
   padding: 90px 0;
 }
 
@@ -741,6 +854,22 @@
   margin: 0;
   font-size: 20px;
   font-weight: 600;
+}
+
+.contact-card-box {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  padding: 36px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--theme-border);
+}
+
+.contact-card-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--theme-text);
+  font-family: var(--font-display);
 }
 
 /* ========================================================
@@ -787,7 +916,7 @@
 
 .social-btn:hover {
   background: var(--color-orange);
-  color: var(--color-forest);
+  color: var(--color-forest-dark);
   transform: translateY(-2px);
 }
 
@@ -864,13 +993,14 @@
 }
 
 .diag-modal-box {
-  background: #ffffff;
-  color: var(--color-text-dark);
+  background: var(--theme-surface);
+  color: var(--theme-text);
   border-radius: 20px;
   max-width: 720px;
   width: 100%;
   padding: 36px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--theme-border);
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -886,8 +1016,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(18, 59, 46, 0.08);
-  color: var(--color-forest);
+  background: rgba(232, 113, 43, 0.12);
+  color: var(--color-orange);
   padding: 6px 14px;
   border-radius: var(--radius-full);
   font-size: 13px;
@@ -899,7 +1029,7 @@
   font-family: var(--font-display);
   font-size: 26px;
   font-weight: 400;
-  color: var(--color-forest);
+  color: var(--theme-text);
   margin: 0;
 }
 
@@ -908,8 +1038,14 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #888;
+  color: var(--theme-text);
+  opacity: 0.7;
   padding: 4px;
+  transition: opacity 0.2s;
+}
+
+.diag-modal-close:hover {
+  opacity: 1;
 }
 
 .diag-stepper {
@@ -922,7 +1058,7 @@
 .diag-step-bullet {
   font-size: 13px;
   font-weight: 700;
-  color: #999;
+  color: var(--theme-text-muted);
 }
 
 .diag-step-bullet.active {
@@ -932,7 +1068,7 @@
 .diag-step-line {
   flex: 1;
   height: 2px;
-  background: #e2e8f0;
+  background: var(--theme-border);
 }
 
 .diag-step-line.active {
@@ -948,6 +1084,7 @@
   font-weight: 700;
   font-size: 15px;
   margin-bottom: 10px;
+  color: var(--theme-text);
 }
 
 .diag-options-grid {
@@ -957,8 +1094,8 @@
 }
 
 .diag-opt-btn {
-  background: #f8fafc;
-  border: 1.5px solid #e2e8f0;
+  background: var(--theme-surface-alt);
+  border: 1.5px solid var(--theme-border);
   border-radius: 10px;
   padding: 12px 14px;
   text-align: left;
@@ -966,18 +1103,17 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--color-text-dark);
+  color: var(--theme-text);
 }
 
 .diag-opt-btn:hover {
   border-color: var(--color-orange);
-  background: #fff;
 }
 
 .diag-opt-btn.selected {
   border-color: var(--color-orange);
-  background: rgba(232, 113, 43, 0.08);
-  color: var(--color-orange-dark);
+  background: rgba(232, 113, 43, 0.12);
+  color: var(--color-orange);
   font-weight: 700;
 }
 
@@ -990,7 +1126,7 @@
 
 /* Résultats Autodiagnostic */
 .diag-results-banner {
-  background: var(--color-forest);
+  background: var(--color-forest-dark);
   color: #fff;
   border-radius: 14px;
   padding: 24px;
@@ -999,6 +1135,7 @@
   gap: 16px;
   text-align: center;
   margin-bottom: 24px;
+  border: 1px solid var(--theme-border);
 }
 
 .diag-kpi-num {
@@ -1028,6 +1165,7 @@
   gap: 10px;
   font-size: 14.5px;
   line-height: 1.5;
+  color: var(--theme-text);
 }
 
 /* Champs Formulaire Standard */
@@ -1047,6 +1185,7 @@
   font-size: 13.5px;
   font-weight: 600;
   margin-bottom: 6px;
+  color: var(--theme-text);
 }
 
 .form-group input,
@@ -1054,12 +1193,12 @@
 .form-group textarea {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--theme-border);
   border-radius: 8px;
   font-family: var(--font-sans);
   font-size: 14px;
-  color: var(--color-text-dark);
-  background: #fff;
+  color: var(--theme-text);
+  background: var(--theme-surface-alt);
   transition: border-color 0.2s ease;
 }
 
@@ -1086,10 +1225,22 @@
   border: 1px solid #a7f3d0;
 }
 
+[data-theme="dark"] .feedback-success {
+  background: rgba(6, 95, 70, 0.25);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
 .feedback-error {
   background: #fef2f2;
   color: #991b1b;
   border: 1px solid #fecaca;
+}
+
+[data-theme="dark"] .feedback-error {
+  background: rgba(153, 27, 27, 0.25);
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.4);
 }
 
 /* ========================================================
@@ -1126,7 +1277,8 @@
   .diag-results-banner {
     grid-template-columns: 1fr;
   }
-  .nav-ctas-group {
+  .nav-ctas-group .nav-btn-diag,
+  .nav-ctas-group .nav-btn-contact {
     display: none;
   }
 }
