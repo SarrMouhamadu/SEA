@@ -185,24 +185,24 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
             </div>
 
             <div className="diag-recommendations">
-              <h4 style={{ margin: '0 0 14px', fontSize: '20px', color: 'var(--color-forest)' }}>
+              <h4 style={{ margin: '0 0 14px', fontSize: '20px', color: 'var(--theme-text)' }}>
                 Recommandations préconisées par SEnergyS Africa :
               </h4>
               <ul className="diag-rec-list">
                 <li>
-                  <CheckCircle2 size={18} color="#E8712B" />
+                  <CheckCircle2 size={18} color="var(--color-orange)" />
                   <span>
                     <strong>Optimisation de la combustion :</strong> Mise à niveau vers des brûleurs modulants avec contrôle électronique du ratio air/gaz pour stabiliser les rendements.
                   </span>
                 </li>
                 <li>
-                  <CheckCircle2 size={18} color="#3F7A5A" />
+                  <CheckCircle2 size={18} color="var(--color-green-mid)" />
                   <span>
                     <strong>Audit d'utilités thermiques :</strong> Traitement des déperditions de vapeur, récupération de chaleur sur fumées et calorifugeage.
                   </span>
                 </li>
                 <li>
-                  <CheckCircle2 size={18} color="#B8470F" />
+                  <CheckCircle2 size={18} color="var(--color-orange-dark)" />
                   <span>
                     <strong>Éligibilité Finance Climat :</strong> Vos installations peuvent prétendre à des mécanismes de co-financement vert (Green Climate Fund, banques partenaires).
                   </span>
@@ -214,7 +214,7 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
               <button
                 type="button"
                 className="btn-pill btn-pill-outline-gold"
-                style={{ color: '#2B1B10', borderColor: '#ccc' }}
+                style={{ color: 'var(--theme-text)', borderColor: 'var(--theme-border)' }}
                 onClick={() => setStep(1)}
               >
                 <ArrowLeft size={16} /> Modifier mes réponses
@@ -235,17 +235,17 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
           <div className="diag-step-content">
             {isSubmitted ? (
               <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <CheckCircle2 size={54} color="#3F7A5A" style={{ margin: '0 auto 16px' }} />
-                <h3 style={{ fontSize: '28px', color: 'var(--color-forest)', marginBottom: '8px' }}>
+                <CheckCircle2 size={54} color="var(--color-green-mid)" style={{ margin: '0 auto 16px' }} />
+                <h3 style={{ fontSize: '28px', color: 'var(--theme-text)', marginBottom: '8px' }}>
                   Demande d'accompagnement transmise !
                 </h3>
-                <p style={{ fontSize: '16px', color: '#666' }}>
+                <p style={{ fontSize: '16px', color: 'var(--theme-text-muted)' }}>
                   Nos ingénieurs énergéticiens ont bien reçu vos données et prendront contact sous 24h ouvrées.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmitAccompaniment}>
-                <p style={{ margin: '0 0 20px', color: '#555', fontSize: '15px' }}>
+                <p style={{ margin: '0 0 20px', color: 'var(--theme-text-muted)', fontSize: '15px' }}>
                   Renseignez vos coordonnées professionnelles pour recevoir l'analyse détaillée et convenir d'un échange avec nos experts.
                 </p>
 
@@ -303,7 +303,7 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
                   <button
                     type="button"
                     className="btn-pill btn-pill-outline-gold"
-                    style={{ color: '#2B1B10', borderColor: '#ccc' }}
+                    style={{ color: 'var(--theme-text)', borderColor: 'var(--theme-border)' }}
                     onClick={() => setStep(2)}
                   >
                     <ArrowLeft size={16} /> Recommandations

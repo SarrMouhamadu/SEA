@@ -436,7 +436,7 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'center' }}>
             <div>
-              <p className="section-label" style={{ color: 'var(--color-forest)', opacity: 0.85 }}>CONTACTEZ-NOUS</p>
+              <p className="section-label" style={{ color: '#FFFFFF', opacity: 0.9 }}>CONTACTEZ-NOUS</p>
               <h2 className="cta-title">Passons à l'action.</h2>
               <p className="cta-contact-info" style={{ marginBottom: '24px' }}>
                 contact@senergysafrica.com · +221 77 217 33 64

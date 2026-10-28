@@ -1223,6 +1223,12 @@
   border-color: var(--color-orange);
 }
 
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--theme-text-muted);
+  opacity: 0.7;
+}
+
 .form-feedback {
   padding: 12px 16px;
   border-radius: 8px;
@@ -1295,4 +1301,303 @@
   .nav-ctas-group .nav-btn-contact {
     display: none;
   }
+}
+
+/* ========================================================
+   Styles Globaux pour toutes les Pages (Mode Light & Dark)
+   ======================================================== */
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.about-page,
+.services-page,
+.sectors-page,
+.products-page,
+.contact-page {
+  min-height: calc(100vh - 280px);
+}
+
+.section {
+  padding: 80px 0;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.section-title-wrapper {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 42px;
+  line-height: 1.15;
+  margin: 16px 0;
+  color: var(--theme-text);
+}
+
+.section-subtitle {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--theme-text-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  background: rgba(232, 113, 43, 0.12);
+  color: var(--color-orange);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid rgba(232, 113, 43, 0.25);
+}
+
+.card {
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--theme-card-shadow);
+  color: var(--theme-text);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-orange);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--color-orange);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #f27c38;
+  box-shadow: 0 8px 20px rgba(232, 113, 43, 0.35);
+}
+
+.btn-secondary {
+  background: var(--theme-surface-alt);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-border);
+}
+
+.btn-secondary:hover {
+  background: var(--theme-surface);
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+/* Cartes Produits / Brûleurs détaillées */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: var(--theme-surface-alt);
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.badge-gaz {
+  background: rgba(18, 59, 46, 0.9);
+  color: #F2C88B;
+  border: 1px solid rgba(242, 200, 139, 0.3);
+}
+
+.badge-fioul {
+  background: rgba(63, 122, 90, 0.9);
+  color: #fff;
+}
+
+.badge-mixte {
+  background: rgba(74, 47, 28, 0.9);
+  color: #F2C88B;
+}
+
+.product-details {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-family {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-orange);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.product-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: var(--theme-text);
+}
+
+.product-power {
+  font-size: 14px;
+  color: var(--theme-text-muted);
+  margin-bottom: 12px;
+}
+
+.product-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--theme-text-muted);
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.product-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-features-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--theme-text);
+}
+
+.check-icon {
+  color: var(--color-orange);
+  flex-shrink: 0;
+}
+
+.product-footer {
+  margin-top: auto;
+}
+
+.products-filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background: var(--color-orange);
+  color: #fff;
+  border-color: var(--color-orange);
 }

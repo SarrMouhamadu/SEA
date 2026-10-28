@@ -19,40 +19,39 @@ export default function Navbar() {
     },
     {
       title: 'À propos',
-      path: '/#apropos',
+      path: '/a-propos',
       items: [
-        { name: 'Qui sommes-nous', path: '/#apropos' },
-        { name: 'Notre vision & notre engagement', path: '/#apropos' },
-        { name: 'Notre approche (Analyse, Financement, Suivi)', path: '/#apropos' },
-        { name: 'Notre équipe', path: '/#equipe' },
-        { name: 'Nos partenaires', path: '/#partenaires' },
+        { name: 'Qui sommes-nous', path: '/a-propos#qui-sommes-nous' },
+        { name: 'Notre vision & nos valeurs', path: '/a-propos#vision' },
+        { name: 'Notre approche en 3 étapes', path: '/a-propos#approche' },
+        { name: 'Notre équipe & nos partenaires', path: '/a-propos#partenaires' },
       ],
     },
     {
       title: 'Expertises',
-      path: '/#competences',
+      path: '/services',
       items: [
-        { name: 'Énergie durable', path: '/#competences' },
-        { name: 'Production propre & Brûleurs', path: '/#competences' },
-        { name: 'Finance climat & durable', path: '/#competences' },
-        { name: 'Stratégies & politiques publiques', path: '/#competences' },
-        { name: 'Formation & innovation', path: '/#competences' },
+        { name: 'Énergie durable', path: '/services' },
+        { name: 'Production propre & Brûleurs', path: '/produits' },
+        { name: 'Finance climat & durable (ESG)', path: '/services' },
+        { name: 'Stratégies & politiques publiques', path: '/services' },
+        { name: 'Formation & innovation', path: '/services' },
       ],
     },
     {
       title: 'Secteurs',
-      path: '/#secteurs',
+      path: '/secteurs',
       items: [
-        { name: 'Industrie & Agroalimentaire', path: '/#secteurs' },
-        { name: 'Bâtiments & services', path: '/#secteurs' },
-        { name: 'Pétrole, gaz et mines', path: '/#secteurs' },
-        { name: 'Institutions financières', path: '/#secteurs' },
-        { name: 'Secteur public & organisations internationales', path: '/#secteurs' },
+        { name: 'Industrie & Agroalimentaire', path: '/secteurs' },
+        { name: 'Bâtiments & services', path: '/secteurs' },
+        { name: 'Pétrole, gaz et mines', path: '/secteurs' },
+        { name: 'Institutions financières', path: '/secteurs' },
+        { name: 'Secteur public & international', path: '/secteurs' },
       ],
     },
     {
-      title: 'Références',
-      path: '/#references',
+      title: 'Brûleurs & Références',
+      path: '/produits',
     },
     {
       title: 'Ressources',
@@ -95,22 +94,22 @@ export default function Navbar() {
                     {menu.title} <ChevronDown size={14} className="dropdown-arrow" />
                   </button>
                 ) : (
-                  <a href={menu.path} className="nav-link">
+                  <Link to={menu.path} className="nav-link">
                     {menu.title}
-                  </a>
+                  </Link>
                 )}
 
                 {menu.items && activeDropdown === menu.title && (
                   <div className="nav-dropdown-menu">
                     {menu.items.map((sub) => (
-                      <a
+                      <Link
                         key={sub.name}
-                        href={sub.path}
+                        to={sub.path}
                         className="nav-dropdown-item"
                         onClick={() => setActiveDropdown(null)}
                       >
                         {sub.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -163,26 +162,26 @@ export default function Navbar() {
                     <div className="mobile-menu-head">{menu.title}</div>
                     <div className="mobile-submenu">
                       {menu.items.map((sub) => (
-                        <a
+                        <Link
                           key={sub.name}
-                          href={sub.path}
+                          to={sub.path}
                           className="mobile-submenu-item"
                           onClick={() => setMobileOpen(false)}
                         >
                           {sub.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </>
                 ) : (
-                  <a
-                    href={menu.path}
+                  <Link
+                    to={menu.path}
                     className="mobile-menu-head"
                     style={{ textDecoration: 'none' }}
                     onClick={() => setMobileOpen(false)}
                   >
                     {menu.title}
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
@@ -246,7 +245,7 @@ export default function Navbar() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="diag-modal-header" style={{ marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '26px', color: 'var(--color-forest)' }}>Nous contacter</h3>
+              <h3 style={{ fontSize: '26px', color: 'var(--theme-text)' }}>Nous contacter</h3>
               <button className="diag-modal-close" onClick={() => setContactOpen(false)}>✕</button>
             </div>
             <ContactForm onSuccess={() => setTimeout(() => setContactOpen(false), 2000)} />

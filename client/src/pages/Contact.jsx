@@ -26,56 +26,56 @@ export default function Contact() {
         <div className="grid-2" style={{ alignItems: 'flex-start' }}>
           <div>
             <div className="card" style={{ marginBottom: '24px' }}>
-              <h3 style={{ marginBottom: '20px' }}>Coordonnées Directes</h3>
+              <h3 style={{ marginBottom: '20px', color: 'var(--theme-text)' }}>Coordonnées Directes</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <MapPin size={22} color="var(--color-primary)" />
+                  <MapPin size={22} color="var(--color-orange)" />
                   <div>
-                    <strong>Adresse :</strong>
-                    <p style={{ color: 'var(--color-muted)' }}>{company?.address || 'Dakar, Sénégal'}</p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Adresse :</strong>
+                    <p style={{ color: 'var(--theme-text-muted)' }}>{company?.address || 'Dakar, Sénégal'}</p>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <Phone size={22} color="var(--color-primary)" />
+                  <Phone size={22} color="var(--color-orange)" />
                   <div>
-                    <strong>Téléphone / WhatsApp :</strong>
-                    <p><a href="tel:+221772173364" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>{company?.phone || '+221 77 217 33 64'}</a></p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Téléphone / WhatsApp :</strong>
+                    <p><a href="tel:+221772173364" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>{company?.phone || '+221 77 217 33 64'}</a></p>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <Mail size={22} color="var(--color-primary)" />
+                  <Mail size={22} color="var(--color-orange)" />
                   <div>
-                    <strong>Email professionnel :</strong>
-                    <p><a href="mailto:contact@senergysafrica.com" style={{ color: 'var(--color-primary)', fontWeight: '600' }}>{company?.email || 'contact@senergysafrica.com'}</a></p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Email professionnel :</strong>
+                    <p><a href="mailto:contact@senergysafrica.com" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>{company?.email || 'contact@senergysafrica.com'}</a></p>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <Clock size={22} color="var(--color-primary)" />
+                  <Clock size={22} color="var(--color-orange)" />
                   <div>
-                    <strong>Disponibilité :</strong>
-                    <p style={{ color: 'var(--color-muted)' }}>Du Lundi au Vendredi : 8h00 - 18h00</p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Disponibilité :</strong>
+                    <p style={{ color: 'var(--theme-text-muted)' }}>Du Lundi au Vendredi : 8h00 - 18h00</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="card" style={{ background: 'var(--color-accent-subtle)', borderColor: 'var(--color-accent)' }}>
+            <div className="card" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)' }}>
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
-                <ShieldCheck size={24} color="var(--color-primary)" />
-                <h4 style={{ color: 'var(--color-primary-dark)' }}>Engagement Qualité & Confidentialité</h4>
+                <ShieldCheck size={24} color="var(--color-orange)" />
+                <h4 style={{ color: 'var(--theme-text)' }}>Engagement Qualité & Confidentialité</h4>
               </div>
-              <p style={{ fontSize: '0.92rem', color: 'var(--color-muted)' }}>
+              <p style={{ fontSize: '0.92rem', color: 'var(--theme-text-muted)' }}>
                 Toutes les données opérationnelles et énergétiques transmises dans le cadre de nos audits font l'objet d'un accord de confidentialité strict (NDA).
               </p>
             </div>
           </div>
 
           <div className="card" style={{ padding: '36px' }}>
-            <h3 style={{ marginBottom: '8px' }}>Formulaire de contact</h3>
-            <p style={{ color: 'var(--color-muted)', marginBottom: '24px', fontSize: '0.95rem' }}>
+            <h3 style={{ marginBottom: '8px', color: 'var(--theme-text)' }}>Formulaire de contact</h3>
+            <p style={{ color: 'var(--theme-text-muted)', marginBottom: '24px', fontSize: '0.95rem' }}>
               Remplissez le formulaire ci-dessous pour recevoir un retour personnalisé :
             </p>
             <ContactForm />
