@@ -8,8 +8,12 @@ export default function Footer() {
         <div className="footer-main-grid">
           {/* Colonne 1 : Brand & Mission */}
           <div className="footer-brand-col">
-            <div className="nav-brand" style={{ fontSize: '26px', marginBottom: '14px' }}>
-              SEnergyS <span>Africa</span>
+            <div style={{ marginBottom: '16px' }}>
+              <img
+                src="/assets/logo/logo-officiel.png"
+                alt="SEnergyS Africa"
+                className="footer-logo-img"
+              />
             </div>
             <p className="footer-desc">
               Accélérateur de performances durables en Afrique de l'Ouest. Expertise en ingénierie thermique,

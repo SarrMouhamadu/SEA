@@ -69,8 +69,12 @@ export default function Navbar() {
       <header className="site-header">
         <div className="site-nav">
           {/* Logo officiel */}
-          <Link to="/" className="nav-brand">
-            SEnergyS <span>Africa</span>
+          <Link to="/" className="nav-brand" aria-label="SEnergyS Africa Accueil">
+            <img
+              src="/assets/logo/logo-officiel.png"
+              alt="SEnergyS Africa"
+              className="nav-logo-img"
+            />
           </Link>
 
           {/* Menu principal Desktop avec dropdowns */}
