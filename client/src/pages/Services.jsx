@@ -1,60 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, TrendingUp, Flame, GraduationCap, Building2, Check, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Zap, TrendingUp, Flame, GraduationCap, Building2, Check, ArrowRight, Briefcase, Smartphone } from 'lucide-react';
 
 const icons = {
   Zap: Zap,
   TrendingUp: TrendingUp,
   Flame: Flame,
   GraduationCap: GraduationCap,
-  Building2: Building2
+  Building2: Building2,
+  Briefcase: Briefcase,
+  Smartphone: Smartphone
 };
 
 const defaultServices = [
   {
     id: 1,
-    slug: 'energie-durable',
-    title: 'Énergie Durable',
-    summary: 'Audits énergétiques ISO 50001, décarbonation industrielle et intégration EnR.',
-    description: 'Diagnostics approfondis de vos installations thermiques et électriques, optimisation des réseaux de vapeur et d\'eau surchauffée, et déploiement de centrales solaires photovoltaïques en autoconsommation industrielle.',
+    slug: 'ingenierie-energie-environnement',
+    title: 'Ingénierie Énergie & Environnement',
+    summary: 'Audit, diagnostic approfondi et conception de systèmes EnR.',
+    description: 'Audits énergétiques détaillés et instrumentés (conformes ISO 50001), optimisation des utilités thermiques (vapeur, air comprimé, froid) et dimensionnement de solutions d\'énergie renouvelable (solaire PV, thermique, biomasse).',
     icon: 'Zap',
-    highlights: ['Audits réglementaires et ISO 50001', 'Plans de mesurage & GTB / Smart metering', 'Intégration solaire PV & biomasse', 'Contrats de performance énergétique (CPE)']
+    highlights: ['Audits énergétiques industriels détaillés', 'Dimensionnement solaire PV, thermique & biomasse', 'Optimisation des utilités (vapeur, air comprimé, froid)', 'Engagement contractuel sur les résultats']
   },
   {
     id: 2,
-    slug: 'production-propre',
-    title: 'Production Propre & Systèmes de Combustion',
-    summary: 'Modernisation de brûleurs industriels, réduction des rejets et éco-parcs.',
-    description: 'Fourniture, montage et maintenance de brûleurs industriels haute performance (gaz naturel, GPL, fioul lourd, bicarburation). Réduction prouvée de la consommation de combustible jusqu\'à 25% et forte diminution des oxydes d\'azote (Low-NOx).',
+    slug: 'conseil-strategique-developpement-durable',
+    title: 'Conseil Stratégique Développement Durable',
+    summary: 'RSE, production propre et mise à niveau environnementale.',
+    description: 'Accompagnement des industries et grandes entreprises dans leurs plans de décarbonation, la modernisation des brûleurs industriels haute performance, la mise en conformité environnementale et la réduction continue des émissions.',
     icon: 'Flame',
-    highlights: ['Brûleurs modulants haute efficacité', 'Régulation O2 / CO et variateurs de vitesse', 'Sécurisation et mise aux normes des chaufferies', 'Accompagnement vers les éco-parcs industriels']
+    highlights: ['Plans de décarbonation industrielle & feuilles de route Net-Zero', 'Brûleurs industriels haute efficacité (gaz, fioul, mixte)', 'RSE et mise à niveau environnementale', 'Accompagnement éco-parcs industriels']
   },
   {
     id: 3,
-    slug: 'finance-durable-esg',
-    title: 'Finance Climat & Durable (ESG)',
-    summary: 'Conseil en finance verte, notations ESG et structuration de projets éligibles.',
-    description: 'Accompagnement stratégique des entreprises et des institutions financières : évaluation des risques climatiques physiques et de transition, structuration de green bonds, et conformité aux standards internationaux (IFC, PRI, taxonomie verte).',
+    slug: 'finance-climatique-marches-carbone',
+    title: 'Finance Climatique & Marchés Carbone',
+    summary: 'Fonds climat, MRV et structuration de projets verts.',
+    description: 'Appui aux institutions financières et investisseurs pour la structuration de lignes de financement vert, l\'élaboration de taxonomies climat, la due diligence environnementale et sociale (E&S) et les mécanismes MRV.',
     icon: 'TrendingUp',
-    highlights: ['Systèmes de gestion environnementale et sociale (ESMS)', 'Audits de conformité E&S et notation ESG', 'Montage de dossiers pour fonds climatiques (GCF, BAD, SFI)', 'Bilan carbone GES Scope 1, 2, 3']
+    highlights: ['Structuration de lignes de financement vert', 'Taxonomies climat & critères d\'éligibilité', 'Due diligence E&S et screening des projets', 'MRV climat & produits financiers innovants (ESCO, leasing)']
   },
   {
     id: 4,
-    slug: 'strategies-politiques-publiques',
-    title: 'Stratégies & Politiques Publiques',
-    summary: 'Appui aux gouvernements, agences nationales et bailleurs internationaux.',
-    description: 'Élaboration de feuilles de route nationales d\'efficacité énergétique, plans directeurs de transition écologique pour zones économiques spéciales (ZES) et assistance technique aux bailleurs de fonds bilatéraux et multilatéraux.',
-    icon: 'Building2',
-    highlights: ['Études sectorielles de décarbonation', 'Réglementations thermiques des bâtiments', 'Cadres institutionnels pour l\'efficacité énergétique', 'Accompagnement des ZES & parcs industriels durables']
+    slug: 'management-projet-amo',
+    title: 'Management de Projet et AMO',
+    summary: 'Pilotage, coordination technique et suivi de performance.',
+    description: 'Assistance à Maîtrise d\'Ouvrage (AMO) pour la conduite de projets de transition énergétique complexes : de l\'étude d\'opportunité et du diagnostic jusqu\'à la mise en œuvre, la réception et le suivi-évaluation des économies d\'énergie.',
+    icon: 'Briefcase',
+    highlights: ['Assistance à Maîtrise d\'Ouvrage (AMO)', 'Pilotage et coordination globale de chantiers', 'Suivi-évaluation indépendant des performances', 'Mesures physiques avant/après travaux']
   },
   {
     id: 5,
-    slug: 'formation-innovation',
-    title: 'Formation & Innovation',
-    summary: 'Montée en compétences certifiante des équipes techniques et managériales.',
-    description: 'Programmes de formation sur mesure et certifiants : exploitation de chaufferies modernes, réglage de combustion, audits énergétiques, maintenance prédictive 4.0 et pilotage de la transition ESG en entreprise.',
+    slug: 'innovation-outils-digitaux',
+    title: 'Innovation et Outils Digitaux Propriétaires',
+    summary: 'e-audit, e-learning et digitalisation des Systèmes de Management de l\'Énergie.',
+    description: 'Développement et déploiement d\'outils numériques exclusifs pour digitaliser les audits énergétiques sur le terrain, administrer les plateformes de formation en ligne et automatiser la conformité ISO 50001 en temps réel.',
+    icon: 'Smartphone',
+    highlights: ['Plateforme e-audit pour relevés terrain connectés', 'Digitalisation des Systèmes de Management de l\'Énergie (ISO 50001)', 'Plateforme e-learning certifiante', 'Dashboards de télémesure et suivi énergétique']
+  },
+  {
+    id: 6,
+    slug: 'formation-renforcement-capacites',
+    title: 'Formation & Renforcement des Capacités',
+    summary: 'Programmes sur-mesure et transfert de compétences certifiant.',
+    description: 'Programmes certifiants de renforcement des capacités pour cadres techniques, industriels et équipes bancaires : thermique industrielle, réglage de combustion, audits ISO 50001 et analyse de projets d\'énergie durable.',
     icon: 'GraduationCap',
-    highlights: ['Sessions pratiques en thermique industrielle', 'Formation certifiante ISO 50001 & ESG', 'Transfert de compétences sur bancs d\'essais', 'Partenariats avec universités et écoles polytechniques']
+    highlights: ['Formation des équipes industrielles & thermiciens', 'Formation des équipes bancaires aux projets énergie', 'Programmes sur mesure avec bancs de test pratiques', 'Transfert de compétences durable']
   }
 ];
 
@@ -65,7 +76,7 @@ export default function Services() {
     fetch('http://localhost:5000/api/services')
       .then(res => res.json())
       .then(json => {
-        if (json.data && json.data.length > 0) {
+        if (json.data && json.data.length >= 6) {
           setServices(json.data);
         }
       })
@@ -76,10 +87,10 @@ export default function Services() {
     <div className="services-page section">
       <div className="container">
         <div className="section-title-wrapper">
-          <span className="badge">Nos 5 Pôles Stratégiques</span>
+          <span className="badge">Nos 6 Domaines d'Expertise Interne</span>
           <h1 className="section-title">Pôles d'Expertise & Prestations</h1>
           <p className="section-subtitle">
-            Une gamme complète de solutions d'ingénierie, de finance durable et de formation pour décupler votre compétitivité.
+            Une chaîne complète de compétences en ingénierie, conseil stratégique, finance climat et solutions digitales pour concrétiser vos objectifs durables.
           </p>
         </div>
 
@@ -124,7 +135,7 @@ export default function Services() {
                     {service.highlights && service.highlights.length > 0 && (
                       <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
                         gap: '10px',
                         marginBottom: '24px',
                         background: 'var(--theme-surface-alt)',
@@ -145,7 +156,7 @@ export default function Services() {
                       <Link to="/contact" className="btn btn-primary btn-sm">
                         Demander un accompagnement <ArrowRight size={14} />
                       </Link>
-                      {service.slug === 'production-propre' && (
+                      {(service.slug.includes('developpement-durable') || service.slug.includes('production-propre')) && (
                         <Link to="/produits" className="btn btn-secondary btn-sm">
                           Voir nos brûleurs industriels <ArrowRight size={14} />
                         </Link>

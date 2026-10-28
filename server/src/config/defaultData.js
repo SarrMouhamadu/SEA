@@ -1,12 +1,15 @@
 module.exports = {
   company: {
-    name: 'SEnergys Africa',
+    name: 'SEnergyS Africa (SESA)',
+    founded: 2015,
     tagline: 'Accélérateur de performances durables',
-    presentation: 'SEnergys Africa est une société d\'ingénierie et de conseil stratégique spécialisée dans la transition énergétique, l\'efficacité industrielle, la finance climatique/ESG et la formation professionnelle en Afrique subsaharienne.',
-    mission: 'Accompagner les entreprises industrielles, le secteur financier et les institutions publiques vers une décarbonation concrète, une efficacité énergétique maximale et l\'alignement avec les standards climatiques internationaux.',
-    vision: 'Devenir le partenaire de référence en Afrique de l\'Ouest pour la transition énergétique et les solutions industrielles propres de haute performance.',
-    values: 'Excellence technique, Intégrité, Innovation durable, Impact mesurable',
-    address: 'Dakar, Sénégal',
+    presentation: "Fondée en 2015, SEnergyS Africa (SESA) est une société d'ingénierie et de conseil en développement durable, spécialisée dans la transition énergétique, l'efficacité énergétique, la finance climatique et la production propre.",
+    scope: "SEnergyS Africa intervient exclusivement sur des projets de développement durable, depuis l'amont (étude d'opportunité, diagnostic) jusqu'à l'aval (mise en œuvre, suivi-évaluation). Notre cabinet accompagne aussi bien les institutions publiques, les organisations internationales, les industries que les PME-PMI dans la concrétisation de leurs objectifs énergétiques et climatiques.",
+    intervention_model: "Modèle d'intervention basé sur l'engagement contractuel sur les résultats, le partenariat de long terme avec nos clients et l'innovation à travers des outils digitaux propriétaires (e-audit, e-learning, digitalisation des Systèmes de Management de l'Énergie).",
+    mission: "Accompagner les institutions publiques, les organisations internationales, les industries et les PME-PMI vers la concrétisation de leurs objectifs énergétiques et climatiques avec engagement contractuel sur les résultats.",
+    vision: "Devenir le partenaire de référence en Afrique pour l'ingénierie durable, la décarbonation concrète et la finance climatique.",
+    values: 'Engagement contractuel sur les résultats, Partenariat durable, Innovation digitale, Intégrité',
+    address: 'P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal',
     phone: '+221 77 217 33 64',
     email: 'contact@senergysafrica.com',
     website: 'https://senergysafrica.com'
@@ -14,43 +17,51 @@ module.exports = {
   services: [
     {
       id: 1,
-      slug: 'energie-durable',
-      title: 'Énergie Durable',
-      summary: 'Audits énergétiques, décarbonation industrielle et intégration des énergies renouvelables.',
-      description: 'Nous réalisons des diagnostics énergétiques complets (audits conformes ISO 50001), l\'optimisation des réseaux de chaleur et de vapeur, ainsi que l\'intégration de solutions solaires et hybrides pour réduire vos coûts opérationnels et votre empreinte carbone.',
+      slug: 'ingenierie-energie-environnement',
+      title: 'Ingénierie Énergie & Environnement',
+      summary: 'Audit, diagnostic, conception et intégration de systèmes EnR.',
+      description: 'Audits énergétiques instrumentés, optimisation des réseaux de vapeur et utilités, conception de systèmes solaires photovoltaïques, thermiques et biomasse.',
       icon: 'Zap'
     },
     {
       id: 2,
-      slug: 'finance-durable-esg',
-      title: 'Finance Durable - ESG',
-      summary: 'Conseil en finance climatique, notation ESG et structuration de projets éligibles aux fonds verts.',
-      description: 'Accompagnement des institutions financières et des investisseurs dans l\'évaluation des risques climatiques, la mise en place de politiques de gestion environnementale et sociale (ESMS) et la mobilisation de financements verts concessionnels.',
-      icon: 'TrendingUp'
-    },
-    {
-      id: 3,
-      slug: 'production-propre',
-      title: 'Production Propre & Brûleurs',
-      summary: 'Rénovation des systèmes de combustion industrielle, brûleurs haute performance et éco-parcs.',
-      description: 'Fourniture, installation et maintenance de brûleurs industriels (gaz, fioul, mixtes) de dernière génération permettant une réduction immédiate de la consommation de combustible jusqu\'à 25% et des émissions de NOx/CO2.',
+      slug: 'conseil-strategique-developpement-durable',
+      title: 'Conseil Stratégique Développement Durable',
+      summary: 'RSE, production propre et mise à niveau environnementale.',
+      description: 'Définition des stratégies RSE, plans de décarbonation industrielle, mise à niveau technologique et réduction de l\'empreinte écologique.',
       icon: 'Flame'
     },
     {
+      id: 3,
+      slug: 'finance-climatique-marches-carbone',
+      title: 'Finance Climatique & Marchés Carbone',
+      summary: 'Fonds climat, MRV et structuration de projets verts.',
+      description: 'Accompagnement des institutions financières et porteurs de projets : structuration de lignes vertes, due diligence E&S, taxonomies climat et MRV.',
+      icon: 'TrendingUp'
+    },
+    {
       id: 4,
-      slug: 'formation-innovation',
-      title: 'Formation & Innovation',
-      summary: 'Renforcement des capacités techniques et managériales vers l\'industrie 4.0.',
-      description: 'Programmes de formation certifiants dédiés aux ingénieurs et techniciens : efficacité énergétique, variation de vitesse, maintenance prédictive, éco-parcs industriels et conformité ESG.',
-      icon: 'GraduationCap'
+      slug: 'management-projet-amo',
+      title: 'Management de Projet et AMO',
+      summary: 'Pilotage, coordination technique et suivi de performance.',
+      description: 'Assistance à Maîtrise d\'Ouvrage (AMO), suivi rigoureux des chantiers d\'efficacité énergétique, réception d\'installations et télémesure des gains.',
+      icon: 'Building2'
     },
     {
       id: 5,
-      slug: 'facility-management',
-      title: 'Facility Management',
-      summary: 'Gestion technique intégrée des bâtiments tertiaires et complexes industriels.',
-      description: 'Supervision globale des installations techniques : climatisation, ventilation, éclairage intelligent (smart metering) et gestion technique de bâtiment (GTB/GTC).',
-      icon: 'Building2'
+      slug: 'innovation-outils-digitaux',
+      title: 'Innovation et Outils Digitaux',
+      summary: 'e-audit, e-learning, digitalisation des Systèmes de Management de l\'Énergie.',
+      description: 'Déploiement d\'outils propriétaires digitaux pour accélérer les diagnostics énergétiques, digitaliser les normes ISO 50001 et former à distance.',
+      icon: 'Zap'
+    },
+    {
+      id: 6,
+      slug: 'formation-renforcement-capacites',
+      title: 'Formation & Renforcement des Capacités',
+      summary: 'Programmes sur-mesure et transfert de compétences certifiant.',
+      description: 'Formations techniques avancées pour équipes opérationnelles et cadres : efficacité énergétique, thermique industrielle, conformité ESG et management de l\'énergie.',
+      icon: 'GraduationCap'
     }
   ],
   sectors: [

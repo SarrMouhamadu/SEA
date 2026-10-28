@@ -103,8 +103,8 @@ export default function Home() {
               <div className="kpi-icon-box">
                 <Award size={26} color="var(--color-orange)" />
               </div>
-              <div className="kpi-val">+15 ans</div>
-              <p className="kpi-desc">D'ingénierie et d'expertise en Afrique de l'Ouest</p>
+              <div className="kpi-val">Depuis 2015</div>
+              <p className="kpi-desc">Société d'ingénierie et de conseil en développement durable</p>
             </div>
 
             <div className="kpi-card">
