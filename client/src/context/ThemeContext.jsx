@@ -2,35 +2,56 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
+function getAutomaticTheme() {
+  // 1. Détection de la préférence système (téléphone ou ordinateur)
+  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  // 2. Détection selon l'heure locale : sombre entre 19h et 7h
+  const hour = new Date().getHours();
+  return (hour >= 19 || hour < 7) ? 'dark' : 'light';
+}
+
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('sea_theme');
-    if (saved) return saved;
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  });
+  const [theme, setTheme] = useState(getAutomaticTheme);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('sea_theme', theme);
-  }, [theme]);
+    const applyTheme = () => {
+      const current = getAutomaticTheme();
+      setTheme(current);
+      document.documentElement.setAttribute('data-theme', current);
+    };
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
+    applyTheme();
+
+    // Écoute des changements de préférence du système (ex: passage jour/nuit automatique du téléphone)
+    const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (mediaQuery?.addEventListener) {
+      mediaQuery.addEventListener('change', applyTheme);
+    } else if (mediaQuery?.addListener) {
+      mediaQuery.addListener(applyTheme);
+    }
+
+    // Actualisation selon l'heure toutes les 10 minutes
+    const interval = setInterval(applyTheme, 10 * 60 * 1000);
+
+    return () => {
+      if (mediaQuery?.removeEventListener) {
+        mediaQuery.removeEventListener('change', applyTheme);
+      } else if (mediaQuery?.removeListener) {
+        mediaQuery.removeListener(applyTheme);
+      }
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
-  return context;
+  return useContext(ThemeContext);
 }

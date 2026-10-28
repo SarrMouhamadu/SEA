@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Sparkles, Moon, Sun } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { Menu, X, ChevronDown, Sparkles } from 'lucide-react';
 import AutoDiagnosticModal from './AutoDiagnosticModal';
 import ContactForm from './ContactForm';
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [diagOpen, setDiagOpen] = useState(false);
@@ -117,16 +115,8 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* 2 Boutons d'Appel à l'Action Permanents + Toggle Theme */}
+          {/* 2 Boutons d'Appel à l'Action Permanents */}
           <div className="nav-ctas-group">
-            <button
-              onClick={toggleTheme}
-              className="theme-toggle-btn"
-              title={theme === 'dark' ? 'Basculer en mode clair' : 'Basculer en mode sombre'}
-              aria-label="Basculer le thème"
-            >
-              {theme === 'dark' ? <Sun size={18} color="#F2C88B" /> : <Moon size={18} color="#E8712B" />}
-            </button>
             <button
               onClick={() => setDiagOpen(true)}
               className="btn-pill btn-pill-outline-gold nav-btn-diag"
@@ -187,24 +177,6 @@ export default function Navbar() {
             ))}
 
             <div className="mobile-cta-box">
-              <button
-                onClick={toggleTheme}
-                className="btn-pill"
-                style={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: 'var(--color-sand)',
-                  border: '1px solid rgba(246, 241, 231, 0.15)',
-                  marginBottom: '6px'
-                }}
-              >
-                {theme === 'dark' ? (
-                  <><Sun size={16} color="#F2C88B" /> Passer en mode clair</>
-                ) : (
-                  <><Moon size={16} color="#E8712B" /> Passer en mode sombre</>
-                )}
-              </button>
               <button
                 onClick={() => {
                   setMobileOpen(false);
