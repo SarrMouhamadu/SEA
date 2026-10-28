@@ -17,8 +17,11 @@ import {
   Flame,
   GraduationCap,
   Briefcase,
-  Smartphone
+  Smartphone,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
+import { playMicroClick, playSoftConfirm } from '../utils/soundEffects';
 
 const internalExpertises = [
   {
@@ -55,6 +58,7 @@ const internalExpertises = [
 
 export default function About() {
   const [company, setCompany] = useState(null);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:5000/api/company')
@@ -62,6 +66,35 @@ export default function About() {
       .then(json => setCompany(json.data || {}))
       .catch(() => {});
   }, []);
+
+  // Motion Reveal Observer natif
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    const targets = document.querySelectorAll('.motion-reveal');
+    targets.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleSound = () => {
+    const nextState = !soundEnabled;
+    setSoundEnabled(nextState);
+    if (nextState) {
+      playSoftConfirm(true);
+    }
+  };
 
   const approachSteps = [
     {
@@ -87,9 +120,20 @@ export default function About() {
   return (
     <div className="about-page section">
       <div className="container">
-        {/* En-tête */}
-        <div className="section-title-wrapper">
-          <span className="badge">À Propos de SEnergys Africa</span>
+        {/* En-tête avec Contrôle Audio discret */}
+        <div className="section-title-wrapper motion-reveal">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '12px' }}>
+            <span className="badge">À Propos de SEnergys Africa</span>
+            <button
+              onClick={toggleSound}
+              className={`sound-toggle-btn ${soundEnabled ? 'sound-on' : ''}`}
+              title={soundEnabled ? 'Désactiver les micro-sons' : 'Activer les micro-sons interactifs (silencieux par défaut)'}
+              aria-label="Contrôle audio"
+            >
+              {soundEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+              <span>{soundEnabled ? 'Son activé' : 'Expérience sonore'}</span>
+            </button>
+          </div>
           <h1 className="section-title">L'Ingénierie durable au cœur du développement africain</h1>
           <p className="section-subtitle">
             Fondée en 2015, SEnergyS Africa (SESA) est une société d'ingénierie et de conseil en développement durable, engagée contractuellement sur les résultats.
@@ -97,7 +141,7 @@ export default function About() {
         </div>
 
         {/* 1. Histoire & Présentation officielle */}
-        <div id="qui-sommes-nous" className="grid-2" style={{ marginBottom: '80px', alignItems: 'center' }}>
+        <div id="qui-sommes-nous" className="grid-2 motion-reveal" style={{ marginBottom: '80px', alignItems: 'center' }}>
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: 'var(--radius-full)', background: 'rgba(232, 113, 43, 0.1)', color: 'var(--color-orange)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '14px' }}>
               Depuis 2015 au service de l'Afrique
@@ -114,12 +158,17 @@ export default function About() {
             <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '24px' }}>
               Nous avons fait le choix d'un <strong>modèle d'intervention basé sur l'engagement contractuel sur les résultats</strong>, le partenariat de long terme avec nos clients et l'innovation à travers des outils digitaux propriétaires (e-audit, e-learning, digitalisation des Systèmes de Management de l'Énergie).
             </p>
-            <Link to="/contact" className="btn btn-primary btn-sm">
+            <Link
+              to="/contact"
+              className="btn btn-primary btn-sm"
+              onMouseEnter={() => playMicroClick(soundEnabled)}
+              onClick={() => playSoftConfirm(soundEnabled)}
+            >
               Prendre contact avec notre équipe <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="card" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)' }}>
+          <div className="card card-interactive" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)' }}>
             <h3 style={{ marginBottom: '20px', color: 'var(--color-orange)' }}>Notre Modèle d'Intervention</h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px', padding: 0 }}>
               <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
@@ -152,7 +201,7 @@ export default function About() {
 
         {/* 2. Les 6 Pôles d'Expertise Interne */}
         <div style={{ marginBottom: '80px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div className="motion-reveal" style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="badge">Savoir-faire Multidisciplinaire</span>
             <h2 style={{ fontSize: '2rem', marginTop: '12px', color: 'var(--theme-text)' }}>
               Expertise Interne
@@ -166,8 +215,13 @@ export default function About() {
             {internalExpertises.map((exp, idx) => {
               const IconComp = exp.icon;
               return (
-                <div key={idx} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{
+                <div
+                  key={idx}
+                  className={`card card-interactive motion-reveal stagger-${idx + 1}`}
+                  onMouseEnter={() => playMicroClick(soundEnabled)}
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  <div className="card-icon-wrapper" style={{
                     width: '50px',
                     height: '50px',
                     borderRadius: '12px',
@@ -192,9 +246,9 @@ export default function About() {
           </div>
         </div>
 
-        {/* 3. Notre Approche en 3 étapes */}
+        {/* 3. Notre Approche en 3 étapes (Avec signature visuelle de flux énergétique) */}
         <div id="approche" style={{ marginBottom: '80px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div className="motion-reveal" style={{ textAlign: 'center', marginBottom: '32px' }}>
             <span className="badge">De l'Amont à l'Aval</span>
             <h2 style={{ fontSize: '2rem', marginTop: '12px', color: 'var(--theme-text)' }}>
               Notre Approche (Amont → Aval)
@@ -204,24 +258,47 @@ export default function About() {
             </p>
           </div>
 
+          {/* Ligne de flux énergétique animée */}
+          <div className="approach-flow-bar motion-reveal">
+            <div className="approach-flow-node">
+              <span className="node-dot"></span>
+              <span>01. Étude & Diagnostic</span>
+            </div>
+            <div className="approach-flow-connector"></div>
+            <div className="approach-flow-node">
+              <span className="node-dot"></span>
+              <span>02. Ingénierie & Financement</span>
+            </div>
+            <div className="approach-flow-connector"></div>
+            <div className="approach-flow-node">
+              <span className="node-dot"></span>
+              <span>03. Mise en Œuvre & Suivi</span>
+            </div>
+          </div>
+
           <div className="grid-3">
-            {approachSteps.map((step) => {
+            {approachSteps.map((step, idx) => {
               const IconComp = step.icon;
               return (
-                <div key={step.num} className="card" style={{ position: 'relative' }}>
-                  <span style={{
+                <div
+                  key={step.num}
+                  className={`card card-interactive motion-reveal stagger-${idx + 1}`}
+                  onMouseEnter={() => playMicroClick(soundEnabled)}
+                  style={{ position: 'relative' }}
+                >
+                  <span className="step-number-watermark" style={{
                     position: 'absolute',
                     top: '20px',
                     right: '24px',
                     fontFamily: 'var(--font-display)',
-                    fontSize: '36px',
+                    fontSize: '38px',
                     color: 'var(--color-orange)',
                     opacity: 0.25,
                     fontWeight: 700
                   }}>
                     {step.num}
                   </span>
-                  <div style={{
+                  <div className="card-icon-wrapper" style={{
                     width: '48px',
                     height: '48px',
                     borderRadius: '12px',
@@ -247,25 +324,40 @@ export default function About() {
         </div>
 
         {/* 4. Vision, Mission & Valeurs */}
-        <div id="vision" className="grid-3" style={{ marginBottom: '80px' }}>
-          <div className="card">
-            <Target size={32} color="var(--color-orange)" style={{ marginBottom: '16px' }} />
+        <div id="vision" className="grid-3 motion-reveal" style={{ marginBottom: '80px' }}>
+          <div
+            className="card card-interactive"
+            onMouseEnter={() => playMicroClick(soundEnabled)}
+          >
+            <div className="card-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(232, 113, 43, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <Target size={28} color="var(--color-orange)" />
+            </div>
             <h3 style={{ color: 'var(--theme-text)' }}>Notre Mission</h3>
             <p style={{ color: 'var(--theme-text-muted)', marginTop: '12px', lineHeight: '1.6' }}>
               Accompagner les institutions publiques, organisations internationales, industries et PME-PMI vers la concrétisation mesurable de leurs objectifs énergétiques et climatiques.
             </p>
           </div>
 
-          <div className="card">
-            <Eye size={32} color="var(--color-green-mid)" style={{ marginBottom: '16px' }} />
+          <div
+            className="card card-interactive"
+            onMouseEnter={() => playMicroClick(soundEnabled)}
+          >
+            <div className="card-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(63, 122, 90, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <Eye size={28} color="var(--color-green-mid)" />
+            </div>
             <h3 style={{ color: 'var(--theme-text)' }}>Notre Vision</h3>
             <p style={{ color: 'var(--theme-text-muted)', marginTop: '12px', lineHeight: '1.6' }}>
               Être le partenaire de référence en Afrique pour l'ingénierie durable, la transition énergétique et les solutions industrielles propres de haute performance.
             </p>
           </div>
 
-          <div className="card">
-            <Award size={32} color="var(--color-gold)" style={{ marginBottom: '16px' }} />
+          <div
+            className="card card-interactive"
+            onMouseEnter={() => playMicroClick(soundEnabled)}
+          >
+            <div className="card-icon-wrapper" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(242, 200, 139, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <Award size={28} color="var(--color-gold)" />
+            </div>
             <h3 style={{ color: 'var(--theme-text)' }}>Nos Valeurs</h3>
             <p style={{ color: 'var(--theme-text-muted)', marginTop: '12px', lineHeight: '1.6' }}>
               Engagement contractuel sur les résultats, Partenariat durable de long terme, Innovation digitale (e-audit, e-learning) et Intégrité.
@@ -274,7 +366,7 @@ export default function About() {
         </div>
 
         {/* 5. Équipe & Partenaires */}
-        <div id="partenaires" className="card" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px' }}>
+        <div id="partenaires" className="card card-interactive motion-reveal" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px' }}>
           <div className="grid-2" style={{ alignItems: 'center' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
@@ -301,7 +393,12 @@ export default function About() {
               <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px' }}>
                 Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les fabricants européens de brûleurs et les universités d'excellence (UGB, EPT Thiès, DAUST).
               </p>
-              <Link to="/contact" className="btn btn-secondary btn-sm">
+              <Link
+                to="/contact"
+                className="btn btn-secondary btn-sm"
+                onMouseEnter={() => playMicroClick(soundEnabled)}
+                onClick={() => playSoftConfirm(soundEnabled)}
+              >
                 Devenir partenaire ou nous rejoindre <ArrowRight size={14} />
               </Link>
             </div>
