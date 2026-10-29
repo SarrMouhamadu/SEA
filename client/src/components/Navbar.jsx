@@ -30,7 +30,7 @@ export default function Navbar() {
       path: '/services',
       items: [
         { name: 'Énergie durable', path: '/services' },
-        { name: 'Production propre & Brûleurs', path: '/produits' },
+        { name: 'Production propre', path: '/services' },
         { name: 'Finance climat & durable (ESG)', path: '/services' },
         { name: 'Stratégies & politiques publiques', path: '/services' },
         { name: 'Formation & innovation', path: '/services' },
@@ -48,8 +48,8 @@ export default function Navbar() {
       ],
     },
     {
-      title: 'Brûleurs & Références',
-      path: '/produits',
+      title: 'Références',
+      path: '/references',
     },
     {
       title: 'Ressources',

@@ -57,7 +57,7 @@ export default function Footer() {
               <li><a href="/#apropos">À propos & Approche</a></li>
               <li><a href="/#competences">Nos 5 Pôles d'Expertise</a></li>
               <li><a href="/#secteurs">Secteurs d'intervention</a></li>
-              <li><a href="/#references">Références & Brûleurs</a></li>
+              <li><a href="/references">Nos Références</a></li>
               <li><a href="/#actualites">Actualités & Publications</a></li>
             </ul>
           </div>

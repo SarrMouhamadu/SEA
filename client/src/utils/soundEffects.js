@@ -65,3 +65,4 @@ export function playSoftConfirm(enabled = false) {
     osc.stop(ctx.currentTime + 0.11);
   } catch (e) {}
 }
+

@@ -1,12 +1,51 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ContactForm from '../components/ContactForm';
 import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
-import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award } from 'lucide-react';
+import ReferenceCard from '../components/ReferenceCard';
+import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award, Building2 } from 'lucide-react';
+
+const homeReferences = [
+  {
+    id: 1,
+    title: "Audit Énergétique & Décarbonation Industrielle",
+    sector: "industrie",
+    sectorLabel: "Industrie & Agroalimentaire",
+    clientType: "Grandes Entreprises & PME",
+    expertiseLabel: "Énergie durable & Efficacité",
+    description: "Diagnostic instrumenté complet des utilités thermiques et d'air comprimé avec mise en place d'un plan de comptage conforme ISO 50001.",
+    keyImpact: "-23% de consommation d'énergie fossile"
+  },
+  {
+    id: 2,
+    title: "Structuration de Lignes Vertes & Due Diligence ESG",
+    sector: "finance",
+    sectorLabel: "Institutions Financières",
+    clientType: "Banques & Bailleurs de Fonds",
+    expertiseLabel: "Finance climat & durable",
+    description: "Élaboration de taxonomies climat, critères d'éligibilité pour fonds verts et screening technique des projets d'investissement durable.",
+    keyImpact: "Portefeuille vert de 25M€ structuré et certifié"
+  },
+  {
+    id: 3,
+    title: "Transition Énergie & Éco-Parcs Industriels",
+    sector: "public",
+    sectorLabel: "Secteur Public & Bailleurs",
+    clientType: "Gouvernements & Partenaires (GIZ, UE, BAD)",
+    expertiseLabel: "Stratégies & politiques publiques",
+    description: "Assistance technique aux ministères et institutions pour l'aménagement durable et les feuilles de route de décarbonation des parcs industriels.",
+    keyImpact: "Cadre national & feuille de route Net-Zero déployés"
+  }
+];
 
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);
-  const [productFilter, setProductFilter] = useState('all');
+  const [refFilter, setRefFilter] = useState('all');
+
+  const filteredReferences = refFilter === 'all'
+    ? homeReferences
+    : homeReferences.filter(r => r.sector === refFilter);
 
   return (
     <div className="home-page">
@@ -119,8 +158,8 @@ export default function Home() {
               <div className="kpi-icon-box">
                 <Gauge size={26} color="var(--color-gold)" />
               </div>
-              <div className="kpi-val">&gt; 93%</div>
-              <p className="kpi-desc">De rendement thermique sur nos brûleurs industriels</p>
+              <div className="kpi-val">&gt; 95%</div>
+              <p className="kpi-desc">D'objectifs énergétiques et climatiques contractuellement atteints</p>
             </div>
 
             <div className="kpi-card">
@@ -134,175 +173,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. RÉFÉRENCES PHARES (Brûleurs & Solutions) */}
+      {/* 4. RÉFÉRENCES PHARES */}
       <section id="references" className="products-section">
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
             <div>
-              <p className="section-label">CATALOGUE TECHNIQUE & PROJETS</p>
+              <p className="section-label">PROJETS & RÉALISATIONS</p>
               <h2 className="section-heading" style={{ margin: 0, color: 'var(--color-text-dark)' }}>
                 Références phares
               </h2>
             </div>
 
-            {/* Filtres par type de brûleur */}
+            {/* Filtres par secteur */}
             <div className="ref-filters">
               <button
-                className={`ref-filter-btn ${productFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setProductFilter('all')}
+                className={`ref-filter-btn ${refFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setRefFilter('all')}
               >
                 Tous
               </button>
               <button
-                className={`ref-filter-btn ${productFilter === 'gaz' ? 'active' : ''}`}
-                onClick={() => setProductFilter('gaz')}
+                className={`ref-filter-btn ${refFilter === 'industrie' ? 'active' : ''}`}
+                onClick={() => setRefFilter('industrie')}
               >
-                Gaz
+                Industrie
               </button>
               <button
-                className={`ref-filter-btn ${productFilter === 'fioul' ? 'active' : ''}`}
-                onClick={() => setProductFilter('fioul')}
+                className={`ref-filter-btn ${refFilter === 'finance' ? 'active' : ''}`}
+                onClick={() => setRefFilter('finance')}
               >
-                Fioul
+                Finance Climat
               </button>
               <button
-                className={`ref-filter-btn ${productFilter === 'mixte' ? 'active' : ''}`}
-                onClick={() => setProductFilter('mixte')}
+                className={`ref-filter-btn ${refFilter === 'public' ? 'active' : ''}`}
+                onClick={() => setRefFilter('public')}
               >
-                Mixtes Gaz/Fioul
+                Secteur Public
               </button>
             </div>
           </div>
 
-          <div className="products-grid">
-            {/* Brûleurs à gaz */}
-            {(productFilter === 'all' || productFilter === 'gaz') && (
-              <a href="#contact" className="prod" style={{ background: '#123B2E' }}>
-                <div className="pv">
-                  <svg viewBox="0 0 360 240" width="100%" height="100%" role="img" aria-label="Illustration d'un brûleur à gaz">
-                    <circle className="gl" cx="300" cy="132" r="96" fill="#E8712B" opacity=".22"></circle>
-                    <path d="M0 206h360" stroke="rgba(246,241,231,.25)" strokeWidth="2"></path>
-                    <rect x="56" y="176" width="16" height="30" fill="#F2C88B"></rect>
-                    <rect x="186" y="156" width="16" height="50" fill="#F2C88B"></rect>
-                    <rect x="164" y="64" width="16" height="40" fill="#F6F1E7"></rect>
-                    <circle cx="172" cy="58" r="11" fill="none" stroke="#F2C88B" strokeWidth="4"></circle>
-                    <path d="M164 58h16M172 50v16" stroke="#F2C88B" strokeWidth="3"></path>
-                    <rect x="30" y="80" width="106" height="104" rx="22" fill="#F6F1E7"></rect>
-                    <circle cx="83" cy="132" r="32" fill="#123B2E"></circle>
-                    <g stroke="#F2C88B" strokeWidth="5" strokeLinecap="round">
-                      <path d="M83 108v48M59 132h48M66 115l34 34M100 115l-34 34"></path>
-                    </g>
-                    <circle cx="83" cy="132" r="7" fill="#F6F1E7"></circle>
-                    <rect x="136" y="104" width="112" height="56" fill="#F2C88B"></rect>
-                    <path d="M168 104v56M200 104v56M232 104v56" stroke="#123B2E" strokeOpacity=".35" strokeWidth="3"></path>
-                    <rect x="248" y="90" width="14" height="84" rx="3" fill="#F6F1E7"></rect>
-                    <rect x="262" y="112" width="26" height="40" fill="#F2C88B"></rect>
-                    <path d="M262 120h26M262 144h26" stroke="#123B2E" strokeOpacity=".4" strokeWidth="3"></path>
-                    <g className="fl">
-                      <path d="M288 132C308 98 336 106 356 132 336 158 308 166 288 132z" fill="#E8712B"></path>
-                      <path d="M288 132C305 112 326 116 342 132 326 148 305 152 288 132z" fill="#F2C88B"></path>
-                      <path d="M288 132C300 122 314 124 324 132 314 140 300 142 288 132z" fill="#5AA0D8"></path>
-                    </g>
-                  </svg>
-                </div>
-                <div className="prod-footer">
-                  <div>
-                    <b className="prod-name">Brûleurs à gaz Low-NOx</b>
-                    <span style={{ display: 'block', fontSize: '13px', opacity: 0.8, marginTop: '4px' }}>
-                      Série TBG · 500 à 7 500 kW
-                    </span>
-                  </div>
-                  <span className="prod-cta">Fiche technique →</span>
-                </div>
-              </a>
-            )}
+          <div className="grid grid-3" style={{ marginBottom: '32px' }}>
+            {filteredReferences.map((refItem) => (
+              <ReferenceCard key={refItem.id} item={refItem} />
+            ))}
+          </div>
 
-            {/* Brûleurs à fioul */}
-            {(productFilter === 'all' || productFilter === 'fioul') && (
-              <a href="#contact" className="prod" style={{ background: '#3F7A5A' }}>
-                <div className="pv">
-                  <svg viewBox="0 0 360 240" width="100%" height="100%" role="img" aria-label="Illustration d'un brûleur à fioul">
-                    <circle className="gl" cx="300" cy="132" r="96" fill="#E8712B" opacity=".22"></circle>
-                    <path d="M0 206h360" stroke="rgba(246,241,231,.25)" strokeWidth="2"></path>
-                    <rect x="56" y="176" width="16" height="30" fill="#F2C88B"></rect>
-                    <rect x="186" y="156" width="16" height="50" fill="#F2C88B"></rect>
-                    <rect x="212" y="78" width="12" height="26" fill="#F6F1E7"></rect>
-                    <path d="M218 34c9 14 16 22 16 32a16 16 0 0 1-32 0c0-10 7-18 16-32z" fill="#E8712B"></path>
-                    <path d="M212 62a7 7 0 0 0 6 7" stroke="#F2C88B" strokeWidth="3" fill="none" strokeLinecap="round"></path>
-                    <rect x="30" y="80" width="106" height="104" rx="22" fill="#F6F1E7"></rect>
-                    <circle cx="83" cy="132" r="32" fill="#3F7A5A"></circle>
-                    <g stroke="#F2C88B" strokeWidth="5" strokeLinecap="round">
-                      <path d="M83 108v48M59 132h48M66 115l34 34M100 115l-34 34"></path>
-                    </g>
-                    <circle cx="83" cy="132" r="7" fill="#F6F1E7"></circle>
-                    <rect x="136" y="104" width="112" height="56" fill="#F2C88B"></rect>
-                    <path d="M168 104v56M200 104v56M232 104v56" stroke="#3F7A5A" strokeOpacity=".35" strokeWidth="3"></path>
-                    <rect x="248" y="90" width="14" height="84" rx="3" fill="#F6F1E7"></rect>
-                    <rect x="262" y="112" width="26" height="40" fill="#F2C88B"></rect>
-                    <path d="M262 120h26M262 144h26" stroke="#3F7A5A" strokeOpacity=".4" strokeWidth="3"></path>
-                    <g className="fl">
-                      <path d="M288 132C308 98 336 106 356 132 336 158 308 166 288 132z" fill="#E8712B"></path>
-                      <path d="M288 132C305 112 326 116 342 132 326 148 305 152 288 132z" fill="#F2C88B"></path>
-                      <path d="M288 132C300 122 314 124 324 132 314 140 300 142 288 132z" fill="#F2C88B"></path>
-                    </g>
-                  </svg>
-                </div>
-                <div className="prod-footer">
-                  <div>
-                    <b className="prod-name">Brûleurs à fioul lourd & léger</b>
-                    <span style={{ display: 'block', fontSize: '13px', opacity: 0.8, marginTop: '4px' }}>
-                      Série TBL · 1 000 à 10 500 kW
-                    </span>
-                  </div>
-                  <span className="prod-cta">Fiche technique →</span>
-                </div>
-              </a>
-            )}
-
-            {/* Brûleurs mixtes */}
-            {(productFilter === 'all' || productFilter === 'mixte') && (
-              <a href="#contact" className="prod" style={{ background: '#4A2F1C' }}>
-                <div className="pv">
-                  <svg viewBox="0 0 360 240" width="100%" height="100%" role="img" aria-label="Illustration d'un brûleur mixte gaz-fioul">
-                    <circle className="gl" cx="300" cy="132" r="96" fill="#E8712B" opacity=".22"></circle>
-                    <path d="M0 206h360" stroke="rgba(246,241,231,.25)" strokeWidth="2"></path>
-                    <rect x="56" y="176" width="16" height="30" fill="#F2C88B"></rect>
-                    <rect x="186" y="156" width="16" height="50" fill="#F2C88B"></rect>
-                    <rect x="150" y="64" width="16" height="40" fill="#F6F1E7"></rect>
-                    <circle cx="158" cy="58" r="11" fill="none" stroke="#F2C88B" strokeWidth="4"></circle>
-                    <path d="M150 58h16M158 50v16" stroke="#F2C88B" strokeWidth="3"></path>
-                    <rect x="226" y="78" width="12" height="26" fill="#F6F1E7"></rect>
-                    <path d="M232 34c9 14 16 22 16 32a16 16 0 0 1-32 0c0-10 7-18 16-32z" fill="#E8712B"></path>
-                    <path d="M226 62a7 7 0 0 0 6 7" stroke="#F2C88B" strokeWidth="3" fill="none" strokeLinecap="round"></path>
-                    <rect x="30" y="80" width="106" height="104" rx="22" fill="#F6F1E7"></rect>
-                    <circle cx="83" cy="132" r="32" fill="#4A2F1C"></circle>
-                    <g stroke="#F2C88B" strokeWidth="5" strokeLinecap="round">
-                      <path d="M83 108v48M59 132h48M66 115l34 34M100 115l-34 34"></path>
-                    </g>
-                    <circle cx="83" cy="132" r="7" fill="#F6F1E7"></circle>
-                    <rect x="136" y="104" width="112" height="56" fill="#F2C88B"></rect>
-                    <path d="M168 104v56M200 104v56M232 104v56" stroke="#4A2F1C" strokeOpacity=".35" strokeWidth="3"></path>
-                    <rect x="248" y="90" width="14" height="84" rx="3" fill="#F6F1E7"></rect>
-                    <rect x="262" y="112" width="26" height="40" fill="#F2C88B"></rect>
-                    <path d="M262 120h26M262 144h26" stroke="#4A2F1C" strokeOpacity=".4" strokeWidth="3"></path>
-                    <g className="fl">
-                      <path d="M288 132C308 98 336 106 356 132 336 158 308 166 288 132z" fill="#E8712B"></path>
-                      <path d="M288 132C305 112 326 116 342 132 326 148 305 152 288 132z" fill="#F2C88B"></path>
-                      <path d="M288 132C300 122 314 124 324 132 314 140 300 142 288 132z" fill="#F2C88B"></path>
-                    </g>
-                  </svg>
-                </div>
-                <div className="prod-footer">
-                  <div>
-                    <b className="prod-name">Brûleurs mixtes bivalents</b>
-                    <span style={{ display: 'block', fontSize: '13px', opacity: 0.8, marginTop: '4px' }}>
-                      Série TBML · Bicarburation instantanée
-                    </span>
-                  </div>
-                  <span className="prod-cta">Fiche technique →</span>
-                </div>
-              </a>
-            )}
+          <div style={{ textAlign: 'center', marginTop: '30px' }}>
+            <Link to="/references" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+              Consulter toutes nos références projets <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>

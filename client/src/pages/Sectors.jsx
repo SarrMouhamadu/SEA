@@ -38,7 +38,7 @@ const defaultSectors = [
     servicesList: [
       'Audits énergétiques industriels détaillés instrumentés',
       'Mise en place de Systèmes de Management de l\'Énergie (ISO 50001)',
-      'Études d\'optimisation des utilités (air comprimé, vapeur, froid, brûleurs)',
+      'Études d\'optimisation des utilités (air comprimé, vapeur, froid, récupération de chaleur)',
       'Dimensionnement de solutions ENR (solaire PV, thermique, biomasse)',
       'Plans de décarbonation industrielle et feuilles de route Net-Zero',
       'Études technico-économiques et business cases bancables',

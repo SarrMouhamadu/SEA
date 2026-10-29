@@ -106,7 +106,7 @@ export default function About() {
     {
       num: '02',
       title: 'Au Cœur : Ingénierie & Financement',
-      desc: 'Dimensionnement technique précis (EnR, brûleurs, utilités), études technico-économiques et structuration des dossiers de financement vert.',
+      desc: 'Dimensionnement technique précis (EnR, efficacité thermique, utilités), études technico-économiques et structuration des dossiers de financement vert.',
       icon: FileCheck2,
     },
     {
@@ -391,7 +391,7 @@ export default function About() {
                 </span>
               </div>
               <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px' }}>
-                Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les fabricants européens de brûleurs et les universités d'excellence (UGB, EPT Thiès, DAUST).
+                Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les universités d'excellence (UGB, EPT Thiès, DAUST).
               </p>
               <Link
                 to="/contact"

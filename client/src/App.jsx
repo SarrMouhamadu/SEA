@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
 import Sectors from './pages/Sectors';
-import Products from './pages/Products';
+import References from './pages/References';
 import Contact from './pages/Contact';
 import './App.css';
 
@@ -23,7 +23,8 @@ export default function App() {
               <Route path="/a-propos" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/secteurs" element={<Sectors />} />
-              <Route path="/produits" element={<Products />} />
+              <Route path="/references" element={<References />} />
+              <Route path="/produits" element={<References />} />
               <Route path="/contact" element={<Contact />} />
             </Routes>
           </main>

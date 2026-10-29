@@ -27,9 +27,9 @@ const defaultServices = [
     slug: 'conseil-strategique-developpement-durable',
     title: 'Conseil Stratégique Développement Durable',
     summary: 'RSE, production propre et mise à niveau environnementale.',
-    description: 'Accompagnement des industries et grandes entreprises dans leurs plans de décarbonation, la modernisation des brûleurs industriels haute performance, la mise en conformité environnementale et la réduction continue des émissions.',
+    description: 'Accompagnement des industries et grandes entreprises dans leurs plans de décarbonation, l\'optimisation des procédés industriels, la valorisation de la chaleur fatale, la mise en conformité environnementale et la réduction continue des émissions.',
     icon: 'Flame',
-    highlights: ['Plans de décarbonation industrielle & feuilles de route Net-Zero', 'Brûleurs industriels haute efficacité (gaz, fioul, mixte)', 'RSE et mise à niveau environnementale', 'Accompagnement éco-parcs industriels']
+    highlights: ['Plans de décarbonation industrielle & feuilles de route Net-Zero', 'Optimisation des utilités industrielles (vapeur, air, chaleur)', 'RSE et mise à niveau environnementale', 'Accompagnement éco-parcs industriels']
   },
   {
     id: 3,
@@ -63,7 +63,7 @@ const defaultServices = [
     slug: 'formation-renforcement-capacites',
     title: 'Formation & Renforcement des Capacités',
     summary: 'Programmes sur-mesure et transfert de compétences certifiant.',
-    description: 'Programmes certifiants de renforcement des capacités pour cadres techniques, industriels et équipes bancaires : thermique industrielle, réglage de combustion, audits ISO 50001 et analyse de projets d\'énergie durable.',
+    description: 'Programmes certifiants de renforcement des capacités pour cadres techniques, industriels et équipes bancaires : thermique industrielle, audits ISO 50001 et analyse de projets d\'énergie durable.',
     icon: 'GraduationCap',
     highlights: ['Formation des équipes industrielles & thermiciens', 'Formation des équipes bancaires aux projets énergie', 'Programmes sur mesure avec bancs de test pratiques', 'Transfert de compétences durable']
   }
@@ -156,11 +156,6 @@ export default function Services() {
                       <Link to="/contact" className="btn btn-primary btn-sm">
                         Demander un accompagnement <ArrowRight size={14} />
                       </Link>
-                      {(service.slug.includes('developpement-durable') || service.slug.includes('production-propre')) && (
-                        <Link to="/produits" className="btn btn-secondary btn-sm">
-                          Voir nos brûleurs industriels <ArrowRight size={14} />
-                        </Link>
-                      )}
                     </div>
                   </div>
                 </div>

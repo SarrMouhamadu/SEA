@@ -116,8 +116,8 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
               <label className="diag-label">2. Votre enjeu prioritaire :</label>
               <div className="diag-options-grid">
                 {[
-                  { id: 'reduction-facture', label: 'Réduction de la facture combustible (-15% à -25%)' },
-                  { id: 'renovation-bruleurs', label: 'Rénovation ou passage à des brûleurs Low-NOx' },
+                  { id: 'reduction-facture', label: 'Réduction de la facture énergétique (-15% à -25%)' },
+                  { id: 'optimisation-utilites', label: 'Optimisation des utilités thermiques et vapeur' },
                   { id: 'audit-iso', label: 'Audit énergétique complet (ISO 50001)' },
                   { id: 'finance-climat', label: 'Structuration éligible aux financements verts / ESG' },
                 ].map((item) => (
@@ -137,7 +137,7 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
               <label className="diag-label">3. Source d'énergie dominante utilisée :</label>
               <div className="diag-options-grid">
                 {[
-                  { id: 'gaz-fioul', label: 'Chaudières & Brûleurs Gaz / Fioul' },
+                  { id: 'chaleur-vapeur', label: 'Chaudières vapeur & Réseaux thermiques' },
                   { id: 'electricite', label: 'Électricité réseau (Senelec / Utilités)' },
                   { id: 'groupes-diesel', label: 'Groupes électrogènes diesel intensifs' },
                   { id: 'mixte-solaire', label: 'Système hybride (Solaire + Thermique)' },
@@ -192,7 +192,7 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
                 <li>
                   <CheckCircle2 size={18} color="var(--color-orange)" />
                   <span>
-                    <strong>Optimisation de la combustion :</strong> Mise à niveau vers des brûleurs modulants avec contrôle électronique du ratio air/gaz pour stabiliser les rendements.
+                    <strong>Optimisation thermique & utilités :</strong> Modernisation des réseaux de vapeur, régulation fine et récupération de chaleur pour stabiliser les rendements.
                   </span>
                 </li>
                 <li>

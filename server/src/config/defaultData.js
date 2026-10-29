@@ -94,61 +94,112 @@ module.exports = {
       icon: 'Building'
     }
   ],
-  products: [
+  references: [
     {
       id: 1,
-      slug: 'tbg-450-750-lx',
-      name: 'Brûleur Industriel Gaz TBG 450-750 LX/MC',
-      category: 'gaz',
-      model_family: 'Série TBG',
-      power_range: '500 à 7 500 kW',
-      description: 'Brûleur gaz basse émission (Low-NOx) conçu pour applications industrielles sévères. Gestion électronique du rapport air/gaz et régulation modulante continue.',
-      image_url: '/assets/products/bruleur-tbg-450.jpg',
-      features: ['Faibles émissions Low-NOx classe 3', 'Régulation électronique modulante', 'Haut rendement thermique > 93%', 'Maintenance facilitée avec accès direct aux têtes de combustion']
+      slug: 'audit-energetique-decarbonation-industrielle',
+      title: "Audit Énergétique Instrumenté & Décarbonation des Procédés",
+      category: 'industrie',
+      sector: "industrie",
+      sectorLabel: "Industrie & Agroalimentaire",
+      clientType: "Industrie & Grandes Entreprises",
+      expertiseLabel: "Ingénierie Énergie & ISO 50001",
+      description: "Diagnostic approfondi des chaudières vapeur, des utilités d'air comprimé et du réseau de distribution thermique d'un complexe industriel manufacturier.",
+      keyImpact: "-23% de consommation d'énergie et 1 200 tCO2 évitées / an",
+      features: ['Audit thermique instrumenté', 'Mesure et plan de comptage', 'Plan de décarbonation conforme ISO 50001', 'ROI inférieur à 18 mois']
     },
     {
       id: 2,
-      slug: 'bt-75-300-dspg',
-      name: 'Brûleur Gaz Modulant BT 75-300 DSPG',
-      category: 'gaz',
-      model_family: 'Série BT',
-      power_range: '850 à 3 000 kW',
-      description: 'Brûleur à gaz robuste à deux allures progressives ou modulant, adapté aux chaudières à vapeur et générateurs d\'eau surchauffée.',
-      image_url: '/assets/products/bruleur-bt-75.jpg',
-      features: ['Système de came électronique', 'Raccordement gaz universel', 'Fiabilité éprouvée en climat tropical', 'Faible niveau sonore']
+      slug: 'structuration-lignes-vertes-taxonomie-climat',
+      title: "Structuration de Lignes de Financement Vert & Taxonomie Climat",
+      category: 'finance',
+      sector: "finance",
+      sectorLabel: "Institutions Financières",
+      clientType: "Banques & Bailleurs de Fonds",
+      expertiseLabel: "Finance Climatique & Marchés Carbone",
+      description: "Élaboration des critères d'éligibilité E&S, outils de screening de portefeuille et accompagnement à la levée de fonds concessionnels verts.",
+      keyImpact: "Portefeuille vert de 25M€ structuré selon les standards IFC / GCF",
+      features: ['Taxonomie verte & critères d\'éligibilité', 'Outil de screening automatisé', 'Due diligence E&S', 'Formation des comités de crédit']
     },
     {
       id: 3,
-      slug: 'tbl-1000-me',
-      name: 'Brûleur Fioul Lourd & Léger TBL 1000 ME',
-      category: 'fioul',
-      model_family: 'Série TBL',
-      power_range: '1 000 à 10 500 kW',
-      description: 'Brûleur fioul haute puissance à commande numérique intégrée, adapté au fioul domestique, fioul lourd ou biodiésel avec système de réchauffage haute précision.',
-      image_url: '/assets/products/bruleur-tbl-1000.jpg',
-      features: ['Compatible fioul lourd et léger', 'Système de réchauffeur de fioul piloté', 'Régulation par servomoteur haute précision', 'Conçu pour service 24/7 en continu']
+      slug: 'strategie-nationale-efficacite-energetique-eco-parcs',
+      title: "Stratégie Nationale d'Efficacité Énergétique & Éco-Parcs Industriels",
+      category: 'public',
+      sector: "public",
+      sectorLabel: "Secteur Public",
+      clientType: "Gouvernement & Bailleurs (GIZ, UE, BAD)",
+      expertiseLabel: "Stratégies & Politiques Publiques",
+      description: "Assistance technique pour la définition des cadres réglementaires MEPS, feuilles de route de transition pour Zones Économiques Spéciales et études territoriales.",
+      keyImpact: "Feuille de route nationale et standardisation éco-parc adoptée",
+      features: ['Assistance technique institutionnelle', 'Développement de cadres réglementaires MEPS', 'Feuille de route Net-Zero ZES', 'Accompagnement bailleurs internationaux']
     },
     {
       id: 4,
-      slug: 'btl-3-26',
-      name: 'Brûleur Compact Fioul BTL 3-26',
-      category: 'fioul',
-      model_family: 'Série BTL',
-      power_range: '30 à 310 kW',
-      description: 'Brûleur compact pour petites et moyennes installations de chauffage et fours artisanaux. Facilité de pose et consommation maîtrisée.',
-      image_url: '/assets/products/bruleur-btl-3.jpg',
-      features: ['Encombrement ultra-réduit', 'Démarrage instantané', 'Faible consommation électrique', 'Facilité d\'entretien']
+      slug: 'digitalisation-sme-iso-50001',
+      title: "Digitalisation du Système de Management de l'Énergie (ISO 50001)",
+      category: 'industrie',
+      sector: "industrie",
+      sectorLabel: "Industrie",
+      clientType: "Grandes Entreprises & PME-PMI",
+      expertiseLabel: "Innovation & Outils Digitaux (e-audit)",
+      description: "Déploiement de notre solution propriétaire d'e-audit et de suivi télémesuré des flux énergétiques pour automatiser le management de l'énergie.",
+      keyImpact: "Certification ISO 50001 obtenue et suivi continu des KPI en temps réel",
+      features: ['Plateforme e-audit propriétaire', 'Télémesure continue des utilités', 'Automatisation du reporting ISO 50001', 'Formation digitale des équipes']
     },
     {
       id: 5,
-      slug: 'tbml-50-me',
-      name: 'Brûleur Mixte Gaz-Fioul TBML 50 ME',
-      category: 'mixte',
-      model_family: 'Série TBML',
-      power_range: '250 à 6 000 kW',
-      description: 'Solution bivalente assurant une continuité de production sans interruption grâce à la commutation rapide entre gaz naturel / GPL et fioul.',
-      image_url: '/assets/products/bruleur-tbml-50.jpg',
-      features: ['Bicarburation instantanée gaz/fioul', 'Sécurité totale d\'approvisionnement énergétique', 'Commande électronique indépendante par combustible', 'Certifié CE & ISO']
+      slug: 'audit-thermique-smart-metering-tertiaire',
+      title: "Audit Thermique Global & Smart Metering d'un Complexe Tertiaire",
+      category: 'batiments',
+      sector: "batiments",
+      sectorLabel: "Bâtiments & Services",
+      clientType: "Secteur Tertiaire & Hôtellerie",
+      expertiseLabel: "Management de Projet & AMO",
+      description: "Optimisation des installations de climatisation (CVC), monitoring intelligent GTB et étude de faisabilité pour intégration solaire PV en toiture.",
+      keyImpact: "-18% sur la facture électrique annuelle et monitoring 24/7",
+      features: ['Audit CVC et enveloppe thermique', 'Supervision GTB communicante', 'Dimensionnement solaire PV toiture', 'Garantie de performance énergétique']
+    }
+  ],
+  products: [
+    {
+      id: 1,
+      slug: 'audit-energetique-decarbonation-industrielle',
+      title: "Audit Énergétique Instrumenté & Décarbonation des Procédés",
+      category: 'industrie',
+      sector: "industrie",
+      sectorLabel: "Industrie & Agroalimentaire",
+      clientType: "Industrie & Grandes Entreprises",
+      expertiseLabel: "Ingénierie Énergie & ISO 50001",
+      description: "Diagnostic approfondi des chaudières vapeur, des utilités d'air comprimé et du réseau de distribution thermique d'un complexe industriel manufacturier.",
+      keyImpact: "-23% de consommation d'énergie et 1 200 tCO2 évitées / an",
+      features: ['Audit thermique instrumenté', 'Mesure et plan de comptage', 'Plan de décarbonation conforme ISO 50001', 'ROI inférieur à 18 mois']
+    },
+    {
+      id: 2,
+      slug: 'structuration-lignes-vertes-taxonomie-climat',
+      title: "Structuration de Lignes de Financement Vert & Taxonomie Climat",
+      category: 'finance',
+      sector: "finance",
+      sectorLabel: "Institutions Financières",
+      clientType: "Banques & Bailleurs de Fonds",
+      expertiseLabel: "Finance Climatique & Marchés Carbone",
+      description: "Élaboration des critères d'éligibilité E&S, outils de screening de portefeuille et accompagnement à la levée de fonds concessionnels verts.",
+      keyImpact: "Portefeuille vert de 25M€ structuré selon les standards IFC / GCF",
+      features: ['Taxonomie verte & critères d\'éligibilité', 'Outil de screening automatisé', 'Due diligence E&S', 'Formation des comités de crédit']
+    },
+    {
+      id: 3,
+      slug: 'strategie-nationale-efficacite-energetique-eco-parcs',
+      title: "Stratégie Nationale d'Efficacité Énergétique & Éco-Parcs Industriels",
+      category: 'public',
+      sector: "public",
+      sectorLabel: "Secteur Public",
+      clientType: "Gouvernement & Bailleurs (GIZ, UE, BAD)",
+      expertiseLabel: "Stratégies & Politiques Publiques",
+      description: "Assistance technique pour la définition des cadres réglementaires MEPS, feuilles de route de transition pour Zones Économiques Spéciales et études territoriales.",
+      keyImpact: "Feuille de route nationale et standardisation éco-parc adoptée",
+      features: ['Assistance technique institutionnelle', 'Développement de cadres réglementaires MEPS', 'Feuille de route Net-Zero ZES', 'Accompagnement bailleurs internationaux']
     }
   ],
   partners: [
