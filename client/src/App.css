@@ -1776,7 +1776,7 @@
 }
 
 /* ========================================================
-   Page de Maintenance SEnergyS Africa (Simple & Épurée)
+   Page de Maintenance SEnergyS Africa (Simple & Animée)
    ======================================================== */
 .maintenance-wrapper {
   min-height: 100vh;
@@ -1786,8 +1786,18 @@
   padding: 32px 20px;
   background-color: var(--theme-bg);
   background-image: 
-    radial-gradient(circle at 50% 30%, rgba(232, 113, 43, 0.05) 0%, transparent 60%);
+    radial-gradient(circle at 50% 30%, rgba(232, 113, 43, 0.08) 0%, transparent 60%);
+  animation: maintenanceBgBreathe 8s ease-in-out infinite alternate;
   transition: background-color 0.3s ease;
+}
+
+@keyframes maintenanceBgBreathe {
+  0% {
+    background-size: 100% 100%;
+  }
+  100% {
+    background-size: 120% 120%;
+  }
 }
 
 .maintenance-simple-card {
@@ -1801,17 +1811,40 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  animation: maintenanceCardEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition: all 0.3s ease;
 }
 
-.maintenance-simple-card::before {
-  content: '';
+@keyframes maintenanceCardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Ligne d'énergie animée au sommet */
+.maintenance-energy-bar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-orange), var(--color-gold));
+  background: linear-gradient(90deg, var(--color-orange), var(--color-gold), var(--color-forest));
+  background-size: 200% 100%;
+  animation: maintenanceEnergyFlow 3.5s linear infinite;
+}
+
+@keyframes maintenanceEnergyFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
 .maintenance-logo-center {
@@ -1825,12 +1858,18 @@
   width: auto;
   object-fit: contain;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.maintenance-logo:hover {
+  transform: scale(1.03);
 }
 
 [data-theme="dark"] .maintenance-logo {
   filter: brightness(1.25) contrast(1.05);
 }
 
+/* Icône Wrench avec respiration lumineuse & oscillation douce */
 .maintenance-simple-icon {
   display: inline-flex;
   align-items: center;
@@ -1838,9 +1877,39 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: rgba(232, 113, 43, 0.1);
+  background: rgba(232, 113, 43, 0.12);
   color: var(--color-orange);
   margin-bottom: 20px;
+  box-shadow: 0 0 0 0 rgba(232, 113, 43, 0.4);
+  animation: maintenanceIconPulse 3s infinite ease-in-out;
+}
+
+@keyframes maintenanceIconPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(232, 113, 43, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(232, 113, 43, 0);
+    transform: scale(1.04);
+  }
+}
+
+.maintenance-wrench-anim {
+  animation: maintenanceWrenchTilt 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes maintenanceWrenchTilt {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(14deg);
+  }
 }
 
 .maintenance-simple-title {
@@ -1865,6 +1934,11 @@
   border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+}
+
+.maintenance-urgency-box:hover {
+  border-color: rgba(232, 113, 43, 0.35);
 }
 
 .maintenance-urgency-label {
@@ -1885,18 +1959,69 @@
   text-decoration: none;
   font-size: 16px;
   font-weight: 700;
-  padding: 12px 24px;
+  padding: 13px 24px;
   border-radius: var(--radius-full);
   border: 1px solid rgba(246, 241, 231, 0.15);
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.maintenance-phone-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  animation: maintenanceBtnShine 4s infinite 1.5s;
+}
+
+@keyframes maintenanceBtnShine {
+  0% {
+    left: -100%;
+  }
+  25%, 100% {
+    left: 140%;
+  }
 }
 
 .maintenance-phone-btn:hover {
   background: var(--color-orange);
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(232, 113, 43, 0.28);
+  box-shadow: 0 8px 24px rgba(232, 113, 43, 0.32);
+}
+
+.maintenance-phone-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maintenance-phone-anim {
+  animation: maintenancePhoneRing 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes maintenancePhoneRing {
+  0%, 75%, 100% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(-12deg);
+  }
+  85% {
+    transform: rotate(12deg);
+  }
+  90% {
+    transform: rotate(-10deg);
+  }
+  95% {
+    transform: rotate(8deg);
+  }
 }
 
 .maintenance-back-link {
@@ -1907,11 +2032,12 @@
   color: var(--theme-text-muted);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .maintenance-back-link:hover {
   color: var(--color-orange);
+  transform: translateX(-3px);
 }
 
 .maintenance-simple-footer {
