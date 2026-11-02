@@ -29,26 +29,40 @@ export default function Contact() {
               <h3 style={{ marginBottom: '20px', color: 'var(--theme-text)' }}>Coordonnées Directes</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <MapPin size={22} color="var(--color-orange)" />
+                  <MapPin size={22} color="var(--color-orange)" style={{ flexShrink: 0 }} />
                   <div>
                     <strong style={{ color: 'var(--theme-text)' }}>Adresse :</strong>
-                    <p style={{ color: 'var(--theme-text-muted)' }}>{company?.address || 'Dakar, Sénégal'}</p>
+                    <p style={{ color: 'var(--theme-text-muted)' }}>P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal</p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <Phone size={22} color="var(--color-orange)" />
+                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                  <Phone size={22} color="var(--color-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <strong style={{ color: 'var(--theme-text)' }}>Téléphone / WhatsApp :</strong>
-                    <p><a href="tel:+221772173364" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>{company?.phone || '+221 77 217 33 64'}</a></p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Téléphones :</strong>
+                    <p style={{ margin: '2px 0' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)' }}>Mobile / WhatsApp : </span>
+                      <a href="tel:+221772173364" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>+221 77 217 33 64</a>
+                    </p>
+                    <p style={{ margin: '2px 0' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)' }}>Ligne fixe : </span>
+                      <a href="tel:+221339455647" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>+221 33 945 56 47</a>
+                    </p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <Mail size={22} color="var(--color-orange)" />
+                <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                  <Mail size={22} color="var(--color-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
                   <div>
-                    <strong style={{ color: 'var(--theme-text)' }}>Email professionnel :</strong>
-                    <p><a href="mailto:contact@senergysafrica.com" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>{company?.email || 'contact@senergysafrica.com'}</a></p>
+                    <strong style={{ color: 'var(--theme-text)' }}>Emails professionnels :</strong>
+                    <p style={{ margin: '2px 0' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)' }}>Support technique : </span>
+                      <a href="mailto:support_tech@senergysafrica.com" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>support_tech@senergysafrica.com</a>
+                    </p>
+                    <p style={{ margin: '2px 0' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)' }}>Contact général : </span>
+                      <a href="mailto:contact@senergysafrica.com" style={{ color: 'var(--color-orange)', fontWeight: '600' }}>contact@senergysafrica.com</a>
+                    </p>
                   </div>
                 </div>
 

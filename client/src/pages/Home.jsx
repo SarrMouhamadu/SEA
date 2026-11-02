@@ -358,8 +358,13 @@ export default function Home() {
             <div>
               <p className="section-label" style={{ color: '#FFFFFF', opacity: 0.9 }}>CONTACTEZ-NOUS</p>
               <h2 className="cta-title">Passons à l'action.</h2>
-              <p className="cta-contact-info" style={{ marginBottom: '24px' }}>
-                contact@senergysafrica.com · +221 77 217 33 64
+              <p className="cta-contact-info" style={{ marginBottom: '14px', lineHeight: 1.5 }}>
+                <span style={{ display: 'block' }}>
+                  📞 Tel : +221 77 217 33 64 · Fixe : +221 33 945 56 47
+                </span>
+                <span style={{ display: 'block', fontSize: '15px', opacity: 0.95, marginTop: '4px' }}>
+                  ✉️ contact@senergysafrica.com · support_tech@senergysafrica.com
+                </span>
               </p>
               <p style={{ fontSize: '16px', lineHeight: 1.6, opacity: 0.9 }}>
                 P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal.

@@ -11,7 +11,9 @@ module.exports = {
     values: 'Engagement contractuel sur les résultats, Partenariat durable, Innovation digitale, Intégrité',
     address: 'P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal',
     phone: '+221 77 217 33 64',
+    phone_fix: '+221 33 945 56 47',
     email: 'contact@senergysafrica.com',
+    email_support: 'support_tech@senergysafrica.com',
     website: 'https://senergysafrica.com'
   },
   services: [

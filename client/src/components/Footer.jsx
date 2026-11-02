@@ -81,16 +81,22 @@ export default function Footer() {
           <div className="footer-contact-col">
             <h4 className="footer-heading">Coordonnées</h4>
             <div className="footer-contact-row">
-              <MapPin size={18} className="footer-icon-accent" />
+              <MapPin size={18} className="footer-icon-accent" style={{ flexShrink: 0 }} />
               <span>P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal</span>
             </div>
             <div className="footer-contact-row">
-              <Phone size={18} className="footer-icon-accent" />
-              <a href="tel:+221772173364">+221 77 217 33 64</a>
+              <Phone size={18} className="footer-icon-accent" style={{ flexShrink: 0 }} />
+              <div>
+                <a href="tel:+221772173364" style={{ display: 'block' }}>+221 77 217 33 64</a>
+                <a href="tel:+221339455647" style={{ display: 'block', fontSize: '13px', opacity: 0.85, marginTop: '2px' }}>Fixe : +221 33 945 56 47</a>
+              </div>
             </div>
             <div className="footer-contact-row">
-              <Mail size={18} className="footer-icon-accent" />
-              <a href="mailto:contact@senergysafrica.com">contact@senergysafrica.com</a>
+              <Mail size={18} className="footer-icon-accent" style={{ flexShrink: 0 }} />
+              <div>
+                <a href="mailto:contact@senergysafrica.com" style={{ display: 'block' }}>contact@senergysafrica.com</a>
+                <a href="mailto:support_tech@senergysafrica.com" style={{ display: 'block', fontSize: '13px', opacity: 0.85, marginTop: '2px' }}>support_tech@senergysafrica.com</a>
+              </div>
             </div>
           </div>
         </div>
