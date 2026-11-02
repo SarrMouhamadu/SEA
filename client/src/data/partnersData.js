@@ -42,3 +42,4 @@ export const partnersList = [
   { id: 41, name: "FINEKIP", category: "Finance & Comptabilité", logo: "/assets/partners/logos/finekip.png" },
   { id: 42, name: "G3A", category: "Développement Durable", logo: "/assets/partners/logos/g3a.jpg" }
 ];
+

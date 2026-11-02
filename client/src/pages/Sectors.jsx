@@ -196,6 +196,19 @@ export default function Sectors() {
             );
           })}
         </div>
+
+        {/* Bannière de contact sectoriel */}
+        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'linear-gradient(135deg, rgba(63, 122, 90, 0.1) 0%, rgba(232, 113, 43, 0.1) 100%)', borderColor: 'var(--color-green-mid)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
+            Une approche sur mesure pour chaque réalité sectorielle
+          </h2>
+          <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            Industriels, banques, ministères ou gestionnaires de grands ensembles : nos ingénieurs adaptent leurs audits et outils de diagnostic aux particularités de vos infrastructures.
+          </p>
+          <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+            Consulter un expert sectoriel SESA <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </div>
   );

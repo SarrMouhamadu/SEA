@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Award, TrendingDown, ShieldCheck } from 'lucide-react';
 import ReferenceCard from '../components/ReferenceCard';
 
 const projectsList = [
@@ -120,6 +122,19 @@ export default function References() {
           {filteredProjects.map((project) => (
             <ReferenceCard key={project.id} item={project} />
           ))}
+        </div>
+
+        {/* Bannière de contact / demande de portfolio complet */}
+        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
+            Vous souhaitez consulter nos références détaillées ?
+          </h2>
+          <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            Consultez nos fiches de réalisations techniques complètes (études de cas, méthodologies d'audit et bilans carbone vérifiés) ou échangez directement avec nos ingénieurs.
+          </p>
+          <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+            Demander nos études de cas complètes <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
     </div>

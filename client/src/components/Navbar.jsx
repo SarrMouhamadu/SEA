@@ -1,89 +1,33 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Sparkles } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
 import AutoDiagnosticModal from './AutoDiagnosticModal';
 import ContactForm from './ContactForm';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
   const [diagOpen, setDiagOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
-  const handleNavClick = (path) => {
-    setActiveDropdown(null);
-    setMobileOpen(false);
-
-    if (path.includes('#')) {
-      const [targetPath, hash] = path.split('#');
-      if (window.location.pathname === targetPath) {
-        setTimeout(() => {
-          const el = document.getElementById(hash);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 50);
-      }
-    }
-  };
-
-  const menuStructure = [
-    {
-      title: 'Accueil',
-      path: '/',
-    },
-    {
-      title: 'À propos',
-      path: '/a-propos',
-      items: [
-        { name: 'Qui sommes-nous', path: '/a-propos#qui-sommes-nous' },
-        { name: 'Notre vision & engagement', path: '/a-propos#vision' },
-        { name: 'Notre approche en 3 étapes', path: '/a-propos#approche' },
-        { name: 'Notre équipe', path: '/a-propos#equipe' },
-        { name: 'Nos partenaires', path: '/a-propos#partenaires' },
-      ],
-    },
-    {
-      title: 'Expertises',
-      path: '/services',
-      items: [
-        { name: 'Énergie durable', path: '/services#energie-durable' },
-        { name: 'Production propre', path: '/services#production-propre' },
-        { name: 'Finance climat & durable (ESG)', path: '/services#finance-climat' },
-        { name: 'Stratégies & politiques publiques', path: '/services#strategies-politiques-publiques' },
-        { name: 'Formation & innovation', path: '/services#formation-innovation' },
-      ],
-    },
-    {
-      title: 'Secteurs',
-      path: '/secteurs',
-      items: [
-        { name: 'Industrie & Agroalimentaire', path: '/secteurs#industrie' },
-        { name: 'Bâtiments & services', path: '/secteurs#batiments' },
-        { name: 'Pétrole, gaz et mines', path: '/secteurs#petrole-gaz-mines' },
-        { name: 'Institutions financières', path: '/secteurs#institutions-financieres' },
-        { name: 'Secteur public & international', path: '/secteurs#secteur-public' },
-      ],
-    },
-    {
-      title: 'Références',
-      path: '/references',
-    },
-    {
-      title: 'Ressources',
-      path: '/ressources',
-      items: [
-        { name: 'Actualités & événements', path: '/ressources#actualites' },
-        { name: 'Publications & études', path: '/ressources#publications' },
-      ],
-    },
+  // Chaque élément de la barre de navigation est une page indépendante avec sa propre URL
+  const navItems = [
+    { name: 'Accueil', path: '/', end: true },
+    { name: 'À propos', path: '/a-propos' },
+    { name: 'Expertises', path: '/services' },
+    { name: 'Secteurs', path: '/secteurs' },
+    { name: 'Références', path: '/references' },
+    { name: 'Ressources', path: '/ressources' },
   ];
+
+  const handleMobileNavClick = () => {
+    setMobileOpen(false);
+  };
 
   return (
     <>
       <header className="site-header">
         <div className="site-nav">
-          {/* Logo officiel */}
+          {/* Logo officiel SEnergyS Africa */}
           <Link to="/" className="nav-brand" aria-label="SEnergyS Africa Accueil">
             <img
               src="/assets/logo/logo-officiel.png"
@@ -92,62 +36,17 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Menu principal Desktop avec dropdowns */}
+          {/* Menu principal Desktop : Liens directs vers chaque page indépendante */}
           <nav className="nav-desktop">
-            {menuStructure.map((menu) => (
-              <div
-                key={menu.title}
-                className="nav-dropdown-wrapper"
-                onMouseEnter={() => menu.items && setActiveDropdown(menu.title)}
-                onMouseLeave={() => setActiveDropdown(null)}
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.end}
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               >
-                {menu.items ? (
-                  <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                    <Link
-                      to={menu.path}
-                      className={`nav-link ${activeDropdown === menu.title ? 'active' : ''}`}
-                      onClick={() => handleNavClick(menu.path)}
-                    >
-                      {menu.title}
-                    </Link>
-                    <button
-                      type="button"
-                      className="nav-link nav-dropdown-btn"
-                      style={{ paddingLeft: '1px', paddingRight: '4px' }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setActiveDropdown(activeDropdown === menu.title ? null : menu.title);
-                      }}
-                      aria-label={`Ouvrir sous-menu ${menu.title}`}
-                    >
-                      <ChevronDown size={14} className="dropdown-arrow" />
-                    </button>
-                  </div>
-                ) : (
-                  <Link 
-                    to={menu.path} 
-                    className="nav-link"
-                    onClick={() => handleNavClick(menu.path)}
-                  >
-                    {menu.title}
-                  </Link>
-                )}
-
-                {menu.items && activeDropdown === menu.title && (
-                  <div className="nav-dropdown-menu">
-                    {menu.items.map((sub) => (
-                      <Link
-                        key={sub.name}
-                        to={sub.path}
-                        className="nav-dropdown-item"
-                        onClick={() => handleNavClick(sub.path)}
-                      >
-                        {sub.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                {item.name}
+              </NavLink>
             ))}
           </nav>
 
@@ -168,7 +67,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Bouton Menu Mobile (Hamburger) */}
           <button
             className="nav-mobile-btn"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -178,47 +77,23 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Menu Mobile */}
+        {/* Tiroir Menu Mobile : Navigation vers chaque page distincte */}
         {mobileOpen && (
           <div className="nav-mobile-panel">
-            {menuStructure.map((menu) => (
-              <div key={menu.title} className="mobile-menu-section">
-                {menu.items ? (
-                  <>
-                    <Link
-                      to={menu.path}
-                      className="mobile-menu-head"
-                      style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                      onClick={() => handleNavClick(menu.path)}
-                    >
-                      <span>{menu.title}</span>
-                      <ChevronDown size={15} />
-                    </Link>
-                    <div className="mobile-submenu">
-                      {menu.items.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          to={sub.path}
-                          className="mobile-submenu-item"
-                          onClick={() => handleNavClick(sub.path)}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <Link
-                    to={menu.path}
-                    className="mobile-menu-head"
-                    style={{ textDecoration: 'none' }}
-                    onClick={() => handleNavClick(menu.path)}
-                  >
-                    {menu.title}
-                  </Link>
-                )}
-              </div>
-            ))}
+            <nav className="mobile-nav-list" style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.end}
+                  className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
+                  onClick={handleMobileNavClick}
+                >
+                  <span>{item.name}</span>
+                  <ArrowRight size={15} className="mobile-nav-arrow" />
+                </NavLink>
+              ))}
+            </nav>
 
             <div className="mobile-cta-box">
               <button

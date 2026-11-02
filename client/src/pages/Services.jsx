@@ -178,6 +178,19 @@ export default function Services() {
             );
           })}
         </div>
+
+        {/* Bannière d'Engagement de Performance */}
+        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'linear-gradient(135deg, rgba(232, 113, 43, 0.1) 0%, rgba(63, 122, 90, 0.1) 100%)', borderColor: 'var(--color-orange)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
+            Un engagement contractuel ferme sur les résultats
+          </h2>
+          <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            Chez SEnergyS Africa, nos préconisations techniques s'accompagnent d'indicateurs de performance mesurables (MWh économisés, réduction de facture, tonnes de CO₂ évitées).
+          </p>
+          <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+            Planifier un échange avec un expert technique <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </div>
   );

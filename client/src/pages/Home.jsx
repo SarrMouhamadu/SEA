@@ -83,54 +83,60 @@ export default function Home() {
 
           <div className="expertise-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))' }}>
             {/* 01 Énergie durable */}
-            <a href="#contact" className="ph">
+            <Link to="/services" className="ph">
               <img src="/assets/claude/expertise-energie-durable.jpg" alt="Énergie durable" style={{ objectPosition: '50% 70%' }} />
               <div className="sc"></div>
               <div className="ph-text">
                 <span className="ph-number">01</span>
                 <b className="ph-title">Énergie durable</b>
               </div>
-            </a>
+            </Link>
 
             {/* 02 Production propre */}
-            <a href="#contact" className="ph">
+            <Link to="/services" className="ph">
               <img src="/assets/claude/expertise-production-propre.jpg" alt="Production propre" style={{ objectPosition: '60% 50%' }} />
               <div className="sc"></div>
               <div className="ph-text">
                 <span className="ph-number">02</span>
                 <b className="ph-title">Production propre</b>
               </div>
-            </a>
+            </Link>
 
             {/* 03 Finance climat & durable */}
-            <a href="#contact" className="ph">
+            <Link to="/services" className="ph">
               <img src="/assets/claude/expertise-finance-esg.jpg" alt="Finance climat & durable" style={{ objectPosition: '50% 50%' }} />
               <div className="sc"></div>
               <div className="ph-text">
                 <span className="ph-number">03</span>
                 <b className="ph-title">Finance climat & ESG</b>
               </div>
-            </a>
+            </Link>
 
             {/* 04 Stratégies & politiques publiques */}
-            <a href="#contact" className="ph">
+            <Link to="/services" className="ph">
               <img src="/assets/claude/blog-ecoparcs.jpg" alt="Stratégies & politiques publiques" style={{ objectPosition: '50% 50%' }} />
               <div className="sc"></div>
               <div className="ph-text">
                 <span className="ph-number">04</span>
                 <b className="ph-title">Stratégies & Politiques</b>
               </div>
-            </a>
+            </Link>
 
             {/* 05 Formation & innovation */}
-            <a href="#contact" className="ph">
+            <Link to="/services" className="ph">
               <img src="/assets/claude/expertise-formation-innovation.jpg" alt="Formation & innovation" style={{ objectPosition: '30% 50%' }} />
               <div className="sc"></div>
               <div className="ph-text">
                 <span className="ph-number">05</span>
                 <b className="ph-title">Formation & Innovation</b>
               </div>
-            </a>
+            </Link>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '36px' }}>
+            <Link to="/services" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+              Découvrir en détail nos 6 pôles d'expertise <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>

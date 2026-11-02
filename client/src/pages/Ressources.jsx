@@ -204,6 +204,18 @@ export default function Ressources() {
           </div>
         </section>
 
+        {/* Bannière Veille Stratégique & Publications */}
+        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'linear-gradient(135deg, rgba(232, 113, 43, 0.08) 0%, rgba(242, 200, 139, 0.08) 100%)', borderColor: 'var(--color-orange)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
+            Restez informés de l'actualité de la transition durable en Afrique
+          </h2>
+          <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            Nos experts publient régulièrement des analyses sectorielles, des notes de cadrage réglementaire et des retours d'expérience opérationnels.
+          </p>
+          <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
+            Recevoir nos prochaines publications techniques <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -44,12 +45,12 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <a href="#contact" className="btn-pill btn-pill-orange">
+            <Link to="/contact" className="btn-pill btn-pill-orange">
               Demander un diagnostic gratuit
-            </a>
-            <a href="#competences" className="btn-pill btn-pill-outline-gold">
+            </Link>
+            <Link to="/services" className="btn-pill btn-pill-outline-gold">
               Nos domaines d'expertise
-            </a>
+            </Link>
           </div>
         </div>
       </div>

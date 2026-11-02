@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Linkedin, Twitter, Globe, ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
@@ -50,15 +51,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Colonne 2 : Liens Institutionnels & Carrières */}
+          {/* Colonne 2 : Liens Institutionnels & Pages Indépendantes */}
           <div className="footer-links-col">
             <h4 className="footer-heading">Navigation</h4>
             <ul className="footer-list">
-              <li><a href="/#apropos">À propos & Approche</a></li>
-              <li><a href="/#competences">Nos 5 Pôles d'Expertise</a></li>
-              <li><a href="/#secteurs">Secteurs d'intervention</a></li>
-              <li><a href="/references">Nos Références</a></li>
-              <li><a href="/#actualites">Actualités & Publications</a></li>
+              <li><Link to="/a-propos">À propos</Link></li>
+              <li><Link to="/services">Expertises</Link></li>
+              <li><Link to="/secteurs">Secteurs</Link></li>
+              <li><Link to="/references">Références</Link></li>
+              <li><Link to="/ressources">Ressources</Link></li>
             </ul>
           </div>
 
@@ -67,13 +68,13 @@ export default function Footer() {
             <h4 className="footer-heading">Entreprise</h4>
             <ul className="footer-list">
               <li>
-                <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Link to="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   Carrières & Recrutement <ArrowUpRight size={13} />
-                </a>
+                </Link>
               </li>
-              <li><a href="#contact">Partenariats institutionnels</a></li>
-              <li><a href="#contact">Mentions légales & Confidentialité</a></li>
-              <li><a href="#contact">Rapport d'impact ESG</a></li>
+              <li><Link to="/contact">Partenariats institutionnels</Link></li>
+              <li><Link to="/contact">Mentions légales & Confidentialité</Link></li>
+              <li><Link to="/contact">Rapport d'impact ESG</Link></li>
             </ul>
           </div>
 
