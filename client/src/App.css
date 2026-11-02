@@ -843,6 +843,146 @@
   letter-spacing: 1px;
 }
 
+/* --- Carrousel Partenaires par Cartes Défilantes --- */
+.partner-carousel-wrapper {
+  margin-top: 32px;
+  position: relative;
+  width: 100%;
+}
+
+.partner-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.partner-count-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-orange);
+  background: rgba(230, 92, 43, 0.08);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(230, 92, 43, 0.25);
+  letter-spacing: 0.3px;
+}
+
+.carousel-nav-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carousel-arrow-btn,
+.carousel-play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carousel-arrow-btn:hover,
+.carousel-play-btn:hover {
+  background: var(--color-orange);
+  color: #ffffff;
+  border-color: var(--color-orange);
+  transform: scale(1.05);
+}
+
+.partner-carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 8px 4px 18px 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.partner-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.partner-card {
+  flex: 0 0 220px;
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  user-select: none;
+}
+
+.partner-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-orange);
+  box-shadow: 0 10px 24px rgba(230, 92, 43, 0.15);
+}
+
+.partner-card-logo-box {
+  width: 100%;
+  height: 85px;
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+}
+
+.partner-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.partner-card:hover .partner-card-img {
+  transform: scale(1.05);
+}
+
+.partner-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.partner-card-category {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-orange);
+}
+
+.partner-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ========================================================
    Section Contact CTA & Card
    ======================================================== */

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PartnerCarousel from '../components/PartnerCarousel';
 import {
   ShieldCheck,
   Target,
@@ -403,6 +404,10 @@ export default function About() {
                 Devenir partenaire ou nous rejoindre <ArrowRight size={14} />
               </Link>
             </div>
+          </div>
+
+          <div style={{ marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--theme-border)' }}>
+            <PartnerCarousel />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import ContactForm from '../components/ContactForm';
 import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
 import ReferenceCard from '../components/ReferenceCard';
+import PartnerCarousel from '../components/PartnerCarousel';
 import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award, Building2 } from 'lucide-react';
 
 const homeReferences = [
@@ -342,12 +343,8 @@ export default function Home() {
             </div>
           </div>
 
-          <h3 className="partners-subheading">Clients & Références</h3>
-          <img
-            src="/assets/claude/partenaires-clients-all.jpg"
-            alt="Logos des clients et références de SEnergyS Africa"
-            style={{ width: '100%', display: 'block', borderRadius: 12, border: '1px solid var(--color-sand-dark)' }}
-          />
+          <h3 className="partners-subheading">Clients, Bailleurs & Partenaires Institutionnels</h3>
+          <PartnerCarousel />
         </div>
       </section>
 
