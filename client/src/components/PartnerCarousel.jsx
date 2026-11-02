@@ -4,26 +4,62 @@ import { partnersList } from '../data/partnersData';
 
 export default function PartnerCarousel() {
   const scrollContainerRef = useRef(null);
+  const currentScrollRef = useRef(0);
+  const initializedRef = useRef(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Défilement automatique continu
+  // 3 copies pour garantir une boucle infinie ultra-fluide dans les deux sens
+  const displayPartners = [...partnersList, ...partnersList, ...partnersList];
+
+  // Initialiser la position au milieu (sur le deuxième jeu) pour un défilement immédiat vers la droite
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const setInitialPosition = () => {
+      if (container && container.scrollWidth > 0 && !initializedRef.current) {
+        const oneThird = container.scrollWidth / 3;
+        container.scrollLeft = oneThird;
+        currentScrollRef.current = oneThird;
+        initializedRef.current = true;
+      }
+    };
+
+    setInitialPosition();
+    const t1 = setTimeout(setInitialPosition, 100);
+    const t2 = setTimeout(setInitialPosition, 350);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  // Défilement automatique continu en boucle de la gauche vers la droite
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     let animationFrameId;
-    const speed = 0.75; // Pixels par frame
+    // Vitesse fluide en pixels par frame (~45px/s à 60fps)
+    const speed = 0.75;
 
     const step = () => {
       if (!isPaused && container) {
-        container.scrollLeft += speed;
-        // Boucle infinie fluide
-        if (container.scrollLeft >= container.scrollWidth - container.clientWidth - 5) {
-          container.scrollLeft = 0;
+        // Décrémenter scrollLeft fait défiler le contenu de la gauche vers la droite
+        currentScrollRef.current -= speed;
+        const oneSetWidth = container.scrollWidth / 3;
+
+        if (oneSetWidth > 0) {
+          // Boucle infinie fluide
+          if (currentScrollRef.current <= 0) {
+            currentScrollRef.current += oneSetWidth;
+          } else if (currentScrollRef.current >= 2 * oneSetWidth) {
+            currentScrollRef.current -= oneSetWidth;
+          }
         }
-        checkScrollButtons();
+
+        container.scrollLeft = currentScrollRef.current;
       }
       animationFrameId = requestAnimationFrame(step);
     };
@@ -32,23 +68,28 @@ export default function PartnerCarousel() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused]);
 
-  const checkScrollButtons = () => {
-    if (!scrollContainerRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-    setCanScrollLeft(scrollLeft > 10);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  // Synchronisation lors du défilement manuel (touch / trackpad / drag)
+  const handleScroll = () => {
+    if (scrollContainerRef.current && isPaused) {
+      currentScrollRef.current = scrollContainerRef.current.scrollLeft;
+    }
   };
 
+  // Navigation carte par carte
   const scrollByCard = (direction) => {
     if (!scrollContainerRef.current) return;
-    const cardWidth = 240; // Largeur moyenne d'une carte + gap
-    const scrollAmount = direction === 'next' ? cardWidth : -cardWidth;
+    const cardWidth = 236; // 220px carte + 16px gap
+    // 'next' défile vers la droite (dans le sens naturel du flux gauche -> droite)
+    // 'prev' défile vers la gauche
+    const scrollAmount = direction === 'next' ? -cardWidth : cardWidth;
     scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    setTimeout(checkScrollButtons, 350);
-  };
 
-  // Duplication de la liste pour garantir un flux infini continu
-  const displayPartners = [...partnersList, ...partnersList];
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        currentScrollRef.current = scrollContainerRef.current.scrollLeft;
+      }
+    }, 400);
+  };
 
   return (
     <div className="partner-carousel-wrapper">
@@ -64,7 +105,7 @@ export default function PartnerCarousel() {
             type="button"
             className="carousel-arrow-btn"
             onClick={() => scrollByCard('prev')}
-            aria-label="Partenaire précédent"
+            aria-label="Défiler vers la gauche"
             title="Précédent"
           >
             <ChevronLeft size={18} />
@@ -83,7 +124,7 @@ export default function PartnerCarousel() {
             type="button"
             className="carousel-arrow-btn"
             onClick={() => scrollByCard('next')}
-            aria-label="Partenaire suivant"
+            aria-label="Défiler vers la droite"
             title="Suivant"
           >
             <ChevronRight size={18} />
@@ -99,7 +140,7 @@ export default function PartnerCarousel() {
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => setIsPaused(false)}
-        onScroll={checkScrollButtons}
+        onScroll={handleScroll}
       >
         {displayPartners.map((partner, index) => (
           <div
