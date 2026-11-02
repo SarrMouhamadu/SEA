@@ -9,7 +9,9 @@ import Services from './pages/Services';
 import Sectors from './pages/Sectors';
 import References from './pages/References';
 import Contact from './pages/Contact';
+import Ressources from './pages/Ressources';
 import Maintenance from './pages/Maintenance';
+import ScrollToAnchor from './components/ScrollToAnchor';
 import './App.css';
 
 export default function App() {
@@ -28,6 +30,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToAnchor />
         <Routes>
           <Route path="/maintenance" element={<Maintenance isGlobal={false} />} />
           <Route
@@ -43,6 +46,7 @@ export default function App() {
                     <Route path="/secteurs" element={<Sectors />} />
                     <Route path="/references" element={<References />} />
                     <Route path="/produits" element={<References />} />
+                    <Route path="/ressources" element={<Ressources />} />
                     <Route path="/contact" element={<Contact />} />
                   </Routes>
                 </main>

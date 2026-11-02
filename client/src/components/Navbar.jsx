@@ -10,6 +10,23 @@ export default function Navbar() {
   const [diagOpen, setDiagOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
+  const handleNavClick = (path) => {
+    setActiveDropdown(null);
+    setMobileOpen(false);
+
+    if (path.includes('#')) {
+      const [targetPath, hash] = path.split('#');
+      if (window.location.pathname === targetPath) {
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 50);
+      }
+    }
+  };
+
   const menuStructure = [
     {
       title: 'Accueil',
@@ -20,31 +37,32 @@ export default function Navbar() {
       path: '/a-propos',
       items: [
         { name: 'Qui sommes-nous', path: '/a-propos#qui-sommes-nous' },
-        { name: 'Notre vision & nos valeurs', path: '/a-propos#vision' },
+        { name: 'Notre vision & engagement', path: '/a-propos#vision' },
         { name: 'Notre approche en 3 étapes', path: '/a-propos#approche' },
-        { name: 'Notre équipe & nos partenaires', path: '/a-propos#partenaires' },
+        { name: 'Notre équipe', path: '/a-propos#equipe' },
+        { name: 'Nos partenaires', path: '/a-propos#partenaires' },
       ],
     },
     {
       title: 'Expertises',
       path: '/services',
       items: [
-        { name: 'Énergie durable', path: '/services' },
-        { name: 'Production propre', path: '/services' },
-        { name: 'Finance climat & durable (ESG)', path: '/services' },
-        { name: 'Stratégies & politiques publiques', path: '/services' },
-        { name: 'Formation & innovation', path: '/services' },
+        { name: 'Énergie durable', path: '/services#energie-durable' },
+        { name: 'Production propre', path: '/services#production-propre' },
+        { name: 'Finance climat & durable (ESG)', path: '/services#finance-climat' },
+        { name: 'Stratégies & politiques publiques', path: '/services#strategies-politiques-publiques' },
+        { name: 'Formation & innovation', path: '/services#formation-innovation' },
       ],
     },
     {
       title: 'Secteurs',
       path: '/secteurs',
       items: [
-        { name: 'Industrie & Agroalimentaire', path: '/secteurs' },
-        { name: 'Bâtiments & services', path: '/secteurs' },
-        { name: 'Pétrole, gaz et mines', path: '/secteurs' },
-        { name: 'Institutions financières', path: '/secteurs' },
-        { name: 'Secteur public & international', path: '/secteurs' },
+        { name: 'Industrie & Agroalimentaire', path: '/secteurs#industrie' },
+        { name: 'Bâtiments & services', path: '/secteurs#batiments' },
+        { name: 'Pétrole, gaz et mines', path: '/secteurs#petrole-gaz-mines' },
+        { name: 'Institutions financières', path: '/secteurs#institutions-financieres' },
+        { name: 'Secteur public & international', path: '/secteurs#secteur-public' },
       ],
     },
     {
@@ -53,10 +71,10 @@ export default function Navbar() {
     },
     {
       title: 'Ressources',
-      path: '/#actualites',
+      path: '/ressources',
       items: [
-        { name: 'Actualités & événements', path: '/#actualites' },
-        { name: 'Publications & études', path: '/#actualites' },
+        { name: 'Actualités & événements', path: '/ressources#actualites' },
+        { name: 'Publications & études', path: '/ressources#publications' },
       ],
     },
   ];
@@ -84,15 +102,33 @@ export default function Navbar() {
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 {menu.items ? (
-                  <button
-                    type="button"
-                    className={`nav-link nav-dropdown-btn ${activeDropdown === menu.title ? 'active' : ''}`}
-                    onClick={() => setActiveDropdown(activeDropdown === menu.title ? null : menu.title)}
-                  >
-                    {menu.title} <ChevronDown size={14} className="dropdown-arrow" />
-                  </button>
+                  <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <Link
+                      to={menu.path}
+                      className={`nav-link ${activeDropdown === menu.title ? 'active' : ''}`}
+                      onClick={() => handleNavClick(menu.path)}
+                    >
+                      {menu.title}
+                    </Link>
+                    <button
+                      type="button"
+                      className="nav-link nav-dropdown-btn"
+                      style={{ paddingLeft: '1px', paddingRight: '4px' }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveDropdown(activeDropdown === menu.title ? null : menu.title);
+                      }}
+                      aria-label={`Ouvrir sous-menu ${menu.title}`}
+                    >
+                      <ChevronDown size={14} className="dropdown-arrow" />
+                    </button>
+                  </div>
                 ) : (
-                  <Link to={menu.path} className="nav-link">
+                  <Link 
+                    to={menu.path} 
+                    className="nav-link"
+                    onClick={() => handleNavClick(menu.path)}
+                  >
                     {menu.title}
                   </Link>
                 )}
@@ -104,7 +140,7 @@ export default function Navbar() {
                         key={sub.name}
                         to={sub.path}
                         className="nav-dropdown-item"
-                        onClick={() => setActiveDropdown(null)}
+                        onClick={() => handleNavClick(sub.path)}
                       >
                         {sub.name}
                       </Link>
@@ -149,14 +185,22 @@ export default function Navbar() {
               <div key={menu.title} className="mobile-menu-section">
                 {menu.items ? (
                   <>
-                    <div className="mobile-menu-head">{menu.title}</div>
+                    <Link
+                      to={menu.path}
+                      className="mobile-menu-head"
+                      style={{ textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                      onClick={() => handleNavClick(menu.path)}
+                    >
+                      <span>{menu.title}</span>
+                      <ChevronDown size={15} />
+                    </Link>
                     <div className="mobile-submenu">
                       {menu.items.map((sub) => (
                         <Link
                           key={sub.name}
                           to={sub.path}
                           className="mobile-submenu-item"
-                          onClick={() => setMobileOpen(false)}
+                          onClick={() => handleNavClick(sub.path)}
                         >
                           {sub.name}
                         </Link>
@@ -168,7 +212,7 @@ export default function Navbar() {
                     to={menu.path}
                     className="mobile-menu-head"
                     style={{ textDecoration: 'none' }}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => handleNavClick(menu.path)}
                   >
                     {menu.title}
                   </Link>

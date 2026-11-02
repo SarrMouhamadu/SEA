@@ -63,6 +63,20 @@
 
 .nav-dropdown-wrapper {
   position: relative;
+  padding: 4px 0;
+}
+
+.nav-dropdown-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
+[id] {
+  scroll-margin-top: 100px;
 }
 
 .nav-link {

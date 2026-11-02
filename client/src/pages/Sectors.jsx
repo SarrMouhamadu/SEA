@@ -94,6 +94,14 @@ const defaultSectors = [
   }
 ];
 
+const sectorAnchors = {
+  1: 'secteur-public',
+  2: 'industrie',
+  3: 'institutions-financieres',
+  4: 'petrole-gaz-mines',
+  5: 'batiments'
+};
+
 export default function Sectors() {
   const [sectors, setSectors] = useState(defaultSectors);
 
@@ -122,8 +130,14 @@ export default function Sectors() {
         <div className="grid-2">
           {sectors.map((sector) => {
             const Icon = sectorIcons[sector.icon] || Factory;
+            const anchorId = sectorAnchors[sector.id] || sector.slug;
             return (
-              <div key={sector.id || sector.slug} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+              <div 
+                key={sector.id || sector.slug} 
+                id={anchorId}
+                className="card" 
+                style={{ display: 'flex', flexDirection: 'column', scrollMarginTop: '100px' }}
+              >
                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
                   <div style={{
                     width: '56px',

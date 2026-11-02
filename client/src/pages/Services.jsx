@@ -69,6 +69,15 @@ const defaultServices = [
   }
 ];
 
+const serviceAnchors = {
+  1: 'energie-durable',
+  2: 'production-propre',
+  3: 'finance-climat',
+  4: 'strategies-politiques-publiques',
+  5: 'innovation-outils-digitaux',
+  6: 'formation-innovation'
+};
+
 export default function Services() {
   const [services, setServices] = useState(defaultServices);
 
@@ -97,8 +106,14 @@ export default function Services() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {services.map((service) => {
             const IconComp = icons[service.icon] || Zap;
+            const anchorId = serviceAnchors[service.id] || service.slug;
             return (
-              <div key={service.id || service.slug} className="card" style={{ padding: '36px' }}>
+              <div 
+                key={service.id || service.slug} 
+                id={anchorId}
+                className="card" 
+                style={{ padding: '36px', scrollMarginTop: '100px' }}
+              >
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                   <div style={{
                     width: '64px',

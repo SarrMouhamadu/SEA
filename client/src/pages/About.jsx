@@ -366,7 +366,8 @@ export default function About() {
         </div>
 
         {/* 5. Équipe & Partenaires */}
-        <div id="partenaires" className="card card-interactive motion-reveal" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px' }}>
+        <div id="equipe" style={{ scrollMarginTop: '100px' }}></div>
+        <div id="partenaires" className="card card-interactive motion-reveal" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px', scrollMarginTop: '100px' }}>
           <div className="grid-2" style={{ alignItems: 'center' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
