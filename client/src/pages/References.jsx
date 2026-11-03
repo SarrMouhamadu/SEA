@@ -61,37 +61,37 @@ export default function References() {
           marginBottom: '40px'
         }}>
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-orange)', fontWeight: 700 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
               20
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Missions d'ingénierie & conseil
             </div>
           </div>
 
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-gold)', fontWeight: 700 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
               +280M FCFA
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               De contrats d'expertise exécutés
             </div>
           </div>
 
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-green-mid)', fontWeight: 700 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
               100%
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Livrables & cadres validés
             </div>
           </div>
 
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-orange)', fontWeight: 700 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
               Sénégal & Bénin
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Rayonnement Afrique de l'Ouest
             </div>
           </div>
