@@ -277,7 +277,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. PARTENAIRES (Techniques, Universités & Références Clients) */}
+      {/* 6. PARTENAIRES (Techniques & Références Clients) */}
       <section id="partenaires" className="partners-section">
         <div className="container">
           <p className="section-label">ÉCOSYSTÈME DE CONFIANCE</p>
@@ -333,19 +333,6 @@ export default function Home() {
                 <div className="lg" role="img" aria-label="Logo YASKAWA" style={{ backgroundPosition: '33.333% 0' }}></div>
                 <div className="lt">APROSI</div>
               </div>
-            </div>
-          </div>
-
-          <h3 className="partners-subheading">Enseignement & Recherche</h3>
-          <div className="partner-box">
-            <div className="partner-box-header">
-              <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#3F7A5A' }}></i>
-              <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Universités et écoles</b>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
-              <div className="lg" role="img" aria-label="Logo Université Gaston Berger" style={{ backgroundPosition: '100.000% 0' }}></div>
-              <div className="lg" role="img" aria-label="Logo École Polytechnique de Thiès" style={{ backgroundPosition: '77.778% 0' }}></div>
-              <div className="lg" role="img" aria-label="Logo DAUST" style={{ backgroundPosition: '88.889% 0' }}></div>
             </div>
           </div>
 

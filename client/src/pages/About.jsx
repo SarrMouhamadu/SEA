@@ -393,7 +393,7 @@ export default function About() {
                 </span>
               </div>
               <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px' }}>
-                Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les universités d'excellence (UGB, EPT Thiès, DAUST).
+                Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les acteurs institutionnels majeurs.
               </p>
               <Link
                 to="/contact"
