@@ -156,7 +156,7 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
             <div>
-              <h2 className="section-heading" style={{ margin: 0, color: 'var(--color-text-dark)' }}>
+              <h2 className="section-heading" style={{ margin: 0, color: 'var(--theme-text)' }}>
                 Références phares
               </h2>
             </div>
@@ -167,25 +167,25 @@ export default function Home() {
                 className={`ref-filter-btn ${refFilter === 'all' ? 'active' : ''}`}
                 onClick={() => setRefFilter('all')}
               >
-                Tous
+                Tous les projets
               </button>
               <button
                 className={`ref-filter-btn ${refFilter === 'bailleurs' ? 'active' : ''}`}
                 onClick={() => setRefFilter('bailleurs')}
               >
-                Bailleurs
+                Bailleurs & Coopération
               </button>
               <button
                 className={`ref-filter-btn ${refFilter === 'industrie' ? 'active' : ''}`}
                 onClick={() => setRefFilter('industrie')}
               >
-                Industrie
+                Industrie & Énergie
               </button>
               <button
                 className={`ref-filter-btn ${refFilter === 'public' ? 'active' : ''}`}
                 onClick={() => setRefFilter('public')}
               >
-                Secteur Public
+                Secteur Public & États
               </button>
             </div>
           </div>

@@ -135,7 +135,7 @@ export default function Sectors() {
               <div 
                 key={sector.id || sector.slug} 
                 id={anchorId}
-                className="card" 
+                className="card card-interactive" 
                 style={{ display: 'flex', flexDirection: 'column', scrollMarginTop: '100px' }}
               >
                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
@@ -153,29 +153,29 @@ export default function Sectors() {
                     <Icon size={28} />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '1.4rem', color: 'var(--theme-text)', marginBottom: '4px' }}>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.65rem', color: 'var(--theme-text)', marginBottom: '4px', fontWeight: 700, lineHeight: 1.25 }}>
                       {sector.title}
                     </h3>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                       {sector.subtitle || 'Pôle Sectoriel'}
                     </span>
                   </div>
                 </div>
 
-                <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '20px' }}>
+                <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '20px', fontSize: '14.5px' }}>
                   {sector.description}
                 </p>
 
                 {sector.servicesList && sector.servicesList.length > 0 && (
                   <div style={{
                     background: 'var(--theme-surface-alt)',
-                    padding: '16px 20px',
+                    padding: '18px 20px',
                     borderRadius: '12px',
                     marginBottom: '24px',
                     border: '1px solid var(--theme-border)',
                     flex: 1
                   }}>
-                    <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-orange)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-orange)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
                       Prestations & Expertises dédiées :
                     </div>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -189,8 +189,8 @@ export default function Sectors() {
                   </div>
                 )}
 
-                <Link to="/contact" className="btn btn-secondary" style={{ width: '100%', marginTop: 'auto' }}>
-                  Demander un accompagnement dédié <ArrowRight size={14} />
+                <Link to="/contact" className="btn btn-primary" style={{ width: '100%', marginTop: 'auto', textAlign: 'center', justifyContent: 'center' }}>
+                  Demander un accompagnement dédié <ArrowRight size={15} />
                 </Link>
               </div>
             );
@@ -198,8 +198,8 @@ export default function Sectors() {
         </div>
 
         {/* Bannière de contact sectoriel */}
-        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'linear-gradient(135deg, rgba(63, 122, 90, 0.1) 0%, rgba(232, 113, 43, 0.1) 100%)', borderColor: 'var(--color-green-mid)', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
+        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', textAlign: 'center' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--theme-text)', marginBottom: '12px', fontWeight: 700 }}>
             Une approche sur mesure pour chaque réalité sectorielle
           </h2>
           <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
