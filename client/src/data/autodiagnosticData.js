@@ -72,8 +72,8 @@ export const FILIERES_DECHETS = [
 export const BAREME_REPONSES = [
   { val: 0, label: "0 - Non / Je ne sais pas", short: "Non / NSP" },
   { val: 1, label: "1 - Envisagé", short: "Envisagé" },
-  { val: 2, label: "2 - En place partiellement", short: "Partiellement" },
-  { val: 3, label: "3 - En place et suivi", short: "En place et suivi" }
+  { val: 2, label: "2 - En place partiellement", short: "Partiel" },
+  { val: 3, label: "3 - En place et suivi", short: "En place & suivi" }
 ];
 
 export const MODULES_CONFIG = [

@@ -646,9 +646,20 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
 
                   return (
                     <div className={`autodiag-q-card ${hasAnswered ? 'answered' : ''}`} key={q.id}>
-                      <div className="autodiag-q-header">
-                        <span className="autodiag-q-num">{q.id}</span>
-                        <div className="autodiag-q-text">{q.text}</div>
+                      <div className="autodiag-q-main">
+                        <div className="autodiag-q-header">
+                          <span className="autodiag-q-num">{q.id}</span>
+                          <div className="autodiag-q-text">{q.text}</div>
+                        </div>
+
+                        {showRec && (
+                          <div className="autodiag-q-rec">
+                            <span className="rec-icon">💡</span>
+                            <div className="rec-content">
+                              <strong>Action recommandée :</strong> {q.rec}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className="autodiag-q-scale">
@@ -667,15 +678,6 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                           );
                         })}
                       </div>
-
-                      {showRec && (
-                        <div className="autodiag-q-rec">
-                          <span className="rec-icon">💡</span>
-                          <div className="rec-content">
-                            <strong>Action recommandée :</strong> {q.rec}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   );
                 })}
