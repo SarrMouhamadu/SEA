@@ -242,7 +242,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         {/* ÉCRAN 1 : INTRODUCTION & CADRE                                            */}
         {/* ========================================================================= */}
         {currentStep === 1 && (
-          <div className="autodiag-card autodiag-fade-in">
+          <div className="autodiag-page-card autodiag-fade-in">
             <div className="autodiag-badge-category">Outil d'Évaluation de la Maturité</div>
             <h1 className="autodiag-title-hero">
               Évaluez la maturité énergie, climat et ESG de votre entreprise
@@ -289,7 +289,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         {/* ÉCRAN 2 : PROFIL DE L'ENTREPRISE (SECTION UNIQUE SUR PLEINE LARGEUR)      */}
         {/* ========================================================================= */}
         {currentStep === 2 && (
-          <div className="autodiag-card autodiag-fade-in">
+          <div className="autodiag-page-card autodiag-fade-in">
             
             {/* En-tête plein format : Titre + Progression */}
             <div className="autodiag-profile-header">
@@ -617,7 +617,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
           const currentModule = MODULES_CONFIG[moduleIndex];
 
           return (
-            <div className="autodiag-card autodiag-fade-in" key={currentModule.id}>
+            <div className="autodiag-page-card autodiag-fade-in" key={currentModule.id}>
               <div className="autodiag-badge-category">
                 Module {currentModule.num} sur 6 — Barème 0 à 3
               </div>
@@ -702,7 +702,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         {/* ÉCRAN 9 : SYNTHÈSE & CALCUL DES RÉSULTATS                                  */}
         {/* ========================================================================= */}
         {currentStep === 9 && (
-          <div className="autodiag-card autodiag-fade-in">
+          <div className="autodiag-page-card autodiag-fade-in">
             <div className="autodiag-badge-category">Partie C — Synthèse Globale</div>
             <h2 className="autodiag-title-screen">Résultats et indicateurs d'impact</h2>
             <p className="autodiag-subtext">
@@ -785,7 +785,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         {/* ÉCRAN 10 : ANALYSE DÉTAILLÉE PAR MODULE & ALERTES STRATÉGIQUES             */}
         {/* ========================================================================= */}
         {currentStep === 10 && (
-          <div className="autodiag-card autodiag-fade-in">
+          <div className="autodiag-page-card autodiag-fade-in">
             <div className="autodiag-badge-category">Diagnostic Approfondi</div>
             <h2 className="autodiag-title-screen">Maturité par dimension & Alertes de conformité</h2>
 
@@ -859,7 +859,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         {/* ÉCRAN 11 : DEMANDE D'ACCOMPAGNEMENT & IMPRESSION PDF                       */}
         {/* ========================================================================= */}
         {currentStep === 11 && (
-          <div className="autodiag-card autodiag-fade-in">
+          <div className="autodiag-page-card autodiag-fade-in">
             <div className="autodiag-badge-category">Finalisation & Passer à l'Action</div>
             <h2 className="autodiag-title-screen">Demande d'accompagnement & Restitution</h2>
             <p className="autodiag-subtext">
