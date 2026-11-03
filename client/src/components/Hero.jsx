@@ -45,8 +45,8 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <Link to="/contact" className="btn-pill btn-pill-orange">
-              Demander un diagnostic gratuit
+            <Link to="/autodiagnostic" className="btn-pill btn-pill-orange">
+              Faire l'autodiagnostic en ligne
             </Link>
             <Link to="/services" className="btn-pill btn-pill-outline-gold">
               Nos domaines d'expertise

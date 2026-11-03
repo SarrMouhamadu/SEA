@@ -10,6 +10,7 @@ import Sectors from './pages/Sectors';
 import References from './pages/References';
 import Contact from './pages/Contact';
 import Ressources from './pages/Ressources';
+import AutoDiagnostic from './pages/AutoDiagnostic';
 import Maintenance from './pages/Maintenance';
 import ScrollToAnchor from './components/ScrollToAnchor';
 import './App.css';
@@ -47,6 +48,7 @@ export default function App() {
                     <Route path="/references" element={<References />} />
                     <Route path="/produits" element={<References />} />
                     <Route path="/ressources" element={<Ressources />} />
+                    <Route path="/autodiagnostic" element={<AutoDiagnostic />} />
                     <Route path="/contact" element={<Contact />} />
                   </Routes>
                 </main>

@@ -17,6 +17,7 @@ export default function Navbar() {
     { name: 'Secteurs', path: '/secteurs' },
     { name: 'Références', path: '/references' },
     { name: 'Ressources', path: '/ressources' },
+    { name: 'Autodiagnostic', path: '/autodiagnostic' },
   ];
 
   const handleMobileNavClick = () => {
@@ -52,13 +53,13 @@ export default function Navbar() {
 
           {/* 2 Boutons d'Appel à l'Action Permanents */}
           <div className="nav-ctas-group">
-            <button
-              onClick={() => setDiagOpen(true)}
+            <Link
+              to="/autodiagnostic"
               className="btn-pill btn-pill-outline-gold nav-btn-diag"
-              title="Autodiagnostic en 3 étapes"
+              title="Outil d'évaluation en 15 minutes"
             >
               <Sparkles size={15} /> Autodiagnostic
-            </button>
+            </Link>
             <button
               onClick={() => setContactOpen(true)}
               className="btn-pill btn-pill-orange nav-btn-contact"
@@ -96,16 +97,14 @@ export default function Navbar() {
             </nav>
 
             <div className="mobile-cta-box">
-              <button
-                onClick={() => {
-                  setMobileOpen(false);
-                  setDiagOpen(true);
-                }}
+              <Link
+                to="/autodiagnostic"
+                onClick={() => setMobileOpen(false)}
                 className="btn-pill btn-pill-outline-gold"
                 style={{ width: '100%', justifyContent: 'center' }}
               >
-                <Sparkles size={15} /> Autodiagnostic (3 étapes)
-              </button>
+                <Sparkles size={15} /> Autodiagnostic (15 min)
+              </Link>
               <button
                 onClick={() => {
                   setMobileOpen(false);
