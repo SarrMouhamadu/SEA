@@ -100,23 +100,6 @@ export default function References() {
         {/* Barre de Recherche et Onglets Filtres */}
         <div style={{ marginBottom: '36px' }}>
           
-          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              fontWeight: 700,
-              color: 'var(--color-orange)',
-              background: 'rgba(232, 113, 43, 0.08)',
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              border: '1px solid rgba(232, 113, 43, 0.2)'
-            }}>
-              📊 Projets classés par valeur contractuelle décroissante (plus le montant est élevé, plus le projet est haut)
-            </span>
-          </div>
-
           {/* Recherche textuelle rapide */}
           <div style={{
             position: 'relative',
