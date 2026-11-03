@@ -676,6 +676,78 @@
   border-color: var(--color-orange);
 }
 
+/* --- Badges & Logos des Cartes Références Projets --- */
+.ref-card-logo-box {
+  width: 72px;
+  height: 44px;
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.ref-card-logo-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.ref-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.ref-rank-badge.rank-gold {
+  background: rgba(242, 200, 139, 0.2);
+  color: #c98a2c;
+  border: 1px solid rgba(242, 200, 139, 0.5);
+}
+
+.ref-rank-badge.rank-silver {
+  background: rgba(160, 174, 192, 0.18);
+  color: #718096;
+  border: 1px solid rgba(160, 174, 192, 0.4);
+}
+
+.ref-rank-badge.rank-bronze {
+  background: rgba(205, 127, 50, 0.15);
+  color: #cd7f32;
+  border: 1px solid rgba(205, 127, 50, 0.35);
+}
+
+.ref-rank-badge.rank-default {
+  background: var(--theme-surface-alt);
+  color: var(--theme-text-muted);
+  border: 1px solid var(--theme-border);
+}
+
+.ref-amount-banner {
+  background: linear-gradient(135deg, rgba(232, 113, 43, 0.08) 0%, rgba(242, 200, 139, 0.12) 100%);
+  border: 1px solid rgba(232, 113, 43, 0.22);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.ref-amount-value {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--color-orange);
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+}
+
 .products-section {
   background: var(--theme-bg);
   color: var(--theme-text);

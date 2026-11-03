@@ -8,9 +8,8 @@ import PartnerCarousel from '../components/PartnerCarousel';
 import { officialReferences } from '../data/referencesData';
 import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award, Building2 } from 'lucide-react';
 
-// Sélection de 6 références phares emblématiques parmi les 20 contrats officiels
-const showcaseIds = [1, 4, 6, 3, 11, 20];
-const homeReferences = officialReferences.filter(r => showcaseIds.includes(r.id));
+// Les 6 plus grands projets par montant contractuel pour la vitrine d'accueil
+const homeReferences = officialReferences.slice(0, 6);
 
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);

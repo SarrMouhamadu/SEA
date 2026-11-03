@@ -8,23 +8,25 @@ export default function References() {
   const [sectorFilter, setSectorFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Filtrage combiné par catégorie et recherche par mot-clé
+  // Filtrage combiné par catégorie et recherche par mot-clé, trié par montant décroissant
   const filteredProjects = useMemo(() => {
-    return officialReferences.filter((project) => {
-      const matchesSector = sectorFilter === 'all' || project.sector === sectorFilter;
-      
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch = !q || (
-        project.title.toLowerCase().includes(q) ||
-        project.client.toLowerCase().includes(q) ||
-        (project.clientBadge && project.clientBadge.toLowerCase().includes(q)) ||
-        (project.country && project.country.toLowerCase().includes(q)) ||
-        (project.keyImpact && project.keyImpact.toLowerCase().includes(q)) ||
-        (project.objectives && project.objectives.some(obj => obj.toLowerCase().includes(q)))
-      );
+    return officialReferences
+      .filter((project) => {
+        const matchesSector = sectorFilter === 'all' || project.sector === sectorFilter;
+        
+        const q = searchQuery.toLowerCase().trim();
+        const matchesSearch = !q || (
+          project.title.toLowerCase().includes(q) ||
+          project.client.toLowerCase().includes(q) ||
+          (project.clientBadge && project.clientBadge.toLowerCase().includes(q)) ||
+          (project.country && project.country.toLowerCase().includes(q)) ||
+          (project.keyImpact && project.keyImpact.toLowerCase().includes(q)) ||
+          (project.objectives && project.objectives.some(obj => obj.toLowerCase().includes(q)))
+        );
 
-      return matchesSector && matchesSearch;
-    });
+        return matchesSector && matchesSearch;
+      })
+      .sort((a, b) => (b.amountValue || 0) - (a.amountValue || 0));
   }, [sectorFilter, searchQuery]);
 
   const counts = useMemo(() => {
@@ -98,6 +100,23 @@ export default function References() {
         {/* Barre de Recherche et Onglets Filtres */}
         <div style={{ marginBottom: '36px' }}>
           
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '12px',
+              fontWeight: 700,
+              color: 'var(--color-orange)',
+              background: 'rgba(232, 113, 43, 0.08)',
+              padding: '6px 14px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(232, 113, 43, 0.2)'
+            }}>
+              📊 Projets classés par valeur contractuelle décroissante (plus le montant est élevé, plus le projet est haut)
+            </span>
+          </div>
+
           {/* Recherche textuelle rapide */}
           <div style={{
             position: 'relative',

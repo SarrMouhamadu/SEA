@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="100%" height="100%">
+  <rect width="240" height="80" rx="10" fill="#ffffff"/>
+  <circle cx="40" cy="40" r="22" fill="#E8712B"/>
+  <path d="M40 22 L45 35 L58 35 L47 43 L51 56 L40 48 L29 56 L33 43 L22 35 L35 35 Z" fill="#F2C88B"/>
+  <circle cx="40" cy="40" r="7" fill="#ffffff"/>
+  <text x="74" y="44" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="800" fill="#1C3829" letter-spacing="1">ENDA</text>
+  <text x="136" y="44" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="800" fill="#E8712B" letter-spacing="1">ENERGIE</text>
+  <text x="75" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#3F7A5A" letter-spacing="0.5">ENVIRONNEMENT & ENERGIE</text>
+</svg>
