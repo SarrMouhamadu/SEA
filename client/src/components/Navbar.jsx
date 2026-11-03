@@ -17,7 +17,6 @@ export default function Navbar() {
     { name: 'Secteurs', path: '/secteurs' },
     { name: 'Références', path: '/references' },
     { name: 'Ressources', path: '/ressources' },
-    { name: 'Autodiagnostic', path: '/autodiagnostic' },
   ];
 
   const handleMobileNavClick = () => {
