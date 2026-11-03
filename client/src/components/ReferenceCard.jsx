@@ -51,7 +51,7 @@ export default function ReferenceCard({ item }) {
       </div>
 
       {/* 2. Titre officiel du projet */}
-      <h3 style={{ fontSize: '1.2rem', color: 'var(--theme-text)', marginBottom: '14px', lineHeight: 1.35, fontWeight: 700 }}>
+      <h3 className="ref-card-title">
         {item.title}
       </h3>
 
