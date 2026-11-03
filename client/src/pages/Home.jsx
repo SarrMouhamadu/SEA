@@ -156,7 +156,6 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
             <div>
-              <p className="section-label">PROJETS & RÉALISATIONS</p>
               <h2 className="section-heading" style={{ margin: 0, color: 'var(--color-text-dark)' }}>
                 Références phares
               </h2>
@@ -210,9 +209,6 @@ export default function Home() {
         <div className="container">
           <div className="autodiag-card">
             <div className="autodiag-card-content">
-              <span className="diag-modal-badge" style={{ background: 'rgba(232, 113, 43, 0.2)', color: 'var(--color-orange)' }}>
-                <Sparkles size={15} /> Parcours interactif gratuit
-              </span>
               <h2 className="autodiag-heading">
                 Évaluez vos gains énergétiques en 3 étapes
               </h2>
@@ -236,13 +232,13 @@ export default function Home() {
             </div>
 
             <div className="autodiag-btn-wrapper">
-              <button
-                onClick={() => setDiagModalOpen(true)}
+              <Link
+                to="/autodiagnostic"
                 className="btn-pill btn-pill-orange"
-                style={{ padding: '20px 36px', fontSize: '17px', width: '100%' }}
+                style={{ padding: '20px 36px', fontSize: '17px', width: '100%', textAlign: 'center', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 Lancer mon autodiagnostic <ArrowRight size={18} />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -251,7 +247,6 @@ export default function Home() {
       {/* 6. PARTENAIRES (Techniques & Références Clients) */}
       <section id="partenaires" className="partners-section">
         <div className="container">
-          <p className="section-label">ÉCOSYSTÈME DE CONFIANCE</p>
           <h2 className="section-heading" style={{ color: 'var(--color-text-dark)', marginBottom: 0 }}>
             Nos partenaires
           </h2>
