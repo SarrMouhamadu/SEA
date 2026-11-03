@@ -2606,122 +2606,136 @@
   box-shadow: var(--theme-card-shadow);
 }
 
-/* Sous-progression du Profil */
-.autodiag-substepper-box {
+/* En-tête Profil plein format */
+.autodiag-profile-header {
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--theme-border);
+}
+
+.autodiag-profile-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Sections principales du formulaire */
+.autodiag-section-block {
   background: var(--theme-surface-alt);
   border: 1px solid var(--theme-border);
   border-radius: var(--radius-md);
-  padding: 16px 18px;
+  padding: 20px 22px;
   margin-bottom: 20px;
 }
 
-.autodiag-substepper-header {
+.autodiag-block-heading {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.autodiag-substep-count {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--color-orange);
-  background: rgba(200, 90, 50, 0.1);
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-.autodiag-substep-tabs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.autodiag-substep-tab {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--theme-border);
-  background: var(--theme-surface);
-  color: var(--theme-text-muted);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.autodiag-substep-tab .tab-num {
-  width: 20px;
-  height: 20px;
+.autodiag-block-num {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: var(--theme-surface-alt);
-  border: 1px solid var(--theme-border);
+  background: var(--color-orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-}
-
-.autodiag-substep-tab.active {
-  background: var(--color-orange);
-  color: #fff;
-  border-color: var(--color-orange);
-}
-
-.autodiag-substep-tab.active .tab-num {
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
-  border-color: transparent;
-}
-
-.autodiag-substep-tab.completed {
-  border-color: var(--color-orange);
-  color: var(--color-orange);
-  background: rgba(200, 90, 50, 0.05);
-}
-
-.autodiag-substep-tab.completed .tab-num {
-  background: var(--color-orange);
-  color: #fff;
-  border-color: transparent;
-}
-
-.tab-divider {
-  width: 12px;
-  height: 1px;
-  background: var(--theme-border);
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
-@media (max-width: 640px) {
-  .autodiag-substep-tabs {
-    flex-direction: column;
-    align-items: stretch;
+.autodiag-block-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--theme-text);
+  margin: 0 0 2px 0;
+}
+
+.autodiag-block-subtitle {
+  font-size: 12px;
+  color: var(--theme-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Grille principale 2 colonnes équilibrées */
+.autodiag-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 680px) {
+  .autodiag-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
-  .tab-divider {
-    display: none;
+  .autodiag-section-block {
+    padding: 16px;
   }
+}
+
+.autodiag-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.autodiag-field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--theme-text);
+}
+
+.autodiag-field input,
+.autodiag-field select,
+.autodiag-field textarea {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--theme-text);
+  background: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.autodiag-field textarea {
+  height: auto;
+  padding: 10px 12px;
+}
+
+.autodiag-field input:focus,
+.autodiag-field select:focus,
+.autodiag-field textarea:focus {
+  border-color: var(--color-orange);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(200, 90, 50, 0.1);
 }
 
 /* Sections repliables (details / summary) */
 .autodiag-details-box {
-  background: var(--theme-surface-alt);
+  background: var(--theme-surface);
   border: 1px solid var(--theme-border);
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
 }
 
 .autodiag-details-summary {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--theme-text);
+  color: var(--color-orange);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2735,70 +2749,6 @@
 
 details[open] .details-arrow {
   transform: rotate(180deg);
-}
-
-.autodiag-collapsible-wrapper {
-  border: 1px dashed var(--theme-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.autodiag-collapsible-toggle {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  background: var(--theme-surface-alt);
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-orange);
-  text-align: left;
-  transition: background 0.15s ease;
-}
-
-.autodiag-collapsible-toggle:hover {
-  background: #ede8dc;
-}
-
-.autodiag-collapsible-content {
-  padding: 14px;
-  background: var(--theme-surface);
-  border-top: 1px dashed var(--theme-border);
-}
-
-.autodiag-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.autodiag-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.autodiag-field label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--theme-text);
-}
-
-.autodiag-field input,
-.autodiag-field select,
-.autodiag-field textarea {
-  padding: 8px 11px;
-  font-size: 13px;
-  font-family: inherit;
-  color: var(--theme-text);
-  background: var(--theme-surface-alt);
-  border: 1px solid var(--theme-border);
-  border-radius: var(--radius-sm);
-  outline: none;
-  transition: all 0.2s ease;
 }
 
 /* Puces et Sélecteurs Ultra-Rapides (1 Clic) */

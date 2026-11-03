@@ -286,60 +286,44 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         )}
 
         {/* ========================================================================= */}
-        {/* ÉCRAN 2 : PROFIL ALLÉGÉ (2 SOUS-ÉTAPES ULTRA RAPIDES)                     */}
+        {/* ÉCRAN 2 : PROFIL DE L'ENTREPRISE (SECTION UNIQUE SUR PLEINE LARGEUR)      */}
         {/* ========================================================================= */}
         {currentStep === 2 && (
           <div className="autodiag-card autodiag-fade-in">
             
-            <div className="autodiag-substepper-box">
-              <div className="autodiag-substepper-header">
-                <div>
-                  <span className="autodiag-badge-category" style={{ marginBottom: '4px' }}>
-                    Profil de l'entreprise
-                  </span>
-                  <h2 className="autodiag-title-screen" style={{ fontSize: '1.45rem', marginBottom: '2px' }}>
-                    {profileSubStep === 1 ? "1. Qui êtes-vous ?" : "2. Votre profil énergétique (optionnel & rapide)"}
-                  </h2>
-                </div>
-                <div className="autodiag-substep-count">
-                  Étape {profileSubStep} / 2
-                </div>
-              </div>
-
-              <div className="autodiag-substep-tabs">
-                <button
-                  type="button"
-                  onClick={() => setProfileSubStep(1)}
-                  className={`autodiag-substep-tab ${profileSubStep === 1 ? 'active' : ''} ${profileSubStep > 1 ? 'completed' : ''}`}
-                >
-                  <span className="tab-num">1</span>
-                  <span className="tab-name">Coordonnées</span>
-                </button>
-                <div className="tab-divider"></div>
-                <button
-                  type="button"
-                  onClick={() => setProfileSubStep(2)}
-                  className={`autodiag-substep-tab ${profileSubStep === 2 ? 'active' : ''}`}
-                >
-                  <span className="tab-num">2</span>
-                  <span className="tab-name">Énergie & Marchés</span>
-                </button>
+            {/* En-tête plein format : Titre + Progression */}
+            <div className="autodiag-profile-header">
+              <div className="autodiag-profile-titles">
+                <span className="autodiag-badge-category">Étape 2 sur 8 — Profil de l'entreprise</span>
+                <h2 className="autodiag-title-screen">Vos coordonnées & contexte d'activité</h2>
+                <p className="autodiag-subtext" style={{ marginBottom: 0 }}>
+                  Renseignez vos informations clés pour calibrer automatiquement vos ordres de grandeur d'émissions (Scopes 1 & 2) et d'économies d'énergie.
+                </p>
               </div>
             </div>
 
-            {/* --- SOUS-ÉTAPE 2.1 : LES 4 COORDONNÉES CLÉS SEULEMENT --- */}
-            {profileSubStep === 1 && (
-              <form onSubmit={(e) => { e.preventDefault(); setProfileSubStep(2); }} className="autodiag-fade-in">
+            <form onSubmit={(e) => { e.preventDefault(); setCurrentStep(3); }}>
+              
+              {/* Section 1 : Identité et Coordonnées */}
+              <div className="autodiag-section-block">
+                <div className="autodiag-block-heading">
+                  <span className="autodiag-block-num">1</span>
+                  <div>
+                    <h3 className="autodiag-block-title">Identité & Coordonnées du répondant</h3>
+                    <p className="autodiag-block-subtitle">Informations de contact pour vous transmettre votre rapport de synthèse.</p>
+                  </div>
+                </div>
+
                 <div className="autodiag-form-grid">
                   <div className="autodiag-field">
-                    <label>Raison sociale de votre entreprise <span className="req">*</span></label>
+                    <label>Raison sociale de l'entreprise <span className="req">*</span></label>
                     <input
                       type="text"
                       name="raisonSociale"
                       required
                       value={profil.raisonSociale || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : Saly Agro / SenLog SA"
+                      placeholder="Ex : Conserverie Atlantique SA"
                     />
                   </div>
 
@@ -352,7 +336,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   </div>
 
                   <div className="autodiag-field">
-                    <label>Votre nom et prénom <span className="req">*</span></label>
+                    <label>Nom et prénom <span className="req">*</span></label>
                     <input
                       type="text"
                       name="nomPrenom"
@@ -371,7 +355,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       required
                       value={profil.fonction || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : Responsable Technique / QHSE"
+                      placeholder="Ex : Responsable QHSE / Directeur Technique"
                     />
                   </div>
 
@@ -399,45 +383,21 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                     />
                   </div>
                 </div>
+              </div>
 
-                <div className="autodiag-footer-nav">
-                  <button type="button" onClick={() => setCurrentStep(1)} className="btn-pill btn-pill-outline-gold">
-                    <ArrowLeft size={16} /> Retour
-                  </button>
-                  <button type="submit" className="btn-pill btn-pill-orange">
-                    Suivant : Énergie & Marchés <ArrowRight size={16} />
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* --- SOUS-ÉTAPE 2.2 : ÉNERGIE RAPIDE AVEC PUCES CLÉS EN 1 CLIC --- */}
-            {profileSubStep === 2 && (
-              <form onSubmit={(e) => { e.preventDefault(); setCurrentStep(3); }} className="autodiag-fade-in">
-                
-                {/* 1. Type d'abonnement en 1 clic */}
-                <div style={{ marginBottom: '16px' }}>
-                  <label className="quick-label">
-                    Type d'abonnement électrique <span className="req">*</span>
-                  </label>
-                  <div className="quick-pills-row">
-                    {TYPES_ABONNEMENT.map(ab => (
-                      <button
-                        key={ab}
-                        type="button"
-                        onClick={() => setProfilValue('typeAbonnement', ab)}
-                        className={`quick-pill-btn ${profil.typeAbonnement === ab ? 'active' : ''}`}
-                      >
-                        {ab}
-                      </button>
-                    ))}
+              {/* Section 2 : Marchés & Parties prenantes */}
+              <div className="autodiag-section-block">
+                <div className="autodiag-block-heading">
+                  <span className="autodiag-block-num">2</span>
+                  <div>
+                    <h3 className="autodiag-block-title">Marchés & Parties prenantes</h3>
+                    <p className="autodiag-block-subtitle">Exigences réglementaires et pressions de vos partenaires financiers.</p>
                   </div>
                 </div>
 
-                {/* 2. Questions oui/non en 1 clic */}
-                <div className="autodiag-form-grid" style={{ marginBottom: '16px' }}>
-                  <div>
-                    <label className="quick-label">Exportez-vous vers l'Union européenne ?</label>
+                <div className="autodiag-form-grid">
+                  <div className="autodiag-field">
+                    <label>Exportez-vous vers l'Union européenne ?</label>
                     <div className="quick-pills-row">
                       <button
                         type="button"
@@ -451,13 +411,13 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                         onClick={() => setProfilValue('exportUE', 'Oui')}
                         className={`quick-pill-btn ${profil.exportUE === 'Oui' ? 'active' : ''}`}
                       >
-                        Oui (Impact MACF)
+                        Oui (Exposition MACF potentielle)
                       </button>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="quick-label">Demande ESG de vos banques ou clients ?</label>
+                  <div className="autodiag-field">
+                    <label>Demande ESG de vos clients ou banques ?</label>
                     <div className="quick-pills-row">
                       <button
                         type="button"
@@ -473,12 +433,45 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       >
                         Oui
                       </button>
+                      <button
+                        type="button"
+                        onClick={() => setProfilValue('demandeESG', 'Je ne sais pas')}
+                        className={`quick-pill-btn ${profil.demandeESG === 'Je ne sais pas' ? 'active' : ''}`}
+                      >
+                        Je ne sais pas
+                      </button>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* 3. Chiffres clés essentiels avec suggestions rapides */}
+              {/* Section 3 : Électricité & Factures */}
+              <div className="autodiag-section-block">
+                <div className="autodiag-block-heading">
+                  <span className="autodiag-block-num">3</span>
+                  <div>
+                    <h3 className="autodiag-block-title">Profil Énergétique & Factures</h3>
+                    <p className="autodiag-block-subtitle">Éléments essentiels pour le calcul du Scope 1 & 2 et de votre potentiel d'économies.</p>
+                  </div>
+                </div>
+
                 <div className="autodiag-form-grid">
+                  <div className="autodiag-field" style={{ gridColumn: '1 / -1' }}>
+                    <label>Type d'abonnement électrique <span className="req">*</span></label>
+                    <div className="quick-pills-row">
+                      {TYPES_ABONNEMENT.map(ab => (
+                        <button
+                          key={ab}
+                          type="button"
+                          onClick={() => setProfilValue('typeAbonnement', ab)}
+                          className={`quick-pill-btn ${profil.typeAbonnement === ab ? 'active' : ''}`}
+                        >
+                          {ab}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="autodiag-field">
                     <label>Facture annuelle électricité (FCFA)</label>
                     <input
@@ -516,14 +509,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   </div>
 
                   <div className="autodiag-field">
-                    <label>Consommation annuelle électricité (kWh) — optionnel</label>
+                    <label>Consommation électricité (kWh/an) — optionnel</label>
                     <input
                       type="number"
                       min="0"
                       name="consoElec"
                       value={profil.consoElec || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : 500 000"
+                      placeholder="Ex : 2 400 000"
                     />
                   </div>
 
@@ -535,88 +528,83 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       name="qGasoil"
                       value={profil.qGasoil || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : 40 000"
+                      placeholder="Ex : 60 000"
                     />
                   </div>
                 </div>
 
-                {/* Détails techniques avancés repliés par défaut */}
-                <div className="autodiag-collapsible-wrapper" style={{ marginTop: '14px' }}>
-                  <button
-                    type="button"
-                    onClick={() => setShowAdvancedEnvironnement(!showAdvancedEnvironnement)}
-                    className="autodiag-collapsible-toggle"
-                  >
-                    <span>
-                      {showAdvancedEnvironnement ? '− Masquer les données solaires, rejets et déchets' : '+ Renseigner Solaire, Eaux ou Déchets (facultatif)'}
-                    </span>
-                    {showAdvancedEnvironnement ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-                  </button>
-
-                  {showAdvancedEnvironnement && (
-                    <div className="autodiag-form-grid autodiag-collapsible-content">
-                      <div className="autodiag-field">
-                        <label>Solaire photovoltaïque installé (kWc)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          name="solaireKwc"
-                          value={profil.solaireKwc || ''}
-                          onChange={handleProfilChange}
-                          placeholder="Ex : 100"
-                        />
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Eaux traitées avant rejet ?</label>
-                        <select name="eauTraitee" value={profil.eauTraitee || 'Non'} onChange={handleProfilChange}>
-                          <option value="Non">Non</option>
-                          <option value="Oui">Oui</option>
-                        </select>
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Valorisation énergétique des déchets ?</label>
-                        <select name="potentielValDechets" value={profil.potentielValDechets || 'Non'} onChange={handleProfilChange}>
-                          <option value="Non">Non</option>
-                          <option value="Oui">Oui</option>
-                        </select>
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Filière principale des déchets</label>
-                        <select name="filiereDechets" value={profil.filiereDechets || ''} onChange={handleProfilChange}>
-                          <option value="">Sélectionner...</option>
-                          {FILIERES_DECHETS.map(f => <option key={f} value={f}>{f}</option>)}
-                        </select>
-                      </div>
+                {/* Bloc repliable pour les détails combustibles et installations secondaires */}
+                <details className="autodiag-details-box" style={{ marginTop: '16px' }}>
+                  <summary className="autodiag-details-summary">
+                    <span>+ Préciser d'autres installations (Solaire, Eaux usées, Déchets, Fuel lourd...)</span>
+                    <ChevronDown size={15} className="details-arrow" />
+                  </summary>
+                  <div className="autodiag-form-grid" style={{ marginTop: '14px' }}>
+                    <div className="autodiag-field">
+                      <label>Fuel lourd (Litres)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        name="qFuel"
+                        value={profil.qFuel || ''}
+                        onChange={handleProfilChange}
+                        placeholder="Ex : 350 000"
+                      />
                     </div>
-                  )}
-                </div>
+                    <div className="autodiag-field">
+                      <label>Solaire photovoltaïque (kWc)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        name="solaireKwc"
+                        value={profil.solaireKwc || ''}
+                        onChange={handleProfilChange}
+                        placeholder="Ex : 150"
+                      />
+                    </div>
+                    <div className="autodiag-field">
+                      <label>Les eaux usées sont-elles traitées avant rejet ?</label>
+                      <select name="eauTraitee" value={profil.eauTraitee || 'Non'} onChange={handleProfilChange}>
+                        <option value="Non">Non</option>
+                        <option value="Oui">Oui</option>
+                      </select>
+                    </div>
+                    <div className="autodiag-field">
+                      <label>Potentiel de valorisation énergétique des déchets ?</label>
+                      <select name="potentielValDechets" value={profil.potentielValDechets || 'Non'} onChange={handleProfilChange}>
+                        <option value="Non">Non</option>
+                        <option value="Oui">Oui (Biogaz, méthanisation, CSR...)</option>
+                      </select>
+                    </div>
+                  </div>
+                </details>
+              </div>
 
-                {/* Consentement légal simplifié */}
-                <div className="autodiag-consent-box" style={{ marginTop: '14px' }}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="consentement"
-                      required
-                      checked={profil.consentement === 'Oui'}
-                      onChange={(e) => setProfil(prev => ({ ...prev, consentement: e.target.checked ? 'Oui' : 'Non' }))}
-                    />
-                    <span>
-                      J'accepte le traitement de ces données pour mon diagnostic (loi sénégalaise n° 2008-12) <span className="req">*</span>
-                    </span>
-                  </label>
-                </div>
+              {/* Consentement légal */}
+              <div className="autodiag-consent-box">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="consentement"
+                    required
+                    checked={profil.consentement === 'Oui'}
+                    onChange={(e) => setProfil(prev => ({ ...prev, consentement: e.target.checked ? 'Oui' : 'Non' }))}
+                  />
+                  <span>
+                    J'accepte que les données saisies soient traitées par SEnergyS Africa pour l'analyse de cet autodiagnostic (loi sénégalaise n° 2008-12 sur les données personnelles) <span className="req">*</span>
+                  </span>
+                </label>
+              </div>
 
-                <div className="autodiag-footer-nav">
-                  <button type="button" onClick={() => setProfileSubStep(1)} className="btn-pill btn-pill-outline-gold">
-                    <ArrowLeft size={16} /> Précédent
-                  </button>
-                  <button type="submit" className="btn-pill btn-pill-orange">
-                    Passer à l'évaluation en 1 clic <ArrowRight size={16} />
-                  </button>
-                </div>
-              </form>
-            )}
+              <div className="autodiag-footer-nav">
+                <button type="button" onClick={() => setCurrentStep(1)} className="btn-pill btn-pill-outline-gold">
+                  <ArrowLeft size={16} /> Précédent
+                </button>
+                <button type="submit" className="btn-pill btn-pill-orange">
+                  Passer à l'évaluation (36 affirmations) <ArrowRight size={16} />
+                </button>
+              </div>
+            </form>
 
           </div>
         )}
