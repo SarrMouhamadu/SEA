@@ -4,6 +4,30 @@
  */
 
 export const officialReferences = [
+
+  {
+    id: 20,
+    rank: 20,
+    amountValue: 0,
+    title: "MCA Bénin II - Programme d’audit énergétique de 20 bâtiments publics et 10 industries",
+    client: "SGS/ MCA Benin II",
+    clientBadge: "SGS / MCA Bénin II",
+    clientLogo: "/assets/partners/logos/sgs.png",
+    sector: "territoires",
+    sectorLabel: "Bâtiments & Santé",
+    country: "Bénin",
+    contractValue: "Confidentiel",
+    period: "Septembre 2019 – Juin 2021",
+    duration: "3 ans",
+    summary: "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
+    keyImpact: "Audits énergétiques instrumentés de 20 bâtiments publics et hôpitaux du Bénin",
+    objectives: [
+      "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
+      "Développement de méthodologies d'audit adaptées au contexte ouest-africain",
+      "Accompagnement des industries à l’ISO 50 001",
+      "Elaboration des prescriptions techniques pour les projets d’économie d’énergie"
+]
+  },
   {
     id: 14,
     rank: 1,
@@ -460,28 +484,4 @@ export const officialReferences = [
       "Formations des parties prenantes dans l’intégration des parcs industriels durables dans les villes du pays",
       "Renforcement des capacités techniques et institutionnelles de l’AEME, de l’APROSI et toutes les parties prenantes"
 ]
-  },
-  {
-    id: 20,
-    rank: 20,
-    amountValue: 0,
-    title: "MCA Bénin II - Programme d’audit énergétique de 20 bâtiments publics et 10 industries",
-    client: "SGS/ MCA Benin II",
-    clientBadge: "SGS / MCA Bénin II",
-    clientLogo: "/assets/partners/logos/sgs.png",
-    sector: "territoires",
-    sectorLabel: "Bâtiments & Santé",
-    country: "Bénin",
-    contractValue: "Confidentiel",
-    period: "Septembre 2019 – Juin 2021",
-    duration: "3 ans",
-    summary: "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
-    keyImpact: "Audits énergétiques instrumentés de 20 bâtiments publics et hôpitaux du Bénin",
-    objectives: [
-      "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
-      "Développement de méthodologies d'audit adaptées au contexte ouest-africain",
-      "Accompagnement des industries à l’ISO 50 001",
-      "Elaboration des prescriptions techniques pour les projets d’économie d’énergie"
-]
-  },
-];
+  },];

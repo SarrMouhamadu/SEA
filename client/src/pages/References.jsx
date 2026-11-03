@@ -26,7 +26,14 @@ export default function References() {
 
         return matchesSector && matchesSearch;
       })
-      .sort((a, b) => (b.amountValue || 0) - (a.amountValue || 0));
+      .sort((a, b) => {
+        // Le projet du Bénin toujours en 1ère position
+        const isBeninA = a.country?.toLowerCase().includes('bénin') || a.country?.toLowerCase().includes('benin') || a.id === 20;
+        const isBeninB = b.country?.toLowerCase().includes('bénin') || b.country?.toLowerCase().includes('benin') || b.id === 20;
+        if (isBeninA && !isBeninB) return -1;
+        if (!isBeninA && isBeninB) return 1;
+        return (b.amountValue || 0) - (a.amountValue || 0);
+      });
   }, [sectorFilter, searchQuery]);
 
   const counts = useMemo(() => {
