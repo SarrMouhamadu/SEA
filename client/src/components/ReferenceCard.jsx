@@ -37,14 +37,9 @@ export default function ReferenceCard({ item }) {
           </div>
         </div>
 
-        {/* Classement & Pays (Sobres) */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-          {item.rank && (
-            <span className={`ref-rank-badge ${item.rank <= 3 ? 'rank-top' : ''}`}>
-              N°{item.rank}
-            </span>
-          )}
-          <span style={{ fontSize: '11px', color: 'var(--theme-text-muted)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+        {/* Pays */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{ fontSize: '11.5px', color: 'var(--theme-text-muted)', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'var(--theme-surface-alt)', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--theme-border)' }}>
             <span>{countryFlag}</span> {item.country || 'Sénégal'}
           </span>
         </div>
