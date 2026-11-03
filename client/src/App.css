@@ -2800,6 +2800,74 @@ details[open] .details-arrow {
   transition: all 0.2s ease;
 }
 
+/* Puces et Sélecteurs Ultra-Rapides (1 Clic) */
+.quick-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 6px;
+}
+
+.quick-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-pill-btn {
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--theme-border);
+  background: var(--theme-surface-alt);
+  color: var(--theme-text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-pill-btn:hover {
+  border-color: var(--color-orange);
+  background: rgba(200, 90, 50, 0.05);
+}
+
+.quick-pill-btn.active {
+  background: var(--color-orange);
+  color: #fff;
+  border-color: var(--color-orange);
+}
+
+.quick-presets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.quick-presets .preset-label {
+  font-size: 11px;
+  color: var(--theme-text-muted);
+}
+
+.quick-presets button {
+  background: var(--theme-surface-alt);
+  border: 1px solid var(--theme-border);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-orange);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-presets button:hover {
+  background: var(--color-orange);
+  color: #fff;
+  border-color: var(--color-orange);
+}
+
 .autodiag-footer-nav {
   display: flex;
   justify-content: space-between;

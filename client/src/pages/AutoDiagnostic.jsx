@@ -10,25 +10,20 @@ import {
   CheckCircle2, 
   Clock, 
   Zap, 
-  Flame, 
   Leaf, 
   BarChart3, 
   RotateCcw, 
   Printer,
   ChevronDown,
   ChevronUp,
-  Building2,
-  FileSpreadsheet,
-  Layers,
-  Droplet,
-  Trash2
+  Sliders,
+  HelpCircle
 } from 'lucide-react';
 import { 
   SECTEURS_ACTIVITE, 
   TRANCHES_EFFECTIF, 
   TRANCHES_CA, 
   TYPES_ABONNEMENT, 
-  DESTINATIONS_EAU, 
   FILIERES_DECHETS, 
   BAREME_REPONSES, 
   MODULES_CONFIG, 
@@ -41,20 +36,15 @@ const STORAGE_KEY_REPONSES = 'sea_autodiag_reponses_v1';
 export default function AutoDiagnostic() {
   // Navigation du parcours global : 
   // 1 = Intro
-  // 2 = Profil Entreprise (avec 3 sous-étapes légères : 2.1, 2.2, 2.3)
+  // 2 = Profil Entreprise (Ultra-simplifié avec puces cliquables et curseurs)
   // 3 à 8 = Modules 1 à 6 (Questionnaire)
   // 9 = Synthèse & Résultats
   // 10 = Analyse détaillée & Alertes
   // 11 = Demande d'accompagnement
   const [currentStep, setCurrentStep] = useState(1);
-
-  // Sous-étapes pour l'Étape 2 (Profil) :
-  // 1 = Coordonnées & Entreprise
-  // 2 = Marchés & Électricité
-  // 3 = Combustibles & Environnement
   const [profileSubStep, setProfileSubStep] = useState(1);
 
-  // Sections repliables pour réduire la densité
+  // Sections repliables optionnelles
   const [showAdvancedCombustibles, setShowAdvancedCombustibles] = useState(false);
   const [showAdvancedEnvironnement, setShowAdvancedEnvironnement] = useState(false);
 
@@ -62,13 +52,27 @@ export default function AutoDiagnostic() {
   const [profil, setProfil] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_PROFIL);
-      return saved ? JSON.parse(saved) : {};
+      return saved ? JSON.parse(saved) : {
+        typeAbonnement: TYPES_ABONNEMENT[1], // Moyenne tension par défaut
+        exportUE: 'Non',
+        demandeESG: 'Non',
+        eauTraitee: 'Non',
+        potentielValDechets: 'Non',
+        consentement: 'Oui'
+      };
     } catch {
-      return {};
+      return {
+        typeAbonnement: TYPES_ABONNEMENT[1],
+        exportUE: 'Non',
+        demandeESG: 'Non',
+        eauTraitee: 'Non',
+        potentielValDechets: 'Non',
+        consentement: 'Oui'
+      };
     }
   });
 
-  // Réponses aux 36 affirmations (clé = "1.1", valeur = 0, 1, 2, ou 3)
+  // Réponses aux 36 affirmations
   const [reponses, setReponses] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_REPONSES);
@@ -78,7 +82,7 @@ export default function AutoDiagnostic() {
     }
   });
 
-  // État de la demande de contact
+  // Demande de contact
   const [contactForm, setContactForm] = useState({
     recontact: 'Oui',
     theme: '',
@@ -115,6 +119,13 @@ export default function AutoDiagnostic() {
     }));
   };
 
+  const setProfilValue = (name, value) => {
+    setProfil(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleAnswerSelect = (questionId, points) => {
     setReponses(prev => ({
       ...prev,
@@ -126,7 +137,14 @@ export default function AutoDiagnostic() {
     if (window.confirm("Souhaitez-vous réinitialiser votre autodiagnostic ? Toutes les données saisies seront effacées.")) {
       localStorage.removeItem(STORAGE_KEY_PROFIL);
       localStorage.removeItem(STORAGE_KEY_REPONSES);
-      setProfil({});
+      setProfil({
+        typeAbonnement: TYPES_ABONNEMENT[1],
+        exportUE: 'Non',
+        demandeESG: 'Non',
+        eauTraitee: 'Non',
+        potentielValDechets: 'Non',
+        consentement: 'Oui'
+      });
       setReponses({});
       setProfileSubStep(1);
       setCurrentStep(1);
@@ -182,13 +200,11 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
     }
   };
 
-  // Progression globale (11 étapes)
   const progressPercent = Math.min(100, Math.round(((currentStep - 1) / 10) * 100));
 
-  // Libellé d'étape dans la barre
   const getStepLabel = () => {
     if (currentStep === 1) return "Démarrage";
-    if (currentStep === 2) return `Profil (${profileSubStep}/3)`;
+    if (currentStep === 2) return `Profil (${profileSubStep}/2)`;
     if (currentStep >= 3 && currentStep <= 8) return `Module ${currentStep - 2}/6`;
     if (currentStep === 9) return "Synthèse";
     if (currentStep === 10) return "Analyse & Alertes";
@@ -199,7 +215,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
     <div className="autodiag-page-container">
       <div className="autodiag-wrapper">
 
-        {/* Barre de navigation haute & Sauvegarde */}
+        {/* Barre de navigation haute */}
         <div className="autodiag-top-bar">
           <div className="autodiag-brand">
             <span className="autodiag-badge">AUTODIAGNOSTIC OFFICIEL</span>
@@ -232,14 +248,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               Évaluez la maturité énergie, climat et ESG de votre entreprise
             </h1>
             <p className="autodiag-lead">
-              En 15 minutes estimées, situez la gouvernance et les performances durables de votre organisation sur 6 dimensions clés, obtenez vos ordres de grandeur d'émissions (Scopes 1 & 2) et identifiez vos économies d'énergie potentielles.
+              En quelques minutes, situez vos pratiques sur 6 dimensions clés, obtenez vos ordres de grandeur d'émissions (Scopes 1 & 2) et identifiez vos économies d'énergie potentielles.
             </p>
 
             <div className="autodiag-feature-grid">
               <div className="autodiag-feature-box">
                 <Clock className="text-orange" size={26} />
-                <h3>~15 min estimées</h3>
-                <p>Durée indicative à confirmer selon la disponibilité de vos données d'activité.</p>
+                <h3>Saisie rapide & fluide</h3>
+                <p>Répondez simplement en cochant des puces sans devoir chercher des chiffres complexes.</p>
               </div>
               <div className="autodiag-feature-box">
                 <BarChart3 className="text-orange" size={26} />
@@ -249,14 +265,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               <div className="autodiag-feature-box">
                 <Leaf className="text-orange" size={26} />
                 <h3>Priorités d'action</h3>
-                <p>Identification automatique de vos 3 chantiers prioritaires et de vos risques réglementaires.</p>
+                <p>Identification automatique de vos 3 chantiers prioritaires et de vos opportunités.</p>
               </div>
             </div>
 
             <div className="autodiag-notice-box">
               <Zap size={18} className="text-orange flex-shrink-0" />
               <div>
-                <strong>Pour un résultat optimal :</strong> Munissez-vous idéalement de vos factures annuelles d'électricité (kWh, FCFA), de vos consommations de combustibles (gasoil, fuel, gaz...) et de la puissance de vos installations éventuelles.
+                <strong>Pratique :</strong> Si vous n'avez pas vos factures exactes sous la main, vous pouvez sélectionner des ordres de grandeur rapides ou passer directement à l'évaluation !
               </div>
             </div>
 
@@ -270,30 +286,26 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         )}
 
         {/* ========================================================================= */}
-        {/* ÉCRAN 2 : PROFIL DE L'ENTREPRISE (DÉCOUPÉ EN 3 SOUS-ÉTAPES LÉGÈRES)       */}
+        {/* ÉCRAN 2 : PROFIL ALLÉGÉ (2 SOUS-ÉTAPES ULTRA RAPIDES)                     */}
         {/* ========================================================================= */}
         {currentStep === 2 && (
           <div className="autodiag-card autodiag-fade-in">
             
-            {/* Sous-progression du Profil */}
             <div className="autodiag-substepper-box">
               <div className="autodiag-substepper-header">
                 <div>
                   <span className="autodiag-badge-category" style={{ marginBottom: '4px' }}>
-                    Partie A — Profil de l'entreprise
+                    Profil de l'entreprise
                   </span>
-                  <h2 className="autodiag-title-screen" style={{ fontSize: '1.5rem', marginBottom: '2px' }}>
-                    {profileSubStep === 1 && "1. Coordonnées & Identité"}
-                    {profileSubStep === 2 && "2. Marchés & Électricité"}
-                    {profileSubStep === 3 && "3. Combustibles & Environnement"}
+                  <h2 className="autodiag-title-screen" style={{ fontSize: '1.45rem', marginBottom: '2px' }}>
+                    {profileSubStep === 1 ? "1. Qui êtes-vous ?" : "2. Votre profil énergétique (optionnel & rapide)"}
                   </h2>
                 </div>
                 <div className="autodiag-substep-count">
-                  Sous-étape {profileSubStep} sur 3
+                  Étape {profileSubStep} / 2
                 </div>
               </div>
 
-              {/* Puces de sous-étapes */}
               <div className="autodiag-substep-tabs">
                 <button
                   type="button"
@@ -307,29 +319,40 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                 <button
                   type="button"
                   onClick={() => setProfileSubStep(2)}
-                  className={`autodiag-substep-tab ${profileSubStep === 2 ? 'active' : ''} ${profileSubStep > 2 ? 'completed' : ''}`}
+                  className={`autodiag-substep-tab ${profileSubStep === 2 ? 'active' : ''}`}
                 >
                   <span className="tab-num">2</span>
-                  <span className="tab-name">Marchés & Élec.</span>
-                </button>
-                <div className="tab-divider"></div>
-                <button
-                  type="button"
-                  onClick={() => setProfileSubStep(3)}
-                  className={`autodiag-substep-tab ${profileSubStep === 3 ? 'active' : ''}`}
-                >
-                  <span className="tab-num">3</span>
-                  <span className="tab-name">Combustibles & Env.</span>
+                  <span className="tab-name">Énergie & Marchés</span>
                 </button>
               </div>
             </div>
 
-            {/* --- SOUS-ÉTAPE 2.1 : COORDONNÉES ET IDENTITÉ --- */}
+            {/* --- SOUS-ÉTAPE 2.1 : LES 4 COORDONNÉES CLÉS SEULEMENT --- */}
             {profileSubStep === 1 && (
               <form onSubmit={(e) => { e.preventDefault(); setProfileSubStep(2); }} className="autodiag-fade-in">
                 <div className="autodiag-form-grid">
                   <div className="autodiag-field">
-                    <label>Nom et prénom <span className="req">*</span></label>
+                    <label>Raison sociale de votre entreprise <span className="req">*</span></label>
+                    <input
+                      type="text"
+                      name="raisonSociale"
+                      required
+                      value={profil.raisonSociale || ''}
+                      onChange={handleProfilChange}
+                      placeholder="Ex : Saly Agro / SenLog SA"
+                    />
+                  </div>
+
+                  <div className="autodiag-field">
+                    <label>Secteur d'activité</label>
+                    <select name="secteurActivite" value={profil.secteurActivite || ''} onChange={handleProfilChange}>
+                      <option value="">Sélectionner un secteur...</option>
+                      {SECTEURS_ACTIVITE.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="autodiag-field">
+                    <label>Votre nom et prénom <span className="req">*</span></label>
                     <input
                       type="text"
                       name="nomPrenom"
@@ -339,6 +362,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       placeholder="Ex : Moussa Diop"
                     />
                   </div>
+
                   <div className="autodiag-field">
                     <label>Fonction <span className="req">*</span></label>
                     <input
@@ -347,9 +371,10 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       required
                       value={profil.fonction || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : Responsable QHSE / Directeur"
+                      placeholder="Ex : Responsable Technique / QHSE"
                     />
                   </div>
+
                   <div className="autodiag-field">
                     <label>Email professionnel <span className="req">*</span></label>
                     <input
@@ -361,6 +386,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       placeholder="m.diop@entreprise.sn"
                     />
                   </div>
+
                   <div className="autodiag-field">
                     <label>Téléphone professionnel <span className="req">*</span></label>
                     <input
@@ -372,131 +398,87 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       placeholder="+221 77 000 00 00"
                     />
                   </div>
-
-                  <div className="autodiag-field">
-                    <label>Raison sociale <span className="req">*</span></label>
-                    <input
-                      type="text"
-                      name="raisonSociale"
-                      required
-                      value={profil.raisonSociale || ''}
-                      onChange={handleProfilChange}
-                      placeholder="Nom officiel de votre entreprise"
-                    />
-                  </div>
-                  <div className="autodiag-field">
-                    <label>Secteur d'activité</label>
-                    <select name="secteurActivite" value={profil.secteurActivite || ''} onChange={handleProfilChange}>
-                      <option value="">Sélectionner un secteur...</option>
-                      {SECTEURS_ACTIVITE.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </div>
                 </div>
-
-                {/* Bloc repliable pour les détails entreprise secondaires */}
-                <details className="autodiag-details-box" style={{ marginTop: '16px' }}>
-                  <summary className="autodiag-details-summary">
-                    <span>Informations complémentaires (Effectif, CA, Sites...)</span>
-                    <ChevronDown size={15} className="details-arrow" />
-                  </summary>
-                  <div className="autodiag-form-grid" style={{ marginTop: '12px' }}>
-                    <div className="autodiag-field">
-                      <label>Effectif global</label>
-                      <select name="effectif" value={profil.effectif || ''} onChange={handleProfilChange}>
-                        <option value="">Sélectionner...</option>
-                        {TRANCHES_EFFECTIF.map(t => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
-                    <div className="autodiag-field">
-                      <label>Chiffre d'affaires annuel (FCFA)</label>
-                      <select name="chiffreAffaires" value={profil.chiffreAffaires || ''} onChange={handleProfilChange}>
-                        <option value="">Sélectionner...</option>
-                        {TRANCHES_CA.map(ca => <option key={ca} value={ca}>{ca}</option>)}
-                      </select>
-                    </div>
-                    <div className="autodiag-field">
-                      <label>Nombre de sites</label>
-                      <input
-                        type="number"
-                        min="1"
-                        name="nbSites"
-                        value={profil.nbSites || ''}
-                        onChange={handleProfilChange}
-                        placeholder="Ex : 1"
-                      />
-                    </div>
-                    <div className="autodiag-field">
-                      <label>Localisation (ville, région)</label>
-                      <input
-                        type="text"
-                        name="localisation"
-                        value={profil.localisation || ''}
-                        onChange={handleProfilChange}
-                        placeholder="Ex : Dakar, Rufisque, Thiès..."
-                      />
-                    </div>
-                  </div>
-                </details>
 
                 <div className="autodiag-footer-nav">
                   <button type="button" onClick={() => setCurrentStep(1)} className="btn-pill btn-pill-outline-gold">
                     <ArrowLeft size={16} /> Retour
                   </button>
                   <button type="submit" className="btn-pill btn-pill-orange">
-                    Suivant : Marchés & Électricité <ArrowRight size={16} />
+                    Suivant : Énergie & Marchés <ArrowRight size={16} />
                   </button>
                 </div>
               </form>
             )}
 
-            {/* --- SOUS-ÉTAPE 2.2 : MARCHÉS & ÉLECTRICITÉ --- */}
+            {/* --- SOUS-ÉTAPE 2.2 : ÉNERGIE RAPIDE AVEC PUCES CLÉS EN 1 CLIC --- */}
             {profileSubStep === 2 && (
-              <form onSubmit={(e) => { e.preventDefault(); setProfileSubStep(3); }} className="autodiag-fade-in">
-                <div className="autodiag-form-grid">
-                  <div className="autodiag-field">
-                    <label>Exportation vers l'Union européenne ?</label>
-                    <select name="exportUE" value={profil.exportUE || 'Non'} onChange={handleProfilChange}>
-                      <option value="Non">Non</option>
-                      <option value="Oui">Oui (Exposition MACF potentielle)</option>
-                    </select>
+              <form onSubmit={(e) => { e.preventDefault(); setCurrentStep(3); }} className="autodiag-fade-in">
+                
+                {/* 1. Type d'abonnement en 1 clic */}
+                <div style={{ marginBottom: '16px' }}>
+                  <label className="quick-label">
+                    Type d'abonnement électrique <span className="req">*</span>
+                  </label>
+                  <div className="quick-pills-row">
+                    {TYPES_ABONNEMENT.map(ab => (
+                      <button
+                        key={ab}
+                        type="button"
+                        onClick={() => setProfilValue('typeAbonnement', ab)}
+                        className={`quick-pill-btn ${profil.typeAbonnement === ab ? 'active' : ''}`}
+                      >
+                        {ab}
+                      </button>
+                    ))}
                   </div>
-                  <div className="autodiag-field">
-                    <label>Demandes ESG de clients ou banques ?</label>
-                    <select name="demandeESG" value={profil.demandeESG || 'Non'} onChange={handleProfilChange}>
-                      <option value="Non">Non</option>
-                      <option value="Oui">Oui</option>
-                      <option value="Je ne sais pas">Je ne sais pas</option>
-                    </select>
+                </div>
+
+                {/* 2. Questions oui/non en 1 clic */}
+                <div className="autodiag-form-grid" style={{ marginBottom: '16px' }}>
+                  <div>
+                    <label className="quick-label">Exportez-vous vers l'Union européenne ?</label>
+                    <div className="quick-pills-row">
+                      <button
+                        type="button"
+                        onClick={() => setProfilValue('exportUE', 'Non')}
+                        className={`quick-pill-btn ${profil.exportUE === 'Non' ? 'active' : ''}`}
+                      >
+                        Non
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setProfilValue('exportUE', 'Oui')}
+                        className={`quick-pill-btn ${profil.exportUE === 'Oui' ? 'active' : ''}`}
+                      >
+                        Oui (Impact MACF)
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="autodiag-field">
-                    <label>Type d'abonnement électrique <span className="req">*</span></label>
-                    <select name="typeAbonnement" required value={profil.typeAbonnement || TYPES_ABONNEMENT[1]} onChange={handleProfilChange}>
-                      {TYPES_ABONNEMENT.map(a => <option key={a} value={a}>{a}</option>)}
-                    </select>
+                  <div>
+                    <label className="quick-label">Demande ESG de vos banques ou clients ?</label>
+                    <div className="quick-pills-row">
+                      <button
+                        type="button"
+                        onClick={() => setProfilValue('demandeESG', 'Non')}
+                        className={`quick-pill-btn ${profil.demandeESG === 'Non' ? 'active' : ''}`}
+                      >
+                        Non
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setProfilValue('demandeESG', 'Oui')}
+                        className={`quick-pill-btn ${profil.demandeESG === 'Oui' ? 'active' : ''}`}
+                      >
+                        Oui
+                      </button>
+                    </div>
                   </div>
-                  <div className="autodiag-field">
-                    <label>Puissance souscrite (kW)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      name="puissanceSouscrite"
-                      value={profil.puissanceSouscrite || ''}
-                      onChange={handleProfilChange}
-                      placeholder="Ex : 800"
-                    />
-                  </div>
-                  <div className="autodiag-field">
-                    <label>Consommation annuelle électricité (kWh)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      name="consoElec"
-                      value={profil.consoElec || ''}
-                      onChange={handleProfilChange}
-                      placeholder="Ex : 2400000"
-                    />
-                  </div>
+                </div>
+
+                {/* 3. Chiffres clés essentiels avec suggestions rapides */}
+                <div className="autodiag-form-grid">
                   <div className="autodiag-field">
                     <label>Facture annuelle électricité (FCFA)</label>
                     <input
@@ -505,39 +487,16 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       name="factureElec"
                       value={profil.factureElec || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : 264000000"
+                      placeholder="Ex : 50 000 000"
                     />
+                    <div className="quick-presets">
+                      <span className="preset-label">Exemples :</span>
+                      <button type="button" onClick={() => setProfilValue('factureElec', 25000000)}>25M</button>
+                      <button type="button" onClick={() => setProfilValue('factureElec', 100000000)}>100M</button>
+                      <button type="button" onClick={() => setProfilValue('factureElec', 250000000)}>250M</button>
+                    </div>
                   </div>
-                </div>
 
-                <div className="autodiag-footer-nav">
-                  <button type="button" onClick={() => setProfileSubStep(1)} className="btn-pill btn-pill-outline-gold">
-                    <ArrowLeft size={16} /> Précédent
-                  </button>
-                  <button type="submit" className="btn-pill btn-pill-orange">
-                    Suivant : Combustibles & Env. <ArrowRight size={16} />
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* --- SOUS-ÉTAPE 2.3 : COMBUSTIBLES, ENVIRONNEMENT & CONSENTEMENT --- */}
-            {profileSubStep === 3 && (
-              <form onSubmit={(e) => { e.preventDefault(); setCurrentStep(3); }} className="autodiag-fade-in">
-                
-                {/* Principaux combustibles */}
-                <div className="autodiag-form-grid">
-                  <div className="autodiag-field">
-                    <label>Gasoil / Fuel léger annuel (Litres)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      name="qGasoil"
-                      value={profil.qGasoil || ''}
-                      onChange={handleProfilChange}
-                      placeholder="Ex : 60000"
-                    />
-                  </div>
                   <div className="autodiag-field">
                     <label>Facture annuelle combustibles (FCFA)</label>
                     <input
@@ -546,83 +505,50 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       name="factureComb"
                       value={profil.factureComb || ''}
                       onChange={handleProfilChange}
-                      placeholder="Ex : 192000000"
+                      placeholder="Ex : 30 000 000"
+                    />
+                    <div className="quick-presets">
+                      <span className="preset-label">Exemples :</span>
+                      <button type="button" onClick={() => setProfilValue('factureComb', 15000000)}>15M</button>
+                      <button type="button" onClick={() => setProfilValue('factureComb', 80000000)}>80M</button>
+                      <button type="button" onClick={() => setProfilValue('factureComb', 200000000)}>200M</button>
+                    </div>
+                  </div>
+
+                  <div className="autodiag-field">
+                    <label>Consommation annuelle électricité (kWh) — optionnel</label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="consoElec"
+                      value={profil.consoElec || ''}
+                      onChange={handleProfilChange}
+                      placeholder="Ex : 500 000"
+                    />
+                  </div>
+
+                  <div className="autodiag-field">
+                    <label>Gasoil / Fuel annuel (Litres) — optionnel</label>
+                    <input
+                      type="number"
+                      min="0"
+                      name="qGasoil"
+                      value={profil.qGasoil || ''}
+                      onChange={handleProfilChange}
+                      placeholder="Ex : 40 000"
                     />
                   </div>
                 </div>
 
-                {/* Combustibles complémentaires repliables */}
-                <div className="autodiag-collapsible-wrapper" style={{ marginTop: '12px' }}>
-                  <button
-                    type="button"
-                    onClick={() => setShowAdvancedCombustibles(!showAdvancedCombustibles)}
-                    className="autodiag-collapsible-toggle"
-                  >
-                    <span>
-                      {showAdvancedCombustibles ? '− Masquer les autres combustibles' : '+ Ajouter d\'autres combustibles (Fuel lourd, GPL, Charbon, Gaz naturel...)'}
-                    </span>
-                    {showAdvancedCombustibles ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
-                  </button>
-
-                  {showAdvancedCombustibles && (
-                    <div className="autodiag-form-grid autodiag-collapsible-content">
-                      <div className="autodiag-field">
-                        <label>Fuel lourd (Litres)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          name="qFuel"
-                          value={profil.qFuel || ''}
-                          onChange={handleProfilChange}
-                          placeholder="Ex : 350000"
-                        />
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Butane / GPL (kg)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          name="qGpl"
-                          value={profil.qGpl || ''}
-                          onChange={handleProfilChange}
-                          placeholder="Ex : 12000"
-                        />
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Gaz naturel (Nm³)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          name="qGazNat"
-                          value={profil.qGazNat || ''}
-                          onChange={handleProfilChange}
-                          placeholder="Ex : 0"
-                        />
-                      </div>
-                      <div className="autodiag-field">
-                        <label>Charbon (kg)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          name="qCharbon"
-                          value={profil.qCharbon || ''}
-                          onChange={handleProfilChange}
-                          placeholder="Ex : 0"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Installations EnR, Rejets et Déchets */}
-                <div className="autodiag-collapsible-wrapper" style={{ marginTop: '12px' }}>
+                {/* Détails techniques avancés repliés par défaut */}
+                <div className="autodiag-collapsible-wrapper" style={{ marginTop: '14px' }}>
                   <button
                     type="button"
                     onClick={() => setShowAdvancedEnvironnement(!showAdvancedEnvironnement)}
                     className="autodiag-collapsible-toggle"
                   >
                     <span>
-                      {showAdvancedEnvironnement ? '− Masquer les données Eau, Déchets et EnR' : '+ Préciser Installations Solaire, Eaux et Déchets'}
+                      {showAdvancedEnvironnement ? '− Masquer les données solaires, rejets et déchets' : '+ Renseigner Solaire, Eaux ou Déchets (facultatif)'}
                     </span>
                     {showAdvancedEnvironnement ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                   </button>
@@ -630,32 +556,32 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   {showAdvancedEnvironnement && (
                     <div className="autodiag-form-grid autodiag-collapsible-content">
                       <div className="autodiag-field">
-                        <label>Solaire photovoltaïque (kWc)</label>
+                        <label>Solaire photovoltaïque installé (kWc)</label>
                         <input
                           type="number"
                           min="0"
                           name="solaireKwc"
                           value={profil.solaireKwc || ''}
                           onChange={handleProfilChange}
-                          placeholder="Ex : 150"
+                          placeholder="Ex : 100"
                         />
                       </div>
                       <div className="autodiag-field">
-                        <label>Les eaux usées sont-elles traitées avant rejet ?</label>
+                        <label>Eaux traitées avant rejet ?</label>
                         <select name="eauTraitee" value={profil.eauTraitee || 'Non'} onChange={handleProfilChange}>
                           <option value="Non">Non</option>
                           <option value="Oui">Oui</option>
                         </select>
                       </div>
                       <div className="autodiag-field">
-                        <label>Potentiel de valorisation des déchets ?</label>
+                        <label>Valorisation énergétique des déchets ?</label>
                         <select name="potentielValDechets" value={profil.potentielValDechets || 'Non'} onChange={handleProfilChange}>
                           <option value="Non">Non</option>
-                          <option value="Oui">Oui (Méthanisation, biogaz, CSR...)</option>
+                          <option value="Oui">Oui</option>
                         </select>
                       </div>
                       <div className="autodiag-field">
-                        <label>Filière d'élimination des déchets</label>
+                        <label>Filière principale des déchets</label>
                         <select name="filiereDechets" value={profil.filiereDechets || ''} onChange={handleProfilChange}>
                           <option value="">Sélectionner...</option>
                           {FILIERES_DECHETS.map(f => <option key={f} value={f}>{f}</option>)}
@@ -665,8 +591,8 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   )}
                 </div>
 
-                {/* Consentement obligatoire */}
-                <div className="autodiag-consent-box" style={{ marginTop: '16px' }}>
+                {/* Consentement légal simplifié */}
+                <div className="autodiag-consent-box" style={{ marginTop: '14px' }}>
                   <label>
                     <input
                       type="checkbox"
@@ -676,17 +602,17 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       onChange={(e) => setProfil(prev => ({ ...prev, consentement: e.target.checked ? 'Oui' : 'Non' }))}
                     />
                     <span>
-                      J'accepte que les données saisies soient traitées par SEnergyS Africa pour l'analyse de cet autodiagnostic (loi sénégalaise n° 2008-12 sur les données personnelles) <span className="req">*</span>
+                      J'accepte le traitement de ces données pour mon diagnostic (loi sénégalaise n° 2008-12) <span className="req">*</span>
                     </span>
                   </label>
                 </div>
 
                 <div className="autodiag-footer-nav">
-                  <button type="button" onClick={() => setProfileSubStep(2)} className="btn-pill btn-pill-outline-gold">
+                  <button type="button" onClick={() => setProfileSubStep(1)} className="btn-pill btn-pill-outline-gold">
                     <ArrowLeft size={16} /> Précédent
                   </button>
                   <button type="submit" className="btn-pill btn-pill-orange">
-                    Passer à l'évaluation (36 affirmations) <ArrowRight size={16} />
+                    Passer à l'évaluation en 1 clic <ArrowRight size={16} />
                   </button>
                 </div>
               </form>
@@ -709,7 +635,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               </div>
               <h2 className="autodiag-title-screen">{currentModule.title}</h2>
               <p className="autodiag-subtext">
-                Répondez aux {currentModule.questions.length} affirmations ci-dessous selon le degré de mise en œuvre dans votre entreprise :
+                Cliquez directement sur l'état d'avancement pour chaque affirmation :
               </p>
 
               <div className="autodiag-questions-list">
@@ -760,7 +686,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   type="button" 
                   onClick={() => {
                     if (currentStep === 3) {
-                      setProfileSubStep(3);
+                      setProfileSubStep(2);
                       setCurrentStep(2);
                     } else {
                       setCurrentStep(currentStep - 1);
@@ -775,7 +701,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                   onClick={() => setCurrentStep(currentStep + 1)} 
                   className="btn-pill btn-pill-orange"
                 >
-                  {currentStep === 8 ? "Calculer et afficher mes résultats" : "Module suivant"} <ArrowRight size={16} />
+                  {currentStep === 8 ? "Calculer mes résultats" : "Module suivant"} <ArrowRight size={16} />
                 </button>
               </div>
             </div>
@@ -790,7 +716,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
             <div className="autodiag-badge-category">Partie C — Synthèse Globale</div>
             <h2 className="autodiag-title-screen">Résultats et indicateurs d'impact</h2>
             <p className="autodiag-subtext">
-              Synthèse calculée automatiquement à partir des données de votre profil et de vos réponses aux 36 affirmations.
+              Synthèse calculée automatiquement à partir de vos réponses et déclarations énergétiques.
             </p>
 
             {/* Score Global Hero */}
@@ -820,7 +746,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                 <div className="autodiag-kpi-value">
                   {diagnosticResults.indicateurs.scope1.toLocaleString('fr-FR')} <span className="unit">tCO₂e/an</span>
                 </div>
-                <div className="autodiag-kpi-sub">Combustibles directs déclarés</div>
+                <div className="autodiag-kpi-sub">Combustibles directs</div>
               </div>
 
               <div className="autodiag-kpi-card">
