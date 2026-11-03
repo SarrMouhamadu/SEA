@@ -565,3 +565,4 @@ export function calculateAutoDiagnostic(profil, reponses) {
     alerts
   };
 }
+
