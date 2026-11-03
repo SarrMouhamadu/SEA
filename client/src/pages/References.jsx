@@ -1,143 +1,225 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Award, TrendingDown, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Search, FileCheck2, Building2, Globe2, TrendingUp, Sparkles } from 'lucide-react';
 import ReferenceCard from '../components/ReferenceCard';
-
-const projectsList = [
-  {
-    id: 1,
-    title: "Audit Énergétique Instrumenté & Décarbonation des Procédés",
-    sector: "industrie",
-    sectorLabel: "Industrie & Agroalimentaire",
-    clientType: "Industrie & Grandes Entreprises",
-    expertiseLabel: "Ingénierie Énergie & ISO 50001",
-    description: "Diagnostic approfondi des chaudières vapeur, des utilités d'air comprimé et du réseau de distribution thermique d'un complexe industriel manufacturier.",
-    keyImpact: "-23% de consommation d'énergie et 1 200 tCO2 évitées / an"
-  },
-  {
-    id: 2,
-    title: "Structuration de Lignes de Financement Vert & Taxonomie Climat",
-    sector: "finance",
-    sectorLabel: "Institutions Financières",
-    clientType: "Banques & Bailleurs de Fonds",
-    expertiseLabel: "Finance Climatique & Marchés Carbone",
-    description: "Élaboration des critères d'éligibilité E&S, outils de screening de portefeuille et accompagnement à la levée de fonds concessionnels verts.",
-    keyImpact: "Portefeuille vert de 25M€ structuré selon les standards IFC / GCF"
-  },
-  {
-    id: 3,
-    title: "Stratégie Nationale d'Efficacité Énergétique & Éco-Parcs Industriels",
-    sector: "public",
-    sectorLabel: "Secteur Public",
-    clientType: "Gouvernement & Bailleurs (GIZ, UE, BAD)",
-    expertiseLabel: "Stratégies & Politiques Publiques",
-    description: "Assistance technique pour la définition des cadres réglementaires MEPS, feuilles de route de transition pour Zones Économiques Spéciales et études territoriales.",
-    keyImpact: "Feuille de route nationale et standardisation éco-parc adoptée"
-  },
-  {
-    id: 4,
-    title: "Digitalisation du Système de Management de l'Énergie (ISO 50001)",
-    sector: "industrie",
-    sectorLabel: "Industrie",
-    clientType: "Grandes Entreprises & PME-PMI",
-    expertiseLabel: "Innovation & Outils Digitaux (e-audit)",
-    description: "Déploiement de notre solution propriétaire d'e-audit et de suivi télémesuré des flux énergétiques pour automatiser le management de l'énergie.",
-    keyImpact: "Certification ISO 50001 obtenue et suivi continu des KPI en temps réel"
-  },
-  {
-    id: 5,
-    title: "Audit Thermique Global & Smart Metering d'un Complexe Tertiaire",
-    sector: "batiments",
-    sectorLabel: "Bâtiments & Services",
-    clientType: "Secteur Tertiaire & Hôtellerie",
-    expertiseLabel: "Management de Projet & AMO",
-    description: "Optimisation des installations de climatisation (CVC), monitoring intelligent GTB et étude de faisabilité pour intégration solaire PV en toiture.",
-    keyImpact: "-18% sur la facture électrique annuelle et monitoring 24/7"
-  },
-  {
-    id: 6,
-    title: "Programme Certifiant de Renforcement des Capacités Énergie-Climat",
-    sector: "public",
-    sectorLabel: "Formation & Innovation",
-    clientType: "Institutions & Équipes Bancaires",
-    expertiseLabel: "Formation & Renforcement des Capacités",
-    description: "Cycles de formation pratique sur bancs d'essais et plateforme e-learning certifiante pour ingénieurs thermiciens et analystes de projets verts.",
-    keyImpact: "+350 professionnels certifiés en efficacité énergétique et ESG"
-  }
-];
+import { officialReferences } from '../data/referencesData';
 
 export default function References() {
   const [sectorFilter, setSectorFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredProjects = sectorFilter === 'all'
-    ? projectsList
-    : projectsList.filter(p => p.sector === sectorFilter);
+  // Filtrage combiné par catégorie et recherche par mot-clé
+  const filteredProjects = useMemo(() => {
+    return officialReferences.filter((project) => {
+      const matchesSector = sectorFilter === 'all' || project.sector === sectorFilter;
+      
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch = !q || (
+        project.title.toLowerCase().includes(q) ||
+        project.client.toLowerCase().includes(q) ||
+        (project.clientBadge && project.clientBadge.toLowerCase().includes(q)) ||
+        (project.country && project.country.toLowerCase().includes(q)) ||
+        (project.keyImpact && project.keyImpact.toLowerCase().includes(q)) ||
+        (project.objectives && project.objectives.some(obj => obj.toLowerCase().includes(q)))
+      );
+
+      return matchesSector && matchesSearch;
+    });
+  }, [sectorFilter, searchQuery]);
+
+  const counts = useMemo(() => {
+    return {
+      all: officialReferences.length,
+      bailleurs: officialReferences.filter(p => p.sector === 'bailleurs').length,
+      industrie: officialReferences.filter(p => p.sector === 'industrie').length,
+      public: officialReferences.filter(p => p.sector === 'public').length,
+      territoires: officialReferences.filter(p => p.sector === 'territoires').length,
+      formation: officialReferences.filter(p => p.sector === 'formation').length,
+    };
+  }, []);
 
   return (
     <div className="references-page section">
       <div className="container">
+        
+        {/* En-tête de la page */}
         <div className="section-title-wrapper">
-          <span className="badge">Nos Réalisations d'Ingénierie & Conseil</span>
-          <h1 className="section-title">Références Phares & Projets Réalisés</h1>
+          <span className="badge">Contrats & Réalisations Officielles</span>
+          <h1 className="section-title">Nos Références & Missions Réalisées</h1>
           <p className="section-subtitle">
-            Découvrez nos missions d'ingénierie énergétique, de finance climat et de transition durable menées avec engagement contractuel sur les résultats.
+            Consultez les 20 projets contractuels majeurs conduits par SEnergyS Africa auprès des bailleurs internationaux, ministères, collectivités et leaders industriels.
           </p>
+        </div>
 
-          {/* Filtres par secteur / typologie */}
-          <div className="products-filter-tabs">
+        {/* Bandeau Chiffres Clés Références */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '16px',
+          marginBottom: '40px'
+        }}>
+          <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-orange)', fontWeight: 700 }}>
+              20
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+              Missions d'ingénierie & conseil
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-gold)', fontWeight: 700 }}>
+              +280M FCFA
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+              De contrats d'expertise exécutés
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-green-mid)', fontWeight: 700 }}>
+              100%
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+              Livrables & cadres validés
+            </div>
+          </div>
+
+          <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--color-orange)', fontWeight: 700 }}>
+              Sénégal & Bénin
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 600 }}>
+              Rayonnement Afrique de l'Ouest
+            </div>
+          </div>
+        </div>
+
+        {/* Barre de Recherche et Onglets Filtres */}
+        <div style={{ marginBottom: '36px' }}>
+          
+          {/* Recherche textuelle rapide */}
+          <div style={{
+            position: 'relative',
+            maxWidth: '480px',
+            margin: '0 auto 24px'
+          }}>
+            <Search size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--theme-text-muted)' }} />
+            <input
+              type="text"
+              placeholder="Rechercher par client, mot-clé, norme (GIZ, Pikine, ISO, Typha...)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '12px 16px 12px 46px',
+                borderRadius: '9999px',
+                border: '1px solid var(--theme-border)',
+                background: 'var(--theme-surface)',
+                color: 'var(--theme-text)',
+                fontSize: '14px',
+                outline: 'none',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+              }}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{
+                  position: 'absolute',
+                  right: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--theme-text-muted)',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Filtres par secteur */}
+          <div className="products-filter-tabs" style={{ justifyContent: 'center' }}>
             <button
               className={`filter-btn ${sectorFilter === 'all' ? 'active' : ''}`}
               onClick={() => setSectorFilter('all')}
             >
-              Tous les projets ({projectsList.length})
+              Tous les projets ({counts.all})
+            </button>
+            <button
+              className={`filter-btn ${sectorFilter === 'bailleurs' ? 'active' : ''}`}
+              onClick={() => setSectorFilter('bailleurs')}
+            >
+              Bailleurs & Coopération ({counts.bailleurs})
             </button>
             <button
               className={`filter-btn ${sectorFilter === 'industrie' ? 'active' : ''}`}
               onClick={() => setSectorFilter('industrie')}
             >
-              Industrie & Procédés
-            </button>
-            <button
-              className={`filter-btn ${sectorFilter === 'finance' ? 'active' : ''}`}
-              onClick={() => setSectorFilter('finance')}
-            >
-              Finance Climat & ESG
+              Industrie & PME ({counts.industrie})
             </button>
             <button
               className={`filter-btn ${sectorFilter === 'public' ? 'active' : ''}`}
               onClick={() => setSectorFilter('public')}
             >
-              Secteur Public & Bailleurs
+              Secteur Public & CDN ({counts.public})
             </button>
             <button
-              className={`filter-btn ${sectorFilter === 'batiments' ? 'active' : ''}`}
-              onClick={() => setSectorFilter('batiments')}
+              className={`filter-btn ${sectorFilter === 'territoires' ? 'active' : ''}`}
+              onClick={() => setSectorFilter('territoires')}
             >
-              Bâtiments & Tertiaire
+              Villes & Bâtiments ({counts.territoires})
+            </button>
+            <button
+              className={`filter-btn ${sectorFilter === 'formation' ? 'active' : ''}`}
+              onClick={() => setSectorFilter('formation')}
+            >
+              Formation & Digital ({counts.formation})
             </button>
           </div>
         </div>
 
-        <div className="grid-3">
-          {filteredProjects.map((project) => (
-            <ReferenceCard key={project.id} item={project} />
-          ))}
-        </div>
+        {/* Grille des Cartes Références */}
+        {filteredProjects.length > 0 ? (
+          <div className="grid-3" style={{ gap: '24px' }}>
+            {filteredProjects.map((project) => (
+              <ReferenceCard key={project.id} item={project} />
+            ))}
+          </div>
+        ) : (
+          <div className="card" style={{ textAlign: 'center', padding: '48px 24px', background: 'var(--theme-surface-alt)' }}>
+            <p style={{ color: 'var(--theme-text-muted)', fontSize: '16px', marginBottom: '16px' }}>
+              Aucun projet ne correspond à votre recherche <strong>"{searchQuery}"</strong>.
+            </p>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => { setSectorFilter('all'); setSearchQuery(''); }}
+            >
+              Réinitialiser les filtres
+            </button>
+          </div>
+        )}
 
-        {/* Bannière de contact / demande de portfolio complet */}
+        {/* Bannière d'appel à l'action */}
         <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', textAlign: 'center' }}>
           <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '12px' }}>
-            Vous souhaitez consulter nos références détaillées ?
+            Vous avez un projet similaire à structurer ?
           </h2>
           <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-            Consultez nos fiches de réalisations techniques complètes (études de cas, méthodologies d'audit et bilans carbone vérifiés) ou échangez directement avec nos ingénieurs.
+            Bailleurs, ministères, municipalités et industriels : bénéficiez d'une équipe d'ingénieurs chevronnés avec un engagement contractuel sur les résultats.
           </p>
           <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
-            Demander nos études de cas complètes <ArrowRight size={16} />
+            Échanger avec notre direction technique <ArrowRight size={16} />
           </Link>
         </div>
+
       </div>
     </div>
   );
 }
-

@@ -5,40 +5,12 @@ import ContactForm from '../components/ContactForm';
 import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
 import ReferenceCard from '../components/ReferenceCard';
 import PartnerCarousel from '../components/PartnerCarousel';
+import { officialReferences } from '../data/referencesData';
 import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award, Building2 } from 'lucide-react';
 
-const homeReferences = [
-  {
-    id: 1,
-    title: "Audit Énergétique & Décarbonation Industrielle",
-    sector: "industrie",
-    sectorLabel: "Industrie & Agroalimentaire",
-    clientType: "Grandes Entreprises & PME",
-    expertiseLabel: "Énergie durable & Efficacité",
-    description: "Diagnostic instrumenté complet des utilités thermiques et d'air comprimé avec mise en place d'un plan de comptage conforme ISO 50001.",
-    keyImpact: "-23% de consommation d'énergie fossile"
-  },
-  {
-    id: 2,
-    title: "Structuration de Lignes Vertes & Due Diligence ESG",
-    sector: "finance",
-    sectorLabel: "Institutions Financières",
-    clientType: "Banques & Bailleurs de Fonds",
-    expertiseLabel: "Finance climat & durable",
-    description: "Élaboration de taxonomies climat, critères d'éligibilité pour fonds verts et screening technique des projets d'investissement durable.",
-    keyImpact: "Portefeuille vert de 25M€ structuré et certifié"
-  },
-  {
-    id: 3,
-    title: "Transition Énergie & Éco-Parcs Industriels",
-    sector: "public",
-    sectorLabel: "Secteur Public & Bailleurs",
-    clientType: "Gouvernements & Partenaires (GIZ, UE, BAD)",
-    expertiseLabel: "Stratégies & politiques publiques",
-    description: "Assistance technique aux ministères et institutions pour l'aménagement durable et les feuilles de route de décarbonation des parcs industriels.",
-    keyImpact: "Cadre national & feuille de route Net-Zero déployés"
-  }
-];
+// Sélection de 6 références phares emblématiques parmi les 20 contrats officiels
+const showcaseIds = [1, 4, 6, 3, 11, 20];
+const homeReferences = officialReferences.filter(r => showcaseIds.includes(r.id));
 
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);
@@ -200,16 +172,16 @@ export default function Home() {
                 Tous
               </button>
               <button
+                className={`ref-filter-btn ${refFilter === 'bailleurs' ? 'active' : ''}`}
+                onClick={() => setRefFilter('bailleurs')}
+              >
+                Bailleurs
+              </button>
+              <button
                 className={`ref-filter-btn ${refFilter === 'industrie' ? 'active' : ''}`}
                 onClick={() => setRefFilter('industrie')}
               >
                 Industrie
-              </button>
-              <button
-                className={`ref-filter-btn ${refFilter === 'finance' ? 'active' : ''}`}
-                onClick={() => setRefFilter('finance')}
-              >
-                Finance Climat
               </button>
               <button
                 className={`ref-filter-btn ${refFilter === 'public' ? 'active' : ''}`}

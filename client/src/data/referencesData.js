@@ -1,0 +1,427 @@
+/**
+ * Données officielles des 20 références clients de SEnergyS Africa
+ * Extrait directement du document contractuel officiel d'entreprise
+ */
+
+export const officialReferences = [
+  {
+    id: 1,
+    title: "Etude sur la stratégie de mise en œuvre de la contribution déterminée au niveau national du secteur des déchets",
+    client: "GIZ",
+    clientBadge: "GIZ",
+    sector: "bailleurs",
+    sectorLabel: "Bailleurs & Coopération",
+    country: "Sénégal",
+    contractValue: "28 650 000 FCFA",
+    period: "Juin 2025 – Novembre 2026",
+    duration: "6 Mois",
+    summary: "Analyse de la situation du secteur, des politiques, et des projets en cours.",
+    keyImpact: "Stratégie sectorielle budgétisée & cadre de mesure MRV",
+    objectives: [
+      "Analyse de la situation du secteur, des politiques, et des projets en cours.",
+      "Conduite d’une analyse SWOT sur les défis climatiques et identification des parties prenantes clés.",
+      "Analyse du niveau actuel de mise en œuvre de la CDN et proposition de projets pour soutenir la stratégie.",
+      "Élaboration d’une stratégie globale budgétisée qui inclut les orientations stratégiques et identification des sources de financement.",
+      "Diagnostic des cadres institutionnels et des systèmes de gestion de données existants.",
+      "Identification des lacunes et des défis pour la collecte de données MRV.",
+      "Conception d’un programme de renforcement des capacités et définition d’une structure durable pour le MRV."
+]
+  },
+  {
+    id: 2,
+    title: "Etude sur la stratégie de mise en œuvre de la contribution déterminée au niveau national du secteur des combustibles domestiques",
+    client: "GIZ",
+    clientBadge: "GIZ",
+    sector: "bailleurs",
+    sectorLabel: "Bailleurs & Coopération",
+    country: "Sénégal",
+    contractValue: "28 975 500 FCFA",
+    period: "Juin 2025 – Novembre 2026",
+    duration: "6 Mois",
+    summary: "Analyse du sous-secteur : politique, évolution, projets en cours, et leur intégration dans la CDN.",
+    keyImpact: "Plan d’action d’atténuation budgétisé & opérationnalisation MRV",
+    objectives: [
+      "Analyse du sous-secteur : politique, évolution, projets en cours, et leur intégration dans la CDN.",
+      "Réalisation d'une analyse SWOT pour évaluer les défis climatiques",
+      "Identification des acteurs clés (public, privé, partenaires financiers) et analyse de leurs approches.",
+      "Inventaire des initiatives existantes et identification des synergies potentielles entre acteurs.",
+      "Préparation d’un plan d’action budgétisé précisant les sources de financement (nationales, internationales).",
+      "Proposition d’un cadre institutionnel pour le suivi et l’exécution de la stratégie.",
+      "Diagnostic du SIE (Système d’Information Énergétique) pour évaluer son potentiel comme base du MRV.",
+      "Évaluation des systèmes de suivi existants chez les acteurs et identification des lacunes.",
+      "Définition des besoins en renforcement des capacités (techniques, données, organisationnelles).",
+      "Élaboration d’un plan d’opérationnalisation pour le MRV, y compris des recommandations de financement."
+]
+  },
+  {
+    id: 3,
+    title: "Cartographie du potentiel du Typha Australis dans la ville de Pikine pour la valorisation en bio-charbon et en matériau de construction",
+    client: "Ville de Pikine",
+    clientBadge: "Ville de Pikine",
+    sector: "territoires",
+    sectorLabel: "Collectivités & Villes Durables",
+    country: "Sénégal",
+    contractValue: "4 400 000 FCFA",
+    period: "Avril 2025 – Septembre 2025",
+    duration: "5 Mois",
+    summary: "Evaluation du potentiel total du typha dans la zone du Technopole et de la quantité exploitable",
+    keyImpact: "Cartographie du potentiel et études de préfaisabilité pour 2 unités de production",
+    objectives: [
+      "Evaluation du potentiel total du typha dans la zone du Technopole et de la quantité exploitable",
+      "Cartographie des zones à fort potentiel",
+      "Evaluation des risques potentiels pour l’environnement et la faune",
+      "Évaluation des quantités totales de bio-charbon et de matériau de construction exploitables par année",
+      "Etude des procédés pour la fabrication de bio-charbon et de matériau de construction",
+      "Evaluation des équipements et la main d’oeuvre nécessaire pour les deux (2) unités de bio-charbon et de matériau de construction",
+      "Etude des procédés pour la valorisation effective du typha en biocombustible et en matériels de construction",
+      "Etude de préfaisabilité pour l’installation d’une unité de bio-charbon",
+      "Etude de préfaisabilité pour l’installation d’une unité de matériaux de construction"
+]
+  },
+  {
+    id: 4,
+    title: "L’ÉLABORATION D’UNE STRATÉGIE QUINQUENNALE DE DÉVELOPPEMENT DE L’INDUSTRIE VERTE AU SÉNÉGAL",
+    client: "Bureau de Mise à Niveau du Sénégal (BMN)/ MINCOM",
+    clientBadge: "BMN / MINCOM",
+    sector: "public",
+    sectorLabel: "Secteur Public & CDN",
+    country: "Sénégal",
+    contractValue: "22 000 000 FCFA",
+    period: "Janvier 2026 – Juin 2026",
+    duration: "5 Mois",
+    summary: "Évaluer la situation actuelle des industries en termes d'impacts environnementaux, d'innovation et de contraintes.",
+    keyImpact: "Stratégie nationale quinquennale et taxonomie verte industrielle adoptée",
+    objectives: [
+      "Évaluer la situation actuelle des industries en termes d'impacts environnementaux, d'innovation et de contraintes.",
+      "Identifier les principaux défis environnementaux comme la variabilité climatique, la pollution, etc., qui nécessitent des solutions écologiques,",
+      "Identification des opportunités et filières : Repérer les secteurs industriels et les produits qui peuvent bénéficier d'un positionnement écologique et contribuer au développement durable.",
+      "Développement de solutions et/ou technologies écologiques : Proposer des nouvelles solutions qui permettent de produire des biens et services de manière durable, tout en respectant les normes environnementales.",
+      "Proposer un cadre institutionnel approprié et une méthodologie de suivi et d’évaluation du plan"
+]
+  },
+  {
+    id: 5,
+    title: "Conception et la mise en oeuvre de trois MOOC sur l’éfficacité énergétique, l’écoconstruction et les énergies renouvelables.",
+    client: "Metropolis pour le projet Metropolitan Governance of the Energy Transition (MGET).",
+    clientBadge: "Metropolis / MGET",
+    sector: "formation",
+    sectorLabel: "Formation & Digital",
+    country: "Sénégal",
+    contractValue: "16 400 000 FCFA",
+    period: "Février 2026 – Mai 2026",
+    duration: "3 Mois",
+    summary: "Élaboration de contenus pédagogiques adaptés au groupe cible.",
+    keyImpact: "3 MOOCs certifiants interactifs conçus et déployés",
+    objectives: [
+      "Élaboration de contenus pédagogiques adaptés au groupe cible.",
+      "Intégration d’études de cas et exemples contextualisés au Sénégal et en Afrique de l’Ouest.",
+      "Proposition d’une architecture pédagogique structurée en modules et séquences. Approche participative, interactive et asynchrone.",
+      "Mise en place d’un système d’évaluation des acquis à la fin de chaque MOOC."
+]
+  },
+  {
+    id: 6,
+    title: "ASSISTANCE A LA MISE EN PLACE D’UN SYSTÈME DE MANAGEMENT DE L’ENERGIE (SMEn) SELON LA NORME ISO 50001 VERSION 2018",
+    client: "NMA Sanders",
+    clientBadge: "NMA Sanders",
+    sector: "industrie",
+    sectorLabel: "Industrie & Agroalimentaire",
+    country: "Sénégal",
+    contractValue: "10 300 000 FCFA",
+    period: "Février 2024 – En cours",
+    duration: "6 Mois",
+    summary: "Détermination du domaine d’application",
+    keyImpact: "Audit énergétique approfondi et conformité ISO 50001 en cours",
+    objectives: [
+      "Détermination du domaine d’application",
+      "Collecte des données énergétiques et des principales utilités",
+      "Identification des axes de surveillance",
+      "Validation du plan d’action de suivi du SMEn (avec les responsables et les délais)",
+      "Détermination des prérequis de la norme",
+      "Mise en place des procédures pertinentes à Mise en place d’un Système de Management de l’Energie (SMEn) conformément à la norme ISO 50001",
+      "Implémentation des procédures de la norme ISO 50001",
+      "Formation de l’équipe ISO de la NMA",
+      "Elaboration du rapport final et de ses annexes"
+]
+  },
+  {
+    id: 7,
+    title: "Programme de Mise à Niveau des entreprises du Sénégal",
+    client: "Bureau de Mise à Niveau (BMN)",
+    clientBadge: "BMN",
+    sector: "industrie",
+    sectorLabel: "Industrie & PME",
+    country: "Sénégal",
+    contractValue: "2 200 000 par Entreprise.",
+    period: "Réalisé",
+    duration: "Mission d'ingénierie",
+    summary: "Visite de l’entreprise",
+    keyImpact: "Accompagnement de grappes d’entreprises vers la mise à niveau environnementale",
+    objectives: [
+      "Visite de l’entreprise",
+      "Analyse détaillée des fonctions retenues",
+      "Elaboration de la matrice SWOT et des recommandations",
+      "Validation du plan d’investissement et identification des fournisseurs",
+      "Rédaction du business plan",
+      "Identification des principales sources de financement",
+      "Rédaction du rapport et de ses annexes (Fiche Copil ; Présentations de synthèse, facture Proforma)",
+      "Elaboration du rapport final après le comité de pilotage"
+]
+  },
+  {
+    id: 8,
+    title: "Prestation d’adaptation et d’animation en ligne de modules de formation sur le financement de l’efficacité énergétique dans les bâtiments au Sénégal",
+    client: "GIZ / ADEME / PEEB (Programme pour l’Efficacité Énergétique dans les bâtiments)",
+    clientBadge: "GIZ / ADEME / PEEB",
+    sector: "formation",
+    sectorLabel: "Formation & Digital",
+    country: "Sénégal",
+    contractValue: "9 300 000 FCFA",
+    period: "Avril 2017 – Juin 2018",
+    duration: "3 mois",
+    summary: "Adaptation des modules de formation et sélection des participants",
+    keyImpact: "Plateforme de formation en ligne et modules interactifs pour professionnels",
+    objectives: [
+      "Adaptation des modules de formation et sélection des participants",
+      "Implémentation de la plateforme e-learning (Enregistrement vidéo des cours, Configuration de la plateforme de E-learning, Mise en ligne des modules et exercices)",
+      "Animation de la plateforme (Animation des sessions live, évaluation de la formation)"
+]
+  },
+  {
+    id: 9,
+    title: "Analyse du secteur de la construction au Sénégal pour le Programme de l’Efficacité Énergétique dans les bâtiments (PEEB)",
+    client: "EMASOL / ADEME",
+    clientBadge: "EMASOL / ADEME",
+    sector: "territoires",
+    sectorLabel: "Villes & Bâtiments Durables",
+    country: "Sénégal",
+    contractValue: "9 918 000 FCFA",
+    period: "Juin 2019 – Décembre 2019",
+    duration: "6 Mois",
+    summary: "Evaluation de l’état du secteur de la construction au Sénégal",
+    keyImpact: "Cartographie technique et diagnostic complet de la filière écoconstruction",
+    objectives: [
+      "Evaluation de l’état du secteur de la construction au Sénégal",
+      "Identification du potentiel de développement des projets d’Efficacité Énergétique dans le bâtiment",
+      "Identification des besoins en capacité de construction pour les acteurs des secteurs publics et privés, incluant le secteur banquier"
+]
+  },
+  {
+    id: 10,
+    title: "EFFICACITE ENERGETIQUE SECTEUR PRIVE PHARMACEUTIQUE DU SENEGAL",
+    client: "GIZ",
+    clientBadge: "GIZ",
+    sector: "bailleurs",
+    sectorLabel: "Bailleurs & Santé",
+    country: "Sénégal",
+    contractValue: "23 000 000 FCFA",
+    period: "Février 2024 – Aout 2024",
+    duration: "6 mois",
+    summary: "Cadrage de la mission et collecte de données du site et des données issues du diagnostic",
+    keyImpact: "Plans d’actions d’efficacité énergétique pour les unités pharmaceutiques privées",
+    objectives: [
+      "Cadrage de la mission et collecte de données du site et des données issues du diagnostic",
+      "Analyses et bilans énergétiques;",
+      "Élaboration du plan d’actions d’efficacité énergétique y compris le protocole de mesurage et vérification pour chaque mesure d’efficacité énergétique proposée et",
+      "l’analyse des risques ainsi que les solutions envisages",
+      "Formation de 2 jours des industriels des 5 sites sur l’efficacité énergétique industriel de leurs sites",
+      "Suivi des recommandations des audits énergétiques qui ne demandent pas d’investissements pour une période de 6 mois."
+]
+  },
+  {
+    id: 11,
+    title: "ENERGIES RENOUVELABLES ET EFFICACITE ENERGETIQUE DANS LES BATIMENTS PUBLICS A DAKAR, SENEGAL",
+    client: "GIZ – VILLE DE DAKAR",
+    clientBadge: "GIZ – Ville de Dakar",
+    sector: "territoires",
+    sectorLabel: "Collectivités & Bâtiments",
+    country: "Sénégal",
+    contractValue: "Confidentiel",
+    period: "Mars 2023 – Octobre 2024",
+    duration: "19 mois",
+    summary: "Préparation des aspects techniques de l'installation de panneaux solaires photovoltaïques, des mesures d'efficacité énergétique et du stockage sur batterie de 23 bâtiments municipaux, de manière à permettre à la ville de Dakar de prendre des décisions correctes et aux soumissionnaires potentiels de préparer une proposition solide.",
+    keyImpact: "Solarisation et réduction de la facture énergétique des bâtiments municipaux",
+    objectives: [
+      "Préparation des aspects techniques de l'installation de panneaux solaires photovoltaïques, des mesures d'efficacité énergétique et du stockage sur batterie de 23 bâtiments municipaux, de manière à permettre à la ville de Dakar de prendre des décisions correctes et aux soumissionnaires potentiels de préparer une proposition solide.",
+      "Réaliser des audits énergétiques pour les bâtiments municipaux restants conformément aux meilleures normes mondiales disponibles pour les bâtiments municipaux et établir des bases de référence pertinentes.",
+      "Élaborer des exigences techniques sur mesure pour les systèmes de stockage d'énergie par batterie dans des bâtiments pilotes appropriés.",
+      "Formation technique et renforcement des capacités des équipes locales de mise en œuvre."
+]
+  },
+  {
+    id: 12,
+    title: "Initiative Villes Durables pour le Sénégal",
+    client: "Ministère du Commerce et des PME",
+    clientBadge: "Ministère du Commerce",
+    sector: "public",
+    sectorLabel: "Secteur Public & Territoires",
+    country: "Sénégal",
+    contractValue: "19 800 000 FCFA",
+    period: "Août 2021 – En cours",
+    duration: "6 mois",
+    summary: "Cadrage de la mission et collecte de données du site et des données issues du diagnostic Production Propre réalisé",
+    keyImpact: "Audit et intégration de la durabilité dans les parcs industriels des villes",
+    objectives: [
+      "Cadrage de la mission et collecte de données du site et des données issues du diagnostic Production Propre réalisé",
+      "Étude de faisabilité technique et financière des projets"
+]
+  },
+  {
+    id: 13,
+    title: "Étude de faisabilité Technico économique du projet d’installation de panneaux photovoltaïques",
+    client: "Bureau de Mise à Niveau",
+    clientBadge: "Bureau de Mise à Niveau",
+    sector: "industrie",
+    sectorLabel: "Énergie Solaire & Industrie",
+    country: "Sénégal",
+    contractValue: "Confidentiel",
+    period: "2021 – 2021",
+    duration: "3 mois",
+    summary: "Description de technique des installations et l’analyse des consommations",
+    keyImpact: "Étude technico-économique bancable et dimensionnement photovoltaïque",
+    objectives: [
+      "Description de technique des installations et l’analyse des consommations",
+      "Dimensionnement du projet d’installation de panneaux solaires photovoltaïques",
+      "Analyse environnementale (règlementations, pollutions : déchets, rejets et émissions)",
+      "Analyse financière"
+]
+  },
+  {
+    id: 14,
+    title: "Conception de la Contribution Déterminée Nationale Industrielle",
+    client: "Ministère de l’Environnement et du Développement Durable",
+    clientBadge: "Ministère de l’Environnement",
+    sector: "public",
+    sectorLabel: "Secteur Public & CDN",
+    country: "Sénégal",
+    contractValue: "44 000 000 FCFA",
+    period: "Janvier 2017 – Décembre 2018",
+    duration: "24 mois",
+    summary: "Évaluation des émissions de Gaz à effet de Serre pour l’industrie du Sénégal",
+    keyImpact: "Document officiel de la CDN industrielle remis et validé par l’État",
+    objectives: [
+      "Évaluation des émissions de Gaz à effet de Serre pour l’industrie du Sénégal",
+      "Développement du scenario « business as usual » considérant le Plan Sénégal Émergent",
+      "Proposition des actions d’atténuation pour la CDN et la CDN+",
+      "Développement d’une proposition de schéma de Monitoring et d’évaluation pour le sous-secteur"
+]
+  },
+  {
+    id: 15,
+    title: "Assistance Technique en Efficacité Énergétique",
+    client: "DUOPHARM",
+    clientBadge: "DUOPHARM",
+    sector: "industrie",
+    sectorLabel: "Industrie & Santé",
+    country: "Sénégal",
+    contractValue: "19 597 000 FCFA",
+    period: "Février 2017 – Mars 2017",
+    duration: "6 mois",
+    summary: "Audit énergétique des sites (Dakar et Tambacounda)",
+    keyImpact: "Optimisation thermique des salles blanches et utilités pharmaceutiques",
+    objectives: [
+      "Audit énergétique des sites (Dakar et Tambacounda)",
+      "Formation et sensibilisation en efficacité énergétique pour tous les employés de l’entreprise",
+      "Assistance énergétique dans la phase de conception des nouveaux bâtiments"
+]
+  },
+  {
+    id: 16,
+    title: "Potentiel de déploiement de la technologie de Co / tri-Génération dans les secteurs industriels et tertiaires",
+    client: "ENDA ENERGY",
+    clientBadge: "ENDA ENERGY",
+    sector: "industrie",
+    sectorLabel: "Industrie & Énergie",
+    country: "Sénégal",
+    contractValue: "confidentiel",
+    period: "Février 2017 – Mars 2017",
+    duration: "1 mois",
+    summary: "Identification et évaluation des secteurs ciblés",
+    keyImpact: "Étude de potentiel et modélisation technico-financière de cogénération/trigénération",
+    objectives: [
+      "Identification et évaluation des secteurs ciblés",
+      "Benchmark des technologies de Co / Tri-génération applicables au Sénégal",
+      "Etudes de faisabilité sur 10 cas pratiques",
+      "Extrapolation à l’échelle du Sénégal prenant en compte les services existants et les projets du PSE (Plan Sénégal Emergeants)"
+]
+  },
+  {
+    id: 17,
+    title: "Diagnostic de Mise à Niveau Allégée des entreprises : SetTIC, Schuller, Groupe 2IC, DMS, Etounature",
+    client: "Bureau de Mise à Niveau des Entreprises du Sénégal",
+    clientBadge: "BMN",
+    sector: "industrie",
+    sectorLabel: "Industrie & PME",
+    country: "Sénégal",
+    contractValue: "14 278 000 FCFA",
+    period: "Septembre 2019 – Septembre 2020",
+    duration: "5 mois",
+    summary: "Cadrage de la mission (Identification des interlocuteurs, réception des données, calendrier de travail)",
+    keyImpact: "Diagnostics de mise à niveau réalisés pour SetTIC, Schuller, FINEKIP et G3A",
+    objectives: [
+      "Cadrage de la mission (Identification des interlocuteurs, réception des données, calendrier de travail)",
+      "Diagnostic (Visites de terrain, analyse fonctions, élaboration de la matrice SWOT et recommandations)",
+      "Elaboration du Business Plan investissements matériels et immatériels prioritaires"
+]
+  },
+  {
+    id: 18,
+    title: "Assistance à la mise en place d’un Système de Management de la Qualité et de l’Environnement et à l’obtention du certificat e-Stewards",
+    client: "SetTIC",
+    clientBadge: "SetTIC",
+    sector: "industrie",
+    sectorLabel: "Management & Qualité",
+    country: "Sénégal",
+    contractValue: "7 670 000 FCFA",
+    period: "Août 2020 – Janvier 2021",
+    duration: "6 mois",
+    summary: "Mise en place du Système de Management de la Qualité et de l’Environnement",
+    keyImpact: "Certification ISO 9001 et structuration des processus de gestion",
+    objectives: [
+      "Mise en place du Système de Management de la Qualité et de l’Environnement",
+      "Méthodologie d’utilisation et de suivi du système mis en place",
+      "Mise en place des procédures nécessaires à l’obtention de la certification e-Stewards ;",
+      "Obtention de la certification e-Stewards ;",
+      "Transfert de compétences"
+]
+  },
+  {
+    id: 19,
+    title: "Initiative du Management des villes durables pour le Sénégal : Promotion des Energies Renouvelables et intégration de la gestion des déchets dans les parcs industriels durables",
+    client: "Enrst and Young/UNIDO",
+    clientBadge: "Ernst & Young / UNIDO",
+    sector: "public",
+    sectorLabel: "Villes Durables & Éco-Parcs",
+    country: "Sénégal",
+    contractValue: "Confidentiel",
+    period: "2019 – 2021",
+    duration: "2 ans",
+    summary: "Développement d’une stratégie pour guider la conception, l’implémentation et la gestion des parcs industriels durables et l’intégration dans le tissu urbain",
+    keyImpact: "Méthodologie d’intégration des éco-parcs industriels dans le tissu urbain",
+    objectives: [
+      "Développement d’une stratégie pour guider la conception, l’implémentation et la gestion des parcs industriels durables et l’intégration dans le tissu urbain",
+      "Formations des parties prenantes dans l’intégration des parcs industriels durables dans les villes du pays",
+      "Renforcement des capacités techniques et institutionnelles de l’AEME, de l’APROSI et toutes les parties prenantes"
+]
+  },
+  {
+    id: 20,
+    title: "MCA Bénin II - Programme d’audit énergétique de 20 bâtiments publics et 10 industries",
+    client: "SGS/ MCA Benin II",
+    clientBadge: "SGS / MCA Bénin II",
+    sector: "territoires",
+    sectorLabel: "Bâtiments & Santé",
+    country: "Bénin",
+    contractValue: "Confidentiel",
+    period: "Septembre 2019 – Juin 2021",
+    duration: "3 ans",
+    summary: "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
+    keyImpact: "Audits énergétiques instrumentés de 20 bâtiments publics et hôpitaux du Bénin",
+    objectives: [
+      "Pilotage des missions d'audit énergétique de 20 bâtiments publics et 10 Industries",
+      "Développement de méthodologies d'audit adaptées au contexte ouest-africain",
+      "Accompagnement des industries à l’ISO 50 001",
+      "Elaboration des prescriptions techniques pour les projets d’économie d’énergie"
+]
+  },
+];
