@@ -189,9 +189,7 @@ export default function Sectors() {
                   </div>
                 )}
 
-                <Link to="/contact" className="btn btn-primary" style={{ width: '100%', marginTop: 'auto', textAlign: 'center', justifyContent: 'center' }}>
-                  Demander un accompagnement dédié <ArrowRight size={15} />
-                </Link>
+
               </div>
             );
           })}
