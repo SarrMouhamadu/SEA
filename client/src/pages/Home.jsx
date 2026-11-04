@@ -3,21 +3,11 @@ import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ContactForm from '../components/ContactForm';
 import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
-import ReferenceCard from '../components/ReferenceCard';
 import PartnerCarousel from '../components/PartnerCarousel';
-import { officialReferences } from '../data/referencesData';
-import { Sparkles, ArrowRight, CheckCircle2, TrendingDown, Gauge, ShieldCheck, Award, Building2 } from 'lucide-react';
-
-// Les 6 plus grands projets par montant contractuel pour la vitrine d'accueil
-const homeReferences = officialReferences.slice(0, 6);
+import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award } from 'lucide-react';
 
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);
-  const [refFilter, setRefFilter] = useState('all');
-
-  const filteredReferences = refFilter === 'all'
-    ? homeReferences
-    : homeReferences.filter(r => r.sector === refFilter);
 
   return (
     <div className="home-page">
@@ -151,60 +141,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. RÉFÉRENCES PHARES */}
-      <section id="references" className="products-section">
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
-            <div>
-              <h2 className="section-heading" style={{ margin: 0, color: 'var(--theme-text)' }}>
-                Références phares
-              </h2>
-            </div>
-
-            {/* Filtres par secteur */}
-            <div className="ref-filters">
-              <button
-                className={`ref-filter-btn ${refFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setRefFilter('all')}
-              >
-                Tous les projets
-              </button>
-              <button
-                className={`ref-filter-btn ${refFilter === 'bailleurs' ? 'active' : ''}`}
-                onClick={() => setRefFilter('bailleurs')}
-              >
-                Bailleurs & Coopération
-              </button>
-              <button
-                className={`ref-filter-btn ${refFilter === 'industrie' ? 'active' : ''}`}
-                onClick={() => setRefFilter('industrie')}
-              >
-                Industrie & Énergie
-              </button>
-              <button
-                className={`ref-filter-btn ${refFilter === 'public' ? 'active' : ''}`}
-                onClick={() => setRefFilter('public')}
-              >
-                Secteur Public & États
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-3" style={{ marginBottom: '32px' }}>
-            {filteredReferences.map((refItem) => (
-              <ReferenceCard key={refItem.id} item={refItem} />
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: '30px' }}>
-            <Link to="/references" className="btn btn-primary" style={{ padding: '14px 28px' }}>
-              Consulter toutes nos références projets <ArrowRight size={18} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. ACCÈS À L'AUTODIAGNOSTIC (Bannière interactive 3 étapes) */}
+      {/* 4. ACCÈS À L'AUTODIAGNOSTIC (Bannière interactive 3 étapes) */}
       <section className="autodiag-cta-section">
         <div className="container">
           <div className="autodiag-card">
