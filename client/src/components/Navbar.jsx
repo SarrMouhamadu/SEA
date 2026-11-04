@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
+import { Menu, X, Sparkles, ArrowRight, ChevronDown } from 'lucide-react';
 import AutoDiagnosticModal from './AutoDiagnosticModal';
 import ContactForm from './ContactForm';
 
@@ -8,11 +8,20 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [diagOpen, setDiagOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+
+  // Sous-sections de la page À propos
+  const aboutSections = [
+    { label: 'Qui sommes-nous ?',   anchor: 'qui-sommes-nous' },
+    { label: 'Notre Approche',      anchor: 'approche' },
+    { label: 'Vision & Valeurs',    anchor: 'vision' },
+    { label: 'Notre Équipe',        anchor: 'equipe' },
+    { label: 'Partenaires',         anchor: 'partenaires' },
+  ];
 
   // Chaque élément de la barre de navigation est une page indépendante avec sa propre URL
   const navItems = [
     { name: 'Accueil', path: '/', end: true },
-    { name: 'À propos', path: '/a-propos' },
     { name: 'Expertises', path: '/services' },
     { name: 'Secteurs', path: '/secteurs' },
     { name: 'Références', path: '/references' },
@@ -36,8 +45,46 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Menu principal Desktop : Liens directs vers chaque page indépendante */}
+          {/* Menu principal Desktop */}
           <nav className="nav-desktop">
+            {/* Lien Accueil */}
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Accueil
+            </NavLink>
+
+            {/* À propos — avec dropdown hover */}
+            <div className="nav-dropdown-wrapper">
+              <NavLink
+                to="/a-propos"
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              >
+                À propos <ChevronDown size={13} className="dropdown-arrow" />
+              </NavLink>
+              <div className="nav-dropdown-menu">
+                {aboutSections.map((s) => (
+                  <Link
+                    key={s.anchor}
+                    to={`/a-propos#${s.anchor}`}
+                    className="nav-dropdown-item"
+                    onClick={() => {
+                      // Scroll vers l'ancre après navigation
+                      setTimeout(() => {
+                        const el = document.getElementById(s.anchor);
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }, 100);
+                    }}
+                  >
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Autres liens */}
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -77,10 +124,62 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Tiroir Menu Mobile : Navigation vers chaque page distincte */}
+        {/* Tiroir Menu Mobile */}
         {mobileOpen && (
           <div className="nav-mobile-panel">
             <nav className="mobile-nav-list" style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+
+              {/* Accueil */}
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
+                onClick={handleMobileNavClick}
+              >
+                <span>Accueil</span>
+                <ArrowRight size={15} className="mobile-nav-arrow" />
+              </NavLink>
+
+              {/* À propos avec sous-menu dépliable */}
+              <div className="mobile-menu-section">
+                <NavLink
+                  to="/a-propos"
+                  className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
+                  onClick={handleMobileNavClick}
+                  style={{ borderBottom: 'none', paddingBottom: '6px' }}
+                >
+                  <span>À propos</span>
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAboutOpen(!aboutOpen); }}
+                    style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: '0 4px' }}
+                    aria-label="Ouvrir sous-menu À propos"
+                  >
+                    <ChevronDown size={15} style={{ transform: aboutOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                  </button>
+                </NavLink>
+                {aboutOpen && (
+                  <div className="mobile-submenu" style={{ marginBottom: '8px' }}>
+                    {aboutSections.map((s) => (
+                      <Link
+                        key={s.anchor}
+                        to={`/a-propos#${s.anchor}`}
+                        className="mobile-submenu-item"
+                        onClick={() => {
+                          handleMobileNavClick();
+                          setTimeout(() => {
+                            const el = document.getElementById(s.anchor);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 150);
+                        }}
+                      >
+                        › {s.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Autres pages */}
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}

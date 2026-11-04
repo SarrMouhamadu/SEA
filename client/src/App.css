@@ -126,9 +126,9 @@
 
 .nav-dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
-  min-width: 250px;
+  min-width: 220px;
   background: #071728;
   border: 1px solid rgba(246, 241, 231, 0.12);
   border-radius: var(--radius-md);
@@ -138,7 +138,18 @@
   flex-direction: column;
   gap: 3px;
   z-index: 1050;
-  animation: fadeIn 0.2s ease;
+  /* Caché par défaut, affiché au hover du wrapper */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.nav-dropdown-wrapper:hover .nav-dropdown-menu,
+.nav-dropdown-wrapper:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 @keyframes fadeIn {
