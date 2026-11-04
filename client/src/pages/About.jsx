@@ -10,7 +10,6 @@ import {
   Search,
   FileCheck2,
   Cpu,
-  Users,
   Handshake,
   ArrowRight,
   Zap,
@@ -366,46 +365,59 @@ export default function About() {
           </div>
         </div>
 
-        {/* 5. Équipe & Partenaires */}
-        <div id="equipe" style={{ scrollMarginTop: '100px' }}></div>
-        <div id="partenaires" className="card card-interactive motion-reveal" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px', scrollMarginTop: '100px' }}>
-          <div className="grid-2" style={{ alignItems: 'center' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                <Users size={24} color="var(--color-orange)" />
-                <span style={{ fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '13px' }}>
-                  Notre Équipe
-                </span>
-              </div>
-              <h2 style={{ fontSize: '1.8rem', color: 'var(--theme-text)', marginBottom: '16px' }}>
-                Des ingénieurs et experts certifiés
-              </h2>
-              <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '16px' }}>
-                L'équipe SEnergyS Africa rassemble des thermiciens, des auditeurs certifiés ISO 50001, des spécialistes en finance climat et des formateurs industriels engagés dans le développement durable de l'Afrique.
-              </p>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                <Handshake size={24} color="var(--color-orange)" />
-                <span style={{ fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '13px' }}>
-                  Écosystème Partenaires
-                </span>
-              </div>
-              <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px' }}>
-                Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les acteurs institutionnels majeurs.
-              </p>
-              <Link
-                to="/contact"
-                className="btn btn-secondary btn-sm"
-                onMouseEnter={() => playMicroClick(soundEnabled)}
-                onClick={() => playSoftConfirm(soundEnabled)}
-              >
-                Devenir partenaire ou nous rejoindre <ArrowRight size={14} />
-              </Link>
-            </div>
+        {/* 5. Notre Équipe */}
+        <div id="equipe" className="team-section motion-reveal" style={{ scrollMarginTop: '100px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span className="badge">L'humain au cœur de la performance</span>
+            <h2 style={{ fontSize: '2rem', marginTop: '12px', color: 'var(--theme-text)' }}>
+              Notre Équipe
+            </h2>
+            <p style={{ color: 'var(--theme-text-muted)', maxWidth: '600px', margin: '8px auto 0' }}>
+              Des ingénieurs et experts certifiés, engagés dans la transition énergétique et le développement durable de l'Afrique.
+            </p>
           </div>
 
+          <div className="team-grid">
+            {[
+              { name: 'Abdoulaye SECK',           role: 'Fondateur',         speciality: 'Spécialiste Énergie & Finance Durable' },
+              { name: 'Assane SECK',               role: 'Expert',            speciality: 'Industrie & Gestion du Changement' },
+              { name: 'Mouhamadou Chamsdine DIA',  role: 'Expert',            speciality: 'Management de l\'Environnement' },
+              { name: 'Khadidiatou Sy NDOUR',      role: 'Responsable',       speciality: 'Marketing & Communication' },
+              { name: 'Adama CAMARA',              role: 'Portfolio Officer', speciality: 'Développement Durable' },
+              { name: 'Fatou Mbaye BOIRO',         role: 'Experte',           speciality: 'Déchets & Économie Circulaire' },
+              { name: 'Fatimata Dione FALL',       role: 'Experte',           speciality: 'Énergie Durable' },
+            ].map((member, idx) => (
+              <div key={idx} className="team-card">
+                <div className={`team-photo p${idx}`} role="img" aria-label={`Photo de ${member.name}`} />
+                <div className="team-info">
+                  <span className="team-name">{member.name}</span>
+                  <span className="team-role">{member.role}</span>
+                  <span className="team-speciality">{member.speciality}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 6. Partenaires */}
+        <div id="partenaires" className="card card-interactive motion-reveal" style={{ background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', padding: '40px', scrollMarginTop: '100px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <Handshake size={24} color="var(--color-orange)" />
+            <span style={{ fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '13px' }}>
+              Écosystème Partenaires
+            </span>
+          </div>
+          <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px', maxWidth: '680px' }}>
+            Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les acteurs institutionnels majeurs.
+          </p>
+          <Link
+            to="/contact"
+            className="btn btn-secondary btn-sm"
+            onMouseEnter={() => playMicroClick(soundEnabled)}
+            onClick={() => playSoftConfirm(soundEnabled)}
+          >
+            Devenir partenaire ou nous rejoindre <ArrowRight size={14} />
+          </Link>
           <div style={{ marginTop: '36px', paddingTop: '28px', borderTop: '1px solid var(--theme-border)' }}>
             <PartnerCarousel />
           </div>

@@ -3508,3 +3508,101 @@ details[open] .details-arrow {
     padding: 0 !important;
   }
 }
+
+/* ========================================================
+   SECTION NOTRE ÉQUIPE — Sprites CSS
+   Sprite: team-sprites.jpg  2520×450px  7 membres
+   Chaque vignette : 360×450px
+   ======================================================== */
+
+.team-section {
+  margin-bottom: 80px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--theme-surface-alt);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--radius-lg);
+  padding: 0 0 20px 0;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* Photo extraite du sprite via background-position */
+.team-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background-image: url('/assets/claude/team-sprites.jpg');
+  /* La largeur totale du sprite est 7× la largeur d'une vignette */
+  background-size: 700% auto;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Positions (index 0→6, left = index * (100/6) %) */
+.team-photo.p0 { background-position: 0%   50%; }
+.team-photo.p1 { background-position: calc(100% / 6 * 1) 50%; }
+.team-photo.p2 { background-position: calc(100% / 6 * 2) 50%; }
+.team-photo.p3 { background-position: calc(100% / 6 * 3) 50%; }
+.team-photo.p4 { background-position: calc(100% / 6 * 4) 50%; }
+.team-photo.p5 { background-position: calc(100% / 6 * 5) 50%; }
+.team-photo.p6 { background-position: 100% 50%; }
+
+.team-info {
+  padding: 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.team-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-text);
+  line-height: 1.3;
+}
+
+.team-role {
+  font-size: 0.8rem;
+  color: var(--color-orange);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.team-speciality {
+  font-size: 0.82rem;
+  color: var(--theme-text-muted);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* Mobile : 2 colonnes */
+@media (max-width: 600px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .team-name  { font-size: 0.88rem; }
+  .team-role  { font-size: 0.72rem; }
+  .team-speciality { font-size: 0.75rem; }
+}
