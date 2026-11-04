@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, FileText, Download, ArrowRight, BookOpen, Tag, Newspaper } from 'lucide-react';
+import { Calendar, FileText, Download, ArrowRight, BookOpen, Tag, Newspaper, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const newsList = [
@@ -119,8 +119,8 @@ export default function Ressources() {
                 </p>
 
                 <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--theme-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: 'var(--color-orange)', fontWeight: 600 }}>
-                    📍 {item.location}
+                  <span style={{ fontSize: '12px', color: 'var(--color-orange)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <MapPin size={12} style={{ flexShrink: 0 }} /> {item.location}
                   </span>
                   <Link to="/contact" className="nav-dropdown-item" style={{ padding: '4px 8px', fontSize: '12px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                     En savoir plus <ArrowRight size={13} />

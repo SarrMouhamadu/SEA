@@ -17,7 +17,9 @@ import {
   ChevronDown,
   ChevronUp,
   Sliders,
-  HelpCircle
+  HelpCircle,
+  Lightbulb,
+  MapPin
 } from 'lucide-react';
 import { 
   SECTEURS_ACTIVITE, 
@@ -642,7 +644,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
 
                         {showRec && (
                           <div className="autodiag-q-rec">
-                            <span className="rec-icon">💡</span>
+                            <span className="rec-icon"><Lightbulb size={15} /></span>
                             <div className="rec-content">
                               <strong>Action recommandée :</strong> {q.rec}
                             </div>
@@ -944,7 +946,8 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               </div>
 
               <div className="autodiag-contact-box">
-                📍 <strong>SEnergyS Africa :</strong> Cabinet d'ingénierie et de conseil en transition énergétique et durable • Dakar, Sénégal.
+                <MapPin size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} />
+                <strong>SEnergyS Africa :</strong> Cabinet d'ingénierie et de conseil en transition énergétique et durable • Dakar, Sénégal.
               </div>
 
               <div className="autodiag-footer-nav">

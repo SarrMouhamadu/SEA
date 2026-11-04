@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, ArrowRight, Calendar, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, ArrowRight, Calendar, Clock, ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 
 export default function ReferenceCard({ item }) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const countryFlag = item.country?.toLowerCase().includes('bénin') || item.country?.toLowerCase().includes('benin')
-    ? '🇧🇯'
-    : '🇸🇳';
+  const countryLabel = item.country || '';
 
   const hasDuration = item.duration && item.duration !== "Mission d'ingénierie";
 
@@ -38,7 +36,7 @@ export default function ReferenceCard({ item }) {
         </div>
 
         <div className="ref-country-badge">
-          <span>{countryFlag}</span>
+          <MapPin size={12} style={{ flexShrink: 0 }} />
           <span>{item.country || 'Sénégal'}</span>
         </div>
       </div>
