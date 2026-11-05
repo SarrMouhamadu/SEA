@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, TrendingUp, Flame, GraduationCap, Building2, Check, ArrowRight, Briefcase, Smartphone } from 'lucide-react';
-
-const icons = {
-  Zap: Zap,
-  TrendingUp: TrendingUp,
-  Flame: Flame,
-  GraduationCap: GraduationCap,
-  Building2: Building2,
-  Briefcase: Briefcase,
-  Smartphone: Smartphone
-};
 
 const defaultServices = [
   {
@@ -117,7 +106,6 @@ export default function Services() {
         <div className="container">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {services.map((service) => {
-            const IconComp = icons[service.icon] || Zap;
             const anchorId = serviceAnchors[service.id] || service.slug;
             return (
               <div 
@@ -126,61 +114,46 @@ export default function Services() {
                 className="card" 
                 style={{ padding: '36px', scrollMarginTop: '100px' }}
               >
-                <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                  <div style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '16px',
-                    background: 'rgba(232, 113, 43, 0.12)',
-                    color: 'var(--color-orange)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}>
-                    <IconComp size={32} />
-                  </div>
-
-                  <div style={{ flex: '1', minWidth: '280px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
-                      <h2 style={{ fontSize: '1.6rem', color: 'var(--theme-text)', margin: 0 }}>
-                        {service.title}
-                      </h2>
-                      <span className="badge" style={{ fontSize: '11px', padding: '4px 10px' }}>
-                        Expertise SEnergyS
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
+                    <h2 style={{ fontSize: '1.6rem', color: 'var(--theme-text)', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ color: 'var(--color-orange)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.35rem' }}>
+                        {String(service.id).padStart(2, '0')}.
                       </span>
-                    </div>
-
-                    <p style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--color-orange)', marginBottom: '14px' }}>
-                      {service.summary}
-                    </p>
-
-                    <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '20px' }}>
-                      {service.description}
-                    </p>
-
-                    {service.highlights && service.highlights.length > 0 && (
-                      <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '10px',
-                        marginBottom: '24px',
-                        background: 'var(--theme-surface-alt)',
-                        padding: '16px 20px',
-                        borderRadius: '12px',
-                        border: '1px solid var(--theme-border)'
-                      }}>
-                        {service.highlights.map((h, i) => (
-                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', color: 'var(--theme-text)' }}>
-                            <Check size={16} color="var(--color-orange)" style={{ flexShrink: 0 }} />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-
+                      <span>{service.title}</span>
+                    </h2>
+                    <span className="badge" style={{ fontSize: '11px', padding: '4px 10px' }}>
+                      Expertise SEnergyS
+                    </span>
                   </div>
+
+                  <p style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--color-orange)', marginBottom: '14px' }}>
+                    {service.summary}
+                  </p>
+
+                  <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '20px' }}>
+                    {service.description}
+                  </p>
+
+                  {service.highlights && service.highlights.length > 0 && (
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                      gap: '12px',
+                      marginBottom: '10px',
+                      background: 'var(--theme-surface-alt)',
+                      padding: '16px 20px',
+                      borderRadius: '12px',
+                      border: '1px solid var(--theme-border)'
+                    }}>
+                      {service.highlights.map((h, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13.5px', color: 'var(--theme-text)' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-orange)', flexShrink: 0 }} />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -196,7 +169,7 @@ export default function Services() {
             Chez SEnergyS Africa, nos préconisations techniques s'accompagnent d'indicateurs de performance mesurables (MWh économisés, réduction de facture, tonnes de CO₂ évitées).
           </p>
           <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
-            Planifier un échange avec un expert technique <ArrowRight size={16} />
+            Planifier un échange avec un expert technique
           </Link>
         </div>
       </div>
