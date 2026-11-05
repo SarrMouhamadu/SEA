@@ -6,7 +6,7 @@ import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
 import PartnerCarousel from '../components/PartnerCarousel';
 import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award, Phone, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
 
-/* ── Données expertises (les 5 réelles uniquement) ─────────── */
+/* ── Données expertises ─────────────────────────────────────── */
 const EXPERTISES = [
   { num: '01', title: 'Énergie durable',         img: '/assets/claude/expertise-energie-durable.jpg',       pos: '50% 70%' },
   { num: '02', title: 'Production propre',        img: '/assets/claude/expertise-production-propre.jpg',    pos: '60% 50%' },
@@ -16,104 +16,92 @@ const EXPERTISES = [
 ];
 
 function ExpertiseCarousel() {
-  const trackRef = useRef(null);
-  const [activeDot, setActiveDot] = useState(0);
+  const scrollContainerRef = useRef(null);
+  const currentScrollRef = useRef(0);
+  const initializedRef = useRef(false);
   const [isPaused, setIsPaused] = useState(false);
-  const isResettingRef = useRef(false);
 
-  // 3 copies des 5 expertises réelles pour un défilement infini sans aucun vide
-  const slides = [...EXPERTISES, ...EXPERTISES, ...EXPERTISES];
-  const TOTAL = EXPERTISES.length;
+  // 3 copies des 5 expertises = 15 cartes pour un défilement continu en boucle infinie
+  const displayExpertises = [...EXPERTISES, ...EXPERTISES, ...EXPERTISES];
 
-  // Initialisation au jeu du milieu (index 5)
+  // Initialisation au jeu du milieu
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
-    const init = () => {
-      const card = track.children[0];
-      if (!card) return;
-      const cardWidth = card.getBoundingClientRect().width + 20; // 20px gap
-      track.scrollLeft = cardWidth * TOTAL;
+    const setInitialPosition = () => {
+      if (container && container.scrollWidth > 0 && !initializedRef.current) {
+        const oneThird = container.scrollWidth / 3;
+        container.scrollLeft = oneThird;
+        currentScrollRef.current = oneThird;
+        initializedRef.current = true;
+      }
     };
 
-    init();
-    const t = setTimeout(init, 150);
-    return () => clearTimeout(t);
-  }, [TOTAL]);
+    setInitialPosition();
+    const t1 = setTimeout(setInitialPosition, 100);
+    const t2 = setTimeout(setInitialPosition, 300);
 
-  // Rebouclage infini automatique lors du défilement
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
+  // Défilement automatique continu en boucle fluide (60fps)
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let animationFrameId;
+    const speed = 0.85; // Vitesse de lecture continue agréable (~50px/sec)
+
+    const step = () => {
+      if (!isPaused && container) {
+        currentScrollRef.current += speed;
+        const oneSetWidth = container.scrollWidth / 3;
+
+        if (oneSetWidth > 0) {
+          // Rebouclage infini invisible
+          if (currentScrollRef.current >= 2 * oneSetWidth) {
+            currentScrollRef.current -= oneSetWidth;
+          } else if (currentScrollRef.current <= 0) {
+            currentScrollRef.current += oneSetWidth;
+          }
+        }
+
+        container.scrollLeft = currentScrollRef.current;
+      }
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isPaused]);
+
+  // Synchronisation lors du défilement manuel (touch / trackpad)
   const handleScroll = () => {
-    const track = trackRef.current;
-    if (!track || isResettingRef.current) return;
-
-    const firstCard = track.children[0];
-    if (!firstCard) return;
-    const cardWidth = firstCard.getBoundingClientRect().width + 20;
-    const setWidth = cardWidth * TOTAL;
-
-    // Calcul du dot actif (0 à 4)
-    const rel = Math.round(track.scrollLeft / cardWidth) % TOTAL;
-    setActiveDot((rel + TOTAL) % TOTAL);
-
-    // Rebouclage sans à-coup si on dépasse le 2ème set ou avant le 1er
-    if (track.scrollLeft >= 2 * setWidth - 5) {
-      isResettingRef.current = true;
-      track.style.scrollBehavior = 'auto';
-      track.scrollLeft -= setWidth;
-      track.style.scrollBehavior = 'smooth';
-      setTimeout(() => { isResettingRef.current = false; }, 60);
-    } else if (track.scrollLeft <= 5) {
-      isResettingRef.current = true;
-      track.style.scrollBehavior = 'auto';
-      track.scrollLeft += setWidth;
-      track.style.scrollBehavior = 'smooth';
-      setTimeout(() => { isResettingRef.current = false; }, 60);
+    if (scrollContainerRef.current && isPaused) {
+      currentScrollRef.current = scrollContainerRef.current.scrollLeft;
     }
   };
 
-  // Autoplay toutes les 3.5s
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      const track = trackRef.current;
-      if (!track) return;
-      const card = track.children[0];
-      if (!card) return;
-      const cardWidth = card.getBoundingClientRect().width + 20;
-      track.scrollBy({ left: cardWidth, behavior: 'smooth' });
-    }, 3500);
+  // Navigation manuelle carte par carte
+  const scrollByCard = (direction) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const firstCard = container.querySelector('.exp-slide');
+    const cardWidth = firstCard ? (firstCard.offsetWidth + 20) : 340;
+    const amount = direction === 'next' ? cardWidth : -cardWidth;
 
-    return () => clearInterval(timer);
-  }, [isPaused]);
+    currentScrollRef.current += amount;
+    container.scrollBy({ left: amount, behavior: 'smooth' });
 
-  const prev = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.children[0];
-    if (!card) return;
-    const cardWidth = card.getBoundingClientRect().width + 20;
-    track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-  };
-
-  const next = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.children[0];
-    if (!card) return;
-    const cardWidth = card.getBoundingClientRect().width + 20;
-    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
-  };
-
-  const goToDot = (dotIndex) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.children[0];
-    if (!card) return;
-    const cardWidth = card.getBoundingClientRect().width + 20;
-    const setWidth = cardWidth * TOTAL;
-    track.scrollTo({ left: setWidth + dotIndex * cardWidth, behavior: 'smooth' });
-    setActiveDot(dotIndex);
+    setTimeout(() => {
+      if (container) {
+        currentScrollRef.current = container.scrollLeft;
+      }
+    }, 450);
   };
 
   return (
@@ -121,19 +109,26 @@ function ExpertiseCarousel() {
       className="exp-carousel"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
     >
       {/* Bouton précédent */}
-      <button className="exp-nav exp-nav-prev" onClick={prev} aria-label="Expertise précédente">
+      <button
+        type="button"
+        className="exp-nav exp-nav-prev"
+        onClick={() => scrollByCard('prev')}
+        aria-label="Expertise précédente"
+      >
         <ChevronLeft size={22} />
       </button>
 
-      {/* Piste avec uniquement les 5 cartes réelles répétées */}
+      {/* Piste en défilement continu en boucle */}
       <div
-        ref={trackRef}
+        ref={scrollContainerRef}
         className="exp-track"
         onScroll={handleScroll}
       >
-        {slides.map((exp, i) => (
+        {displayExpertises.map((exp, i) => (
           <Link
             key={i}
             to="/services"
@@ -151,21 +146,14 @@ function ExpertiseCarousel() {
       </div>
 
       {/* Bouton suivant */}
-      <button className="exp-nav exp-nav-next" onClick={next} aria-label="Expertise suivante">
+      <button
+        type="button"
+        className="exp-nav exp-nav-next"
+        onClick={() => scrollByCard('next')}
+        aria-label="Expertise suivante"
+      >
         <ChevronRight size={22} />
       </button>
-
-      {/* 5 Dots indicateurs */}
-      <div className="exp-dots">
-        {EXPERTISES.map((_, i) => (
-          <button
-            key={i}
-            className={`exp-dot ${i === activeDot ? 'exp-dot-active' : ''}`}
-            onClick={() => goToDot(i)}
-            aria-label={`Expertise ${i + 1}`}
-          />
-        ))}
-      </div>
     </div>
   );
 }

@@ -4081,12 +4081,12 @@ details[open] .details-arrow {
 
 /* ============================================================
    EXPERTISE CAROUSEL — Section "Nos expertises" (Home)
-   Défilement continu fluide — 5 expertises réelles uniquement
+   Défilement continu fluide en boucle infinie (60fps)
    ============================================================ */
 
 .exp-carousel {
   position: relative;
-  padding: 0 46px 48px;
+  padding: 0 46px 16px;
   margin: 0 -12px;
 }
 
@@ -4094,10 +4094,14 @@ details[open] .details-arrow {
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 12px 4px;
+  cursor: grab;
+}
+
+.exp-track:active {
+  cursor: grabbing;
 }
 
 .exp-track::-webkit-scrollbar {
@@ -4124,7 +4128,7 @@ details[open] .details-arrow {
 .exp-nav {
   position: absolute;
   top: 50%;
-  transform: translateY(calc(-50% - 24px));
+  transform: translateY(-50%);
   z-index: 10;
   width: 42px;
   height: 42px;
@@ -4151,34 +4155,6 @@ details[open] .details-arrow {
 .exp-nav-prev { left: 0; }
 .exp-nav-next { right: 0; }
 
-/* Dots indicateurs */
-.exp-dots {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.exp-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--theme-border);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: background 0.25s ease, width 0.25s ease, border-radius 0.25s ease;
-}
-
-.exp-dot.exp-dot-active {
-  background: var(--color-orange);
-  width: 22px;
-  border-radius: 4px;
-}
-
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .exp-slide {
@@ -4188,7 +4164,7 @@ details[open] .details-arrow {
 
 @media (max-width: 600px) {
   .exp-carousel {
-    padding: 0 32px 44px;
+    padding: 0 32px 14px;
   }
   .exp-slide {
     flex: 0 0 100%;
