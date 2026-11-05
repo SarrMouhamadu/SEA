@@ -271,13 +271,6 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               </div>
             </div>
 
-            <div className="autodiag-notice-box">
-              <Zap size={18} className="text-orange flex-shrink-0" />
-              <div>
-                <strong>Pratique :</strong> Si vous n'avez pas vos factures exactes sous la main, vous pouvez sélectionner des ordres de grandeur rapides ou passer directement à l'évaluation !
-              </div>
-            </div>
-
             <div className="autodiag-footer-nav" style={{ borderTop: 'none', paddingTop: 0 }}>
               <div></div>
               <button onClick={() => { setProfileSubStep(1); setCurrentStep(2); }} className="btn-pill btn-pill-orange">
