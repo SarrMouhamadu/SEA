@@ -1,10 +1,117 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ContactForm from '../components/ContactForm';
 import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
 import PartnerCarousel from '../components/PartnerCarousel';
-import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award, Phone, Mail } from 'lucide-react';
+import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award, Phone, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
+
+/* ── Données expertises ─────────────────────────────────────── */
+const EXPERTISES = [
+  { num: '01', title: 'Énergie durable',        img: '/assets/claude/expertise-energie-durable.jpg',      pos: '50% 70%' },
+  { num: '02', title: 'Production propre',       img: '/assets/claude/expertise-production-propre.jpg',   pos: '60% 50%' },
+  { num: '03', title: 'Finance climat & ESG',    img: '/assets/claude/expertise-finance-esg.jpg',         pos: '50% 50%' },
+  { num: '04', title: 'Stratégies & Politiques', img: '/assets/claude/blog-ecoparcs.jpg',                 pos: '50% 50%' },
+  { num: '05', title: 'Formation & Innovation',  img: '/assets/claude/expertise-formation-innovation.jpg', pos: '30% 50%' },
+];
+
+/* ── Carousel expertise ─────────────────────────────────────── */
+function ExpertiseCarousel() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const trackRef = useRef(null);
+  const dragRef = useRef({ dragging: false, startX: 0, scrollLeft: 0 });
+  const total = EXPERTISES.length;
+
+  /* Autoplay toutes les 3,5s */
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setActive(a => (a + 1) % total), 3500);
+    return () => clearInterval(id);
+  }, [paused, total]);
+
+  /* Scroll fluide vers la carte active */
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[active];
+    if (!card) return;
+    const trackRect = track.getBoundingClientRect();
+    const cardRect  = card.getBoundingClientRect();
+    const offset = cardRect.left - trackRect.left - (trackRect.width - cardRect.width) / 2;
+    track.scrollBy({ left: offset, behavior: 'smooth' });
+  }, [active]);
+
+  const prev = () => { setPaused(true); setActive(a => (a - 1 + total) % total); };
+  const next = () => { setPaused(true); setActive(a => (a + 1) % total); };
+
+  /* Drag-to-scroll (desktop) */
+  const onMouseDown = (e) => {
+    dragRef.current = { dragging: true, startX: e.pageX - trackRef.current.offsetLeft, scrollLeft: trackRef.current.scrollLeft };
+    trackRef.current.style.cursor = 'grabbing';
+  };
+  const onMouseMove = (e) => {
+    if (!dragRef.current.dragging) return;
+    e.preventDefault();
+    const x    = e.pageX - trackRef.current.offsetLeft;
+    const walk = (x - dragRef.current.startX) * 1.2;
+    trackRef.current.scrollLeft = dragRef.current.scrollLeft - walk;
+  };
+  const onMouseUp = () => { dragRef.current.dragging = false; trackRef.current.style.cursor = 'grab'; };
+
+  return (
+    <div className="exp-carousel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      {/* Bouton précédent */}
+      <button className="exp-nav exp-nav-prev" onClick={prev} aria-label="Expertise précédente">
+        <ChevronLeft size={22} />
+      </button>
+
+      {/* Piste défilante */}
+      <div
+        className="exp-track"
+        ref={trackRef}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+      >
+        {EXPERTISES.map((exp, i) => (
+          <Link
+            key={i}
+            to="/services"
+            className={`ph exp-slide ${i === active ? 'exp-slide-active' : ''}`}
+            onClick={() => setPaused(true)}
+            draggable={false}
+          >
+            <img src={exp.img} alt={exp.title} style={{ objectPosition: exp.pos }} draggable={false} />
+            <div className="sc" />
+            <div className="ph-text">
+              <span className="ph-number">{exp.num}</span>
+              <b className="ph-title">{exp.title}</b>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Bouton suivant */}
+      <button className="exp-nav exp-nav-next" onClick={next} aria-label="Expertise suivante">
+        <ChevronRight size={22} />
+      </button>
+
+      {/* Dots */}
+      <div className="exp-dots">
+        {EXPERTISES.map((_, i) => (
+          <button
+            key={i}
+            className={`exp-dot ${i === active ? 'exp-dot-active' : ''}`}
+            onClick={() => { setPaused(true); setActive(i); }}
+            aria-label={`Expertise ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);
@@ -42,57 +149,7 @@ export default function Home() {
             Nos expertises
           </h2>
 
-          <div className="expertise-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))' }}>
-            {/* 01 Énergie durable */}
-            <Link to="/services" className="ph">
-              <img src="/assets/claude/expertise-energie-durable.jpg" alt="Énergie durable" style={{ objectPosition: '50% 70%' }} />
-              <div className="sc"></div>
-              <div className="ph-text">
-                <span className="ph-number">01</span>
-                <b className="ph-title">Énergie durable</b>
-              </div>
-            </Link>
-
-            {/* 02 Production propre */}
-            <Link to="/services" className="ph">
-              <img src="/assets/claude/expertise-production-propre.jpg" alt="Production propre" style={{ objectPosition: '60% 50%' }} />
-              <div className="sc"></div>
-              <div className="ph-text">
-                <span className="ph-number">02</span>
-                <b className="ph-title">Production propre</b>
-              </div>
-            </Link>
-
-            {/* 03 Finance climat & durable */}
-            <Link to="/services" className="ph">
-              <img src="/assets/claude/expertise-finance-esg.jpg" alt="Finance climat & durable" style={{ objectPosition: '50% 50%' }} />
-              <div className="sc"></div>
-              <div className="ph-text">
-                <span className="ph-number">03</span>
-                <b className="ph-title">Finance climat & ESG</b>
-              </div>
-            </Link>
-
-            {/* 04 Stratégies & politiques publiques */}
-            <Link to="/services" className="ph">
-              <img src="/assets/claude/blog-ecoparcs.jpg" alt="Stratégies & politiques publiques" style={{ objectPosition: '50% 50%' }} />
-              <div className="sc"></div>
-              <div className="ph-text">
-                <span className="ph-number">04</span>
-                <b className="ph-title">Stratégies & Politiques</b>
-              </div>
-            </Link>
-
-            {/* 05 Formation & innovation */}
-            <Link to="/services" className="ph">
-              <img src="/assets/claude/expertise-formation-innovation.jpg" alt="Formation & innovation" style={{ objectPosition: '30% 50%' }} />
-              <div className="sc"></div>
-              <div className="ph-text">
-                <span className="ph-number">05</span>
-                <b className="ph-title">Formation & Innovation</b>
-              </div>
-            </Link>
-          </div>
+          <ExpertiseCarousel />
 
           <div style={{ textAlign: 'center', marginTop: '36px' }}>
             <Link to="/services" className="btn btn-primary" style={{ padding: '14px 28px' }}>
