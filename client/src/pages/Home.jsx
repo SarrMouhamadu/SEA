@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ContactForm from '../components/ContactForm';
@@ -8,89 +8,124 @@ import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award, Phone, Mail, Chevr
 
 /* ── Données expertises ─────────────────────────────────────── */
 const EXPERTISES = [
-  { num: '01', title: 'Énergie durable',        img: '/assets/claude/expertise-energie-durable.jpg',      pos: '50% 70%' },
-  { num: '02', title: 'Production propre',       img: '/assets/claude/expertise-production-propre.jpg',   pos: '60% 50%' },
-  { num: '03', title: 'Finance climat & ESG',    img: '/assets/claude/expertise-finance-esg.jpg',         pos: '50% 50%' },
-  { num: '04', title: 'Stratégies & Politiques', img: '/assets/claude/blog-ecoparcs.jpg',                 pos: '50% 50%' },
-  { num: '05', title: 'Formation & Innovation',  img: '/assets/claude/expertise-formation-innovation.jpg', pos: '30% 50%' },
+  { num: '01', title: 'Énergie durable',         img: '/assets/claude/expertise-energie-durable.jpg',       pos: '50% 70%' },
+  { num: '02', title: 'Production propre',        img: '/assets/claude/expertise-production-propre.jpg',    pos: '60% 50%' },
+  { num: '03', title: 'Finance climat & ESG',     img: '/assets/claude/expertise-finance-esg.jpg',          pos: '50% 50%' },
+  { num: '04', title: 'Stratégies & Politiques',  img: '/assets/claude/blog-ecoparcs.jpg',                  pos: '50% 50%' },
+  { num: '05', title: 'Formation & Innovation',   img: '/assets/claude/expertise-formation-innovation.jpg', pos: '30% 50%' },
 ];
 
-/* ── Carousel expertise ─────────────────────────────────────── */
-function ExpertiseCarousel() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const trackRef = useRef(null);
-  const dragRef = useRef({ dragging: false, startX: 0, scrollLeft: 0 });
-  const total = EXPERTISES.length;
+/* ── Carousel infini ────────────────────────────────────────────
+   Principe :  [clone_last, ...items, clone_first]
+   - On démarre à l'index 1 (premier item réel)
+   - Quand on dépasse le dernier clone on saute sans animation
+     à l'item réel correspondant, et vice-versa
+   ─────────────────────────────────────────────────────────────── */
+const CLONES = 2; // nb de clones de chaque côté
+function buildSlides() {
+  const tail  = EXPERTISES.slice(-CLONES);
+  const head  = EXPERTISES.slice(0, CLONES);
+  return [...tail, ...EXPERTISES, ...head];
+}
+const SLIDES      = buildSlides();
+const TOTAL_REAL  = EXPERTISES.length;
+const START_INDEX = CLONES; // vrai index 0 se trouve à CLONES dans SLIDES
 
-  /* Autoplay toutes les 3,5s */
+function ExpertiseCarousel() {
+  const [index, setIndex]   = useState(START_INDEX); // position courante dans SLIDES
+  const [anim,  setAnim]    = useState(true);         // transition active ou non
+  const [paused, setPaused] = useState(false);
+  const trackRef  = useRef(null);
+  const indexRef  = useRef(START_INDEX);
+  const timerRef  = useRef(null);
+
+  /* Largeur d'une carte en % du container (3 visible desktop) */
+  const CARD_W_PERCENT = 100 / 3; // ~33.33%
+
+  /* Position transform */
+  const getX = (i) => `translateX(calc(-${i * CARD_W_PERCENT}% + ${CARD_W_PERCENT}%))`;
+
+  /* Avance d'un pas */
+  const goTo = (i, animated = true) => {
+    setAnim(animated);
+    setIndex(i);
+    indexRef.current = i;
+  };
+
+  const next = () => { setPaused(true); goTo(indexRef.current + 1); };
+  const prev = () => { setPaused(true); goTo(indexRef.current - 1); };
+
+  /* Après transition : saut silencieux si on est sur un clone */
+  const onTransitionEnd = () => {
+    const cur = indexRef.current;
+    if (cur >= START_INDEX + TOTAL_REAL) {
+      // On vient de dépasser la fin → sauter au vrai début
+      goTo(START_INDEX, false);
+    } else if (cur < START_INDEX) {
+      // On vient de passer avant le début → sauter à la vraie fin
+      goTo(START_INDEX + TOTAL_REAL - 1, false);
+    }
+  };
+
+  /* Autoplay */
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => setActive(a => (a + 1) % total), 3500);
-    return () => clearInterval(id);
-  }, [paused, total]);
+    timerRef.current = setInterval(() => goTo(indexRef.current + 1), 3200);
+    return () => clearInterval(timerRef.current);
+  }, [paused]);
 
-  /* Scroll fluide vers la carte active */
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.children[active];
-    if (!card) return;
-    const trackRect = track.getBoundingClientRect();
-    const cardRect  = card.getBoundingClientRect();
-    const offset = cardRect.left - trackRect.left - (trackRect.width - cardRect.width) / 2;
-    track.scrollBy({ left: offset, behavior: 'smooth' });
-  }, [active]);
-
-  const prev = () => { setPaused(true); setActive(a => (a - 1 + total) % total); };
-  const next = () => { setPaused(true); setActive(a => (a + 1) % total); };
-
-  /* Drag-to-scroll (desktop) */
-  const onMouseDown = (e) => {
-    dragRef.current = { dragging: true, startX: e.pageX - trackRef.current.offsetLeft, scrollLeft: trackRef.current.scrollLeft };
-    trackRef.current.style.cursor = 'grabbing';
-  };
-  const onMouseMove = (e) => {
-    if (!dragRef.current.dragging) return;
-    e.preventDefault();
-    const x    = e.pageX - trackRef.current.offsetLeft;
-    const walk = (x - dragRef.current.startX) * 1.2;
-    trackRef.current.scrollLeft = dragRef.current.scrollLeft - walk;
-  };
-  const onMouseUp = () => { dragRef.current.dragging = false; trackRef.current.style.cursor = 'grab'; };
+  /* Dot actif = position réelle dans EXPERTISES */
+  const activeDot = ((index - START_INDEX) % TOTAL_REAL + TOTAL_REAL) % TOTAL_REAL;
 
   return (
-    <div className="exp-carousel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <div
+      className="exp-carousel"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       {/* Bouton précédent */}
       <button className="exp-nav exp-nav-prev" onClick={prev} aria-label="Expertise précédente">
         <ChevronLeft size={22} />
       </button>
 
-      {/* Piste défilante */}
-      <div
-        className="exp-track"
-        ref={trackRef}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
-      >
-        {EXPERTISES.map((exp, i) => (
-          <Link
-            key={i}
-            to="/services"
-            className={`ph exp-slide ${i === active ? 'exp-slide-active' : ''}`}
-            onClick={() => setPaused(true)}
-            draggable={false}
-          >
-            <img src={exp.img} alt={exp.title} style={{ objectPosition: exp.pos }} draggable={false} />
-            <div className="sc" />
-            <div className="ph-text">
-              <span className="ph-number">{exp.num}</span>
-              <b className="ph-title">{exp.title}</b>
-            </div>
-          </Link>
-        ))}
+      {/* Piste */}
+      <div className="exp-track-wrapper">
+        <div
+          ref={trackRef}
+          className="exp-track-inner"
+          style={{
+            transform: getX(index),
+            transition: anim ? 'transform 0.55s cubic-bezier(0.16,1,0.3,1)' : 'none',
+            width: `${SLIDES.length * CARD_W_PERCENT}%`,
+          }}
+          onTransitionEnd={onTransitionEnd}
+        >
+          {SLIDES.map((exp, i) => {
+            const realIdx = ((i - START_INDEX) % TOTAL_REAL + TOTAL_REAL) % TOTAL_REAL;
+            const isActive = i === index;
+            return (
+              <div
+                key={i}
+                className="exp-slide-wrapper"
+                style={{ width: `${100 / SLIDES.length}%` }}
+              >
+                <Link
+                  to="/services"
+                  className={`ph exp-slide ${isActive ? 'exp-slide-active' : ''}`}
+                  draggable={false}
+                  tabIndex={isActive ? 0 : -1}
+                >
+                  <img src={exp.img} alt={exp.title} style={{ objectPosition: exp.pos }} draggable={false} />
+                  <div className="sc" />
+                  <div className="ph-text">
+                    <span className="ph-number">{exp.num}</span>
+                    <b className="ph-title">{exp.title}</b>
+                  </div>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Bouton suivant */}
@@ -98,13 +133,13 @@ function ExpertiseCarousel() {
         <ChevronRight size={22} />
       </button>
 
-      {/* Dots */}
+      {/* Dots (sur les 5 items réels) */}
       <div className="exp-dots">
         {EXPERTISES.map((_, i) => (
           <button
             key={i}
-            className={`exp-dot ${i === active ? 'exp-dot-active' : ''}`}
-            onClick={() => { setPaused(true); setActive(i); }}
+            className={`exp-dot ${i === activeDot ? 'exp-dot-active' : ''}`}
+            onClick={() => { setPaused(true); goTo(START_INDEX + i); }}
             aria-label={`Expertise ${i + 1}`}
           />
         ))}
