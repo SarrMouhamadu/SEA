@@ -167,11 +167,7 @@ export default function Services() {
                       </div>
                     )}
 
-                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                      <Link to="/contact" className="btn btn-primary btn-sm">
-                        Demander un accompagnement <ArrowRight size={14} />
-                      </Link>
-                    </div>
+
                   </div>
                 </div>
               </div>
