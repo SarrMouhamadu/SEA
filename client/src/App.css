@@ -664,6 +664,7 @@
   color: var(--color-gold);
   line-height: 1.1;
   margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
 }
 
 .kpi-desc {

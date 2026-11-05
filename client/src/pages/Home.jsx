@@ -158,8 +158,71 @@ function ExpertiseCarousel() {
   );
 }
 
+/* ── Compteur avec animation d'incrémentation ────────────────── */
+function AnimatedCounter({ end, duration = 1800, start = 0, prefix = '', suffix = '', trigger = false }) {
+  const [value, setValue] = useState(start);
+
+  useEffect(() => {
+    if (!trigger) return;
+
+    let startTimestamp = null;
+    let animId;
+
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easedProgress = easeOutCubic(progress);
+      const current = start + (end - start) * easedProgress;
+
+      setValue(Math.round(current));
+
+      if (progress < 1) {
+        animId = requestAnimationFrame(step);
+      } else {
+        setValue(end);
+      }
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [trigger, end, start, duration]);
+
+  return (
+    <span>
+      {prefix}{trigger ? value : start}{suffix}
+    </span>
+  );
+}
+
 export default function Home() {
   const [diagModalOpen, setDiagModalOpen] = useState(false);
+  const kpiSectionRef = useRef(null);
+  const [kpiVisible, setKpiVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setKpiVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setKpiVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (kpiSectionRef.current) {
+      observer.observe(kpiSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="home-page">
@@ -205,14 +268,22 @@ export default function Home() {
       </section>
 
       {/* 3. CHIFFRES CLÉS */}
-      <section className="kpi-strip-section">
+      <section ref={kpiSectionRef} className="kpi-strip-section">
         <div className="container">
           <div className="kpi-strip-grid">
             <div className="kpi-card">
               <div className="kpi-icon-box">
                 <Award size={26} color="var(--color-orange)" />
               </div>
-              <div className="kpi-val">Depuis 2015</div>
+              <div className="kpi-val">
+                <AnimatedCounter
+                  start={0}
+                  end={2015}
+                  prefix="Depuis "
+                  duration={1800}
+                  trigger={kpiVisible}
+                />
+              </div>
               <p className="kpi-desc">Société d'ingénierie et de conseil en développement durable</p>
             </div>
 
@@ -220,7 +291,16 @@ export default function Home() {
               <div className="kpi-icon-box">
                 <TrendingDown size={26} color="#3F7A5A" />
               </div>
-              <div className="kpi-val">Jusqu'à -25%</div>
+              <div className="kpi-val">
+                <AnimatedCounter
+                  start={0}
+                  end={25}
+                  prefix="Jusqu'à -"
+                  suffix="%"
+                  duration={1800}
+                  trigger={kpiVisible}
+                />
+              </div>
               <p className="kpi-desc">De réduction immédiate sur la facture combustible</p>
             </div>
 
@@ -228,7 +308,16 @@ export default function Home() {
               <div className="kpi-icon-box">
                 <Gauge size={26} color="var(--color-gold)" />
               </div>
-              <div className="kpi-val">&gt; 95%</div>
+              <div className="kpi-val">
+                <AnimatedCounter
+                  start={0}
+                  end={95}
+                  prefix="> "
+                  suffix="%"
+                  duration={1800}
+                  trigger={kpiVisible}
+                />
+              </div>
               <p className="kpi-desc">D'objectifs énergétiques et climatiques contractuellement atteints</p>
             </div>
 
@@ -236,7 +325,16 @@ export default function Home() {
               <div className="kpi-icon-box">
                 <ShieldCheck size={26} color="#123B2E" />
               </div>
-              <div className="kpi-val">+50 projets</div>
+              <div className="kpi-val">
+                <AnimatedCounter
+                  start={0}
+                  end={50}
+                  prefix="+"
+                  suffix=" projets"
+                  duration={1800}
+                  trigger={kpiVisible}
+                />
+              </div>
               <p className="kpi-desc">Audits certifiés ISO 50001 & financements verts structurés</p>
             </div>
           </div>
