@@ -6,7 +6,7 @@ import AutoDiagnosticModal from '../components/AutoDiagnosticModal';
 import PartnerCarousel from '../components/PartnerCarousel';
 import { ArrowRight, TrendingDown, Gauge, ShieldCheck, Award, Phone, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
 
-/* ── Données expertises ─────────────────────────────────────── */
+/* ── Données expertises (les 5 réelles uniquement) ─────────── */
 const EXPERTISES = [
   { num: '01', title: 'Énergie durable',         img: '/assets/claude/expertise-energie-durable.jpg',       pos: '50% 70%' },
   { num: '02', title: 'Production propre',        img: '/assets/claude/expertise-production-propre.jpg',    pos: '60% 50%' },
@@ -15,117 +15,139 @@ const EXPERTISES = [
   { num: '05', title: 'Formation & Innovation',   img: '/assets/claude/expertise-formation-innovation.jpg', pos: '30% 50%' },
 ];
 
-/* ── Carousel infini ────────────────────────────────────────────
-   Principe :  [clone_last, ...items, clone_first]
-   - On démarre à l'index 1 (premier item réel)
-   - Quand on dépasse le dernier clone on saute sans animation
-     à l'item réel correspondant, et vice-versa
-   ─────────────────────────────────────────────────────────────── */
-const CLONES = 2; // nb de clones de chaque côté
-function buildSlides() {
-  const tail  = EXPERTISES.slice(-CLONES);
-  const head  = EXPERTISES.slice(0, CLONES);
-  return [...tail, ...EXPERTISES, ...head];
-}
-const SLIDES      = buildSlides();
-const TOTAL_REAL  = EXPERTISES.length;
-const START_INDEX = CLONES; // vrai index 0 se trouve à CLONES dans SLIDES
-
 function ExpertiseCarousel() {
-  const [index, setIndex]   = useState(START_INDEX); // position courante dans SLIDES
-  const [anim,  setAnim]    = useState(true);         // transition active ou non
-  const [paused, setPaused] = useState(false);
-  const trackRef  = useRef(null);
-  const indexRef  = useRef(START_INDEX);
-  const timerRef  = useRef(null);
+  const trackRef = useRef(null);
+  const [activeDot, setActiveDot] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const isResettingRef = useRef(false);
 
-  /* Largeur d'une carte en % du container (3 visible desktop) */
-  const CARD_W_PERCENT = 100 / 3; // ~33.33%
+  // 3 copies des 5 expertises réelles pour un défilement infini sans aucun vide
+  const slides = [...EXPERTISES, ...EXPERTISES, ...EXPERTISES];
+  const TOTAL = EXPERTISES.length;
 
-  /* Position transform */
-  const getX = (i) => `translateX(calc(-${i * CARD_W_PERCENT}% + ${CARD_W_PERCENT}%))`;
+  // Initialisation au jeu du milieu (index 5)
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
 
-  /* Avance d'un pas */
-  const goTo = (i, animated = true) => {
-    setAnim(animated);
-    setIndex(i);
-    indexRef.current = i;
-  };
+    const init = () => {
+      const card = track.children[0];
+      if (!card) return;
+      const cardWidth = card.getBoundingClientRect().width + 20; // 20px gap
+      track.scrollLeft = cardWidth * TOTAL;
+    };
 
-  const next = () => { setPaused(true); goTo(indexRef.current + 1); };
-  const prev = () => { setPaused(true); goTo(indexRef.current - 1); };
+    init();
+    const t = setTimeout(init, 150);
+    return () => clearTimeout(t);
+  }, [TOTAL]);
 
-  /* Après transition : saut silencieux si on est sur un clone */
-  const onTransitionEnd = () => {
-    const cur = indexRef.current;
-    if (cur >= START_INDEX + TOTAL_REAL) {
-      // On vient de dépasser la fin → sauter au vrai début
-      goTo(START_INDEX, false);
-    } else if (cur < START_INDEX) {
-      // On vient de passer avant le début → sauter à la vraie fin
-      goTo(START_INDEX + TOTAL_REAL - 1, false);
+  // Rebouclage infini automatique lors du défilement
+  const handleScroll = () => {
+    const track = trackRef.current;
+    if (!track || isResettingRef.current) return;
+
+    const firstCard = track.children[0];
+    if (!firstCard) return;
+    const cardWidth = firstCard.getBoundingClientRect().width + 20;
+    const setWidth = cardWidth * TOTAL;
+
+    // Calcul du dot actif (0 à 4)
+    const rel = Math.round(track.scrollLeft / cardWidth) % TOTAL;
+    setActiveDot((rel + TOTAL) % TOTAL);
+
+    // Rebouclage sans à-coup si on dépasse le 2ème set ou avant le 1er
+    if (track.scrollLeft >= 2 * setWidth - 5) {
+      isResettingRef.current = true;
+      track.style.scrollBehavior = 'auto';
+      track.scrollLeft -= setWidth;
+      track.style.scrollBehavior = 'smooth';
+      setTimeout(() => { isResettingRef.current = false; }, 60);
+    } else if (track.scrollLeft <= 5) {
+      isResettingRef.current = true;
+      track.style.scrollBehavior = 'auto';
+      track.scrollLeft += setWidth;
+      track.style.scrollBehavior = 'smooth';
+      setTimeout(() => { isResettingRef.current = false; }, 60);
     }
   };
 
-  /* Autoplay */
+  // Autoplay toutes les 3.5s
   useEffect(() => {
-    if (paused) return;
-    timerRef.current = setInterval(() => goTo(indexRef.current + 1), 3200);
-    return () => clearInterval(timerRef.current);
-  }, [paused]);
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      const track = trackRef.current;
+      if (!track) return;
+      const card = track.children[0];
+      if (!card) return;
+      const cardWidth = card.getBoundingClientRect().width + 20;
+      track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    }, 3500);
 
-  /* Dot actif = position réelle dans EXPERTISES */
-  const activeDot = ((index - START_INDEX) % TOTAL_REAL + TOTAL_REAL) % TOTAL_REAL;
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
+  const prev = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[0];
+    if (!card) return;
+    const cardWidth = card.getBoundingClientRect().width + 20;
+    track.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+  };
+
+  const next = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[0];
+    if (!card) return;
+    const cardWidth = card.getBoundingClientRect().width + 20;
+    track.scrollBy({ left: cardWidth, behavior: 'smooth' });
+  };
+
+  const goToDot = (dotIndex) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.children[0];
+    if (!card) return;
+    const cardWidth = card.getBoundingClientRect().width + 20;
+    const setWidth = cardWidth * TOTAL;
+    track.scrollTo({ left: setWidth + dotIndex * cardWidth, behavior: 'smooth' });
+    setActiveDot(dotIndex);
+  };
 
   return (
     <div
       className="exp-carousel"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Bouton précédent */}
       <button className="exp-nav exp-nav-prev" onClick={prev} aria-label="Expertise précédente">
         <ChevronLeft size={22} />
       </button>
 
-      {/* Piste */}
-      <div className="exp-track-wrapper">
-        <div
-          ref={trackRef}
-          className="exp-track-inner"
-          style={{
-            transform: getX(index),
-            transition: anim ? 'transform 0.55s cubic-bezier(0.16,1,0.3,1)' : 'none',
-            width: `${SLIDES.length * CARD_W_PERCENT}%`,
-          }}
-          onTransitionEnd={onTransitionEnd}
-        >
-          {SLIDES.map((exp, i) => {
-            const realIdx = ((i - START_INDEX) % TOTAL_REAL + TOTAL_REAL) % TOTAL_REAL;
-            const isActive = i === index;
-            return (
-              <div
-                key={i}
-                className="exp-slide-wrapper"
-                style={{ width: `${100 / SLIDES.length}%` }}
-              >
-                <Link
-                  to="/services"
-                  className={`ph exp-slide ${isActive ? 'exp-slide-active' : ''}`}
-                  draggable={false}
-                  tabIndex={isActive ? 0 : -1}
-                >
-                  <img src={exp.img} alt={exp.title} style={{ objectPosition: exp.pos }} draggable={false} />
-                  <div className="sc" />
-                  <div className="ph-text">
-                    <span className="ph-number">{exp.num}</span>
-                    <b className="ph-title">{exp.title}</b>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+      {/* Piste avec uniquement les 5 cartes réelles répétées */}
+      <div
+        ref={trackRef}
+        className="exp-track"
+        onScroll={handleScroll}
+      >
+        {slides.map((exp, i) => (
+          <Link
+            key={i}
+            to="/services"
+            className="ph exp-slide"
+            draggable={false}
+          >
+            <img src={exp.img} alt={exp.title} style={{ objectPosition: exp.pos }} draggable={false} />
+            <div className="sc" />
+            <div className="ph-text">
+              <span className="ph-number">{exp.num}</span>
+              <b className="ph-title">{exp.title}</b>
+            </div>
+          </Link>
+        ))}
       </div>
 
       {/* Bouton suivant */}
@@ -133,13 +155,13 @@ function ExpertiseCarousel() {
         <ChevronRight size={22} />
       </button>
 
-      {/* Dots (sur les 5 items réels) */}
+      {/* 5 Dots indicateurs */}
       <div className="exp-dots">
         {EXPERTISES.map((_, i) => (
           <button
             key={i}
             className={`exp-dot ${i === activeDot ? 'exp-dot-active' : ''}`}
-            onClick={() => { setPaused(true); goTo(START_INDEX + i); }}
+            onClick={() => goToDot(i)}
             aria-label={`Expertise ${i + 1}`}
           />
         ))}

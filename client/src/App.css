@@ -4081,55 +4081,43 @@ details[open] .details-arrow {
 
 /* ============================================================
    EXPERTISE CAROUSEL — Section "Nos expertises" (Home)
-   Infinite loop via transform + clones
+   Défilement continu fluide — 5 expertises réelles uniquement
    ============================================================ */
 
 .exp-carousel {
   position: relative;
-  padding-bottom: 48px; /* espace pour les dots */
-  overflow: hidden;     /* cache les clones hors zone */
+  padding: 0 46px 48px;
+  margin: 0 -12px;
 }
 
-/* Zone visible : clip strict */
-.exp-track-wrapper {
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  /* padding latéral pour que les cartes adjacentes soient partiellement visibles */
-  padding: 8px 0 12px;
-}
-
-/* Piste interne déplaçée via transform */
-.exp-track-inner {
+.exp-track {
   display: flex;
-  gap: 0;
-  will-change: transform;
-  /* transition gérée inline en JS */
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 12px 4px;
 }
 
-/* Wrapper de chaque slide (pour le gap) */
-.exp-slide-wrapper {
-  flex-shrink: 0;
-  padding: 0 10px; /* gap entre cartes */
-  box-sizing: border-box;
+.exp-track::-webkit-scrollbar {
+  display: none;
 }
 
-/* Chaque slide hérite du style .ph existant + effets actif/inactif */
 .exp-slide {
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
-              box-shadow 0.4s ease,
-              opacity 0.4s ease,
-              border-color 0.3s ease !important;
-  opacity: 0.65;
-  transform: scale(0.95);
-  pointer-events: none;
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: 240px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
-.exp-slide.exp-slide-active {
-  opacity: 1;
-  transform: scale(1);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.3) !important;
+.exp-slide:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
   border-color: var(--color-orange) !important;
-  pointer-events: auto;
 }
 
 /* Boutons de navigation */
@@ -4160,8 +4148,8 @@ details[open] .details-arrow {
   box-shadow: 0 6px 20px rgba(232,113,43,0.35);
 }
 
-.exp-nav-prev { left: 4px; }
-.exp-nav-next { right: 4px; }
+.exp-nav-prev { left: 0; }
+.exp-nav-next { right: 0; }
 
 /* Dots indicateurs */
 .exp-dots {
@@ -4187,17 +4175,25 @@ details[open] .details-arrow {
 
 .exp-dot.exp-dot-active {
   background: var(--color-orange);
-  width: 20px;
+  width: 22px;
   border-radius: 4px;
 }
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
-  /* 2 cartes visibles sur tablette */
-  .exp-carousel .exp-track-wrapper { overflow: hidden; }
+  .exp-slide {
+    flex: 0 0 calc((100% - 20px) / 2);
+  }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 600px) {
+  .exp-carousel {
+    padding: 0 32px 44px;
+  }
+  .exp-slide {
+    flex: 0 0 100%;
+    min-width: 220px;
+  }
   .exp-nav { width: 36px; height: 36px; }
 }
 
