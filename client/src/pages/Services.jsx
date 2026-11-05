@@ -137,21 +137,56 @@ export default function Services() {
 
                   {service.highlights && service.highlights.length > 0 && (
                     <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                      gap: '12px',
-                      marginBottom: '10px',
+                      marginTop: '24px',
                       background: 'var(--theme-surface-alt)',
-                      padding: '16px 20px',
-                      borderRadius: '12px',
+                      padding: '24px',
+                      borderRadius: '16px',
                       border: '1px solid var(--theme-border)'
                     }}>
-                      {service.highlights.map((h, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13.5px', color: 'var(--theme-text)' }}>
-                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-orange)', flexShrink: 0 }} />
-                          <span>{h}</span>
-                        </div>
-                      ))}
+                      <div style={{
+                        fontSize: '11px',
+                        fontWeight: 800,
+                        letterSpacing: '1.5px',
+                        color: 'var(--color-orange)',
+                        textTransform: 'uppercase',
+                        marginBottom: '16px'
+                      }}>
+                        Domaines d'action & livrables clés
+                      </div>
+
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                        gap: '12px'
+                      }}>
+                        {service.highlights.map((h, i) => (
+                          <div
+                            key={i}
+                            className="service-highlight-chip"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              padding: '14px 18px',
+                              background: 'var(--theme-surface)',
+                              border: '1px solid var(--theme-border)',
+                              borderLeft: '4px solid var(--color-orange)',
+                              borderRadius: '10px',
+                              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                              transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease'
+                            }}
+                          >
+                            <span style={{
+                              fontSize: '14.5px',
+                              fontWeight: 600,
+                              color: 'var(--theme-text)',
+                              lineHeight: 1.45,
+                              letterSpacing: '-0.01em'
+                            }}>
+                              {h}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

@@ -4289,3 +4289,10 @@ details[open] .details-arrow {
     padding: 70px 20px 90px;
   }
 }
+
+/* Puces de livrables et expertises clés sur la page Services */
+.service-highlight-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-orange) !important;
+}
