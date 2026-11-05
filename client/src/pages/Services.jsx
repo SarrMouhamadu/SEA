@@ -93,17 +93,29 @@ export default function Services() {
   }, []);
 
   return (
-    <div className="services-page section">
-      <div className="container">
-        <div className="section-title-wrapper">
-          <span className="badge">Nos 6 Domaines d'Expertise Interne</span>
-          <h1 className="section-title">Pôles d'Expertise & Prestations</h1>
-          <p className="section-subtitle">
+    <div className="services-page">
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="services-hero">
+        <div className="services-hero-overlay" />
+        <div className="services-hero-content container">
+          <span className="services-hero-label">NOS EXPERTISES</span>
+          <h1 className="services-hero-title">
+            Pôles d'Expertise <span className="services-hero-accent">& Prestations</span>
+          </h1>
+          <p className="services-hero-sub">
             Une chaîne complète de compétences en ingénierie, conseil stratégique, finance climat et solutions digitales pour concrétiser vos objectifs durables.
           </p>
         </div>
+        {/* Vague décorative bas du hero */}
+        <svg className="services-hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" />
+        </svg>
+      </section>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      {/* ── LISTE DES PRESTATIONS ────────────────────────────── */}
+      <div className="section" style={{ paddingTop: '30px' }}>
+        <div className="container">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {services.map((service) => {
             const IconComp = icons[service.icon] || Zap;
             const anchorId = serviceAnchors[service.id] || service.slug;
@@ -189,5 +201,6 @@ export default function Services() {
         </div>
       </div>
     </div>
+  </div>
   );
 }
