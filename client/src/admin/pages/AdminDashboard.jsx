@@ -190,30 +190,36 @@ export default function AdminDashboard() {
             </h3>
           </div>
           <div className="admin-panel-body" style={{ padding: '16px 20px' }}>
-            {analytics.topPages?.map((p, idx) => {
-              const maxCount = analytics.topPages[0]?.count || 1;
-              const pct = Math.round((p.count / maxCount) * 100);
-              const labelMap = {
-                '/': 'Accueil SESA',
-                '/services': 'Nos Expertises',
-                '/secteurs': 'Nos Secteurs',
-                '/references': 'Références & Projets',
-                '/autodiagnostic': 'Outil Autodiagnostic',
-                '/contact': 'Page Contact',
-                '/a-propos': 'À Propos'
-              };
-              return (
-                <div key={idx} style={{ marginBottom: 14 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
-                    <span style={{ fontWeight: 600, color: '#fff' }}>{labelMap[p.path] || p.path}</span>
-                    <span style={{ color: 'var(--admin-text-muted)' }}>{p.count} vues</span>
+            {!analytics.topPages || analytics.topPages.length === 0 ? (
+              <div style={{ textAlign: 'center', color: 'var(--admin-text-subtle)', padding: '24px 0', fontSize: 13 }}>
+                Aucune visite enregistrée pour le moment
+              </div>
+            ) : (
+              analytics.topPages.map((p, idx) => {
+                const maxCount = analytics.topPages[0]?.count || 1;
+                const pct = Math.round((p.count / maxCount) * 100);
+                const labelMap = {
+                  '/': 'Accueil SESA',
+                  '/services': 'Nos Expertises',
+                  '/secteurs': 'Nos Secteurs',
+                  '/references': 'Références & Projets',
+                  '/autodiagnostic': 'Outil Autodiagnostic',
+                  '/contact': 'Page Contact',
+                  '/a-propos': 'À Propos'
+                };
+                return (
+                  <div key={idx} style={{ marginBottom: 14 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
+                      <span style={{ fontWeight: 600, color: '#fff' }}>{labelMap[p.path] || p.path}</span>
+                      <span style={{ color: 'var(--admin-text-muted)' }}>{p.count} vues</span>
+                    </div>
+                    <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${pct}%`, background: 'var(--admin-accent-blue)', borderRadius: 3 }} />
+                    </div>
                   </div>
-                  <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${pct}%`, background: 'var(--admin-accent-blue)', borderRadius: 3 }} />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
       </div>
@@ -533,3 +539,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

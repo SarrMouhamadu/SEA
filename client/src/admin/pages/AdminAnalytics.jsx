@@ -8,7 +8,6 @@ import {
   Smartphone,
   Tablet,
   Globe,
-  Share2,
   Calendar,
   Layers,
   ArrowUpRight,
@@ -183,37 +182,43 @@ export default function AdminAnalytics() {
             </h3>
           </div>
           <div className="admin-panel-body">
-            {topPages.map((page, idx) => {
-              const maxCount = topPages[0]?.count || 1;
-              const pct = Math.round((page.count / maxCount) * 100);
-              const sharePct = Math.round((page.count / totalVisits) * 100);
-              return (
-                <div key={idx} style={{ marginBottom: 16 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, fontSize: 13.5 }}>
-                    <div>
-                      <span style={{ fontWeight: 600, color: '#fff' }}>
-                        {pageNames[page.path] || page.path}
-                      </span>
-                      <code style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 8 }}>{page.path}</code>
+            {!topPages || topPages.length === 0 ? (
+              <div style={{ textAlign: 'center', color: 'var(--admin-text-subtle)', padding: '24px 0', fontSize: 13 }}>
+                Aucune visite enregistrée pour le moment
+              </div>
+            ) : (
+              topPages.map((page, idx) => {
+                const maxCount = topPages[0]?.count || 1;
+                const pct = Math.round((page.count / maxCount) * 100);
+                const sharePct = totalVisits > 0 ? Math.round((page.count / totalVisits) * 100) : 0;
+                return (
+                  <div key={idx} style={{ marginBottom: 16 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, fontSize: 13.5 }}>
+                      <div>
+                        <span style={{ fontWeight: 600, color: '#fff' }}>
+                          {pageNames[page.path] || page.path}
+                        </span>
+                        <code style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 8 }}>{page.path}</code>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <b style={{ color: '#fff' }}>{page.count} vues</b>
+                        <span style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 6 }}>({sharePct}%)</span>
+                      </div>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <b style={{ color: '#fff' }}>{page.count} vues</b>
-                      <span style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 6 }}>({sharePct}%)</span>
+                    <div style={{ height: 8, background: 'rgba(255,255,255,0.05)', borderRadius: 4, overflow: 'hidden' }}>
+                      <div
+                        style={{
+                          height: '100%',
+                          width: `${pct}%`,
+                          background: 'linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)',
+                          borderRadius: 4
+                        }}
+                      />
                     </div>
                   </div>
-                  <div style={{ height: 8, background: 'rgba(255,255,255,0.05)', borderRadius: 4, overflow: 'hidden' }}>
-                    <div
-                      style={{
-                        height: '100%',
-                        width: `${pct}%`,
-                        background: 'linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)',
-                        borderRadius: 4
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -256,60 +261,27 @@ export default function AdminAnalytics() {
             {/* Origine du trafic */}
             <div className="admin-detail-group">
               <h4>Canaux d'Acquisition (Referrers)</h4>
-              {Object.entries(referrerCounts).map(([ref, count], i) => {
-                const pct = Math.round((count / totalVisits) * 100);
-                return (
-                  <div key={i} className="admin-detail-row">
-                    <span className="admin-detail-label">{ref}</span>
-                    <span className="admin-detail-val">{count} visites ({pct}%)</span>
-                  </div>
-                );
-              })}
+              {Object.keys(referrerCounts).length === 0 ? (
+                <div style={{ color: 'var(--admin-text-subtle)', fontSize: 13, padding: '8px 0' }}>
+                  Aucune donnée de provenance pour le moment
+                </div>
+              ) : (
+                Object.entries(referrerCounts).map(([ref, count], i) => {
+                  const pct = totalVisits > 0 ? Math.round((count / totalVisits) * 100) : 0;
+                  return (
+                    <div key={i} className="admin-detail-row">
+                      <span className="admin-detail-label">{ref}</span>
+                      <span className="admin-detail-val">{count} visites ({pct}%)</span>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>
 
-      </div>
-
-      {/* Informations utiles & Conseils d'optimisation */}
-      <div className="admin-panel">
-        <div className="admin-panel-header">
-          <h3 className="admin-panel-title">
-            <Share2 size={18} color="var(--admin-accent-amber)" />
-            Informations utiles & Recommandations stratégiques
-          </h3>
-        </div>
-        <div className="admin-panel-body">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-            <div style={{ padding: 16, background: 'rgba(244, 119, 33, 0.08)', borderRadius: 8, border: '1px solid rgba(244, 119, 33, 0.2)' }}>
-              <b style={{ color: 'var(--admin-primary)', display: 'block', marginBottom: 6, fontSize: 14 }}>
-                Impact fort de l'Autodiagnostic
-              </b>
-              <p style={{ margin: 0, fontSize: 13, color: 'var(--admin-text-muted)', lineHeight: 1.5 }}>
-                L'outil d'autodiagnostic en ligne génère le plus fort taux de qualification commerciale avec des données précises (nom d'entreprise, factures énergétiques annuelles et besoins thermiques).
-              </p>
-            </div>
-
-            <div style={{ padding: 16, background: 'rgba(59, 130, 246, 0.08)', borderRadius: 8, border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-              <b style={{ color: 'var(--admin-accent-blue)', display: 'block', marginBottom: 6, fontSize: 14 }}>
-                Audience B2B majoritairement Desktop
-              </b>
-              <p style={{ margin: 0, fontSize: 13, color: 'var(--admin-text-muted)', lineHeight: 1.5 }}>
-                Plus de 65% des visites proviennent d'ordinateurs de bureau aux heures de travail, confirmant une consultation active par des directeurs d'usine, ingénieurs et responsables financiers.
-              </p>
-            </div>
-
-            <div style={{ padding: 16, background: 'rgba(16, 185, 129, 0.08)', borderRadius: 8, border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-              <b style={{ color: 'var(--admin-accent-green)', display: 'block', marginBottom: 6, fontSize: 14 }}>
-                Protection & Sécurité des données
-              </b>
-              <p style={{ margin: 0, fontSize: 13, color: 'var(--admin-text-muted)', lineHeight: 1.5 }}>
-                Toutes les coordonnées et bilans industriels sont stockés de façon sécurisée et isolés du public. Les exports CSV vous permettent de synchroniser ces leads avec votre CRM interne.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
 }
+
