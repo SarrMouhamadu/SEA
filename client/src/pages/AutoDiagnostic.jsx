@@ -182,7 +182,42 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      // 1. Enregistrement de l'autodiagnostic structuré pour l'administration
+      await fetch('/api/diagnostics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contact: {
+            nom: contactForm.nom,
+            email: contactForm.email,
+            telephone: contactForm.telephone,
+            fonction: contactForm.fonction,
+            recontact: contactForm.recontact,
+            theme: contactForm.theme || diagnosticResults.priorites[0]?.title,
+            echeance: contactForm.echeance,
+            commentaire: contactForm.message
+          },
+          generalInfo: {
+            nomEntreprise: generalInfo.nomEntreprise,
+            secteurActivite: generalInfo.secteurActivite,
+            pays: generalInfo.pays,
+            region: generalInfo.region,
+            factureAnnuelle: generalInfo.factureAnnuelle
+          },
+          scores: {
+            globalScore: diagnosticResults.globalScore,
+            niveau: diagnosticResults.appreciation?.level,
+            priorites: diagnosticResults.priorites?.map(p => ({
+              title: p.title,
+              scorePct: p.scorePct,
+              recommendation: p.recommendation
+            }))
+          }
+        })
+      });
+
+      // 2. Message de contact également
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

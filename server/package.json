@@ -4,8 +4,8 @@
   "description": "API REST Node.js / Express pour la refonte SEnergys Africa",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

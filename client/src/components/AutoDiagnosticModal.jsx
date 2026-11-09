@@ -35,16 +35,29 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
     setSubmitting(true);
 
     try {
-      await fetch('http://localhost:5000/api/contact', {
+      await fetch('/api/diagnostics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: contactData.name,
-          email: contactData.email,
-          phone: contactData.phone,
-          company: contactData.company,
-          subject: "Demande d'accompagnement (suite à l'Autodiagnostic)",
-          message: `Résultats de l'Autodiagnostic:\n- Secteur: ${answers.sector}\n- Enjeu prioritaire: ${answers.priority}\n- Énergie: ${answers.energyType}\n- Consommation: ${answers.budgetTier}`,
+          contact: {
+            nom: contactData.name,
+            email: contactData.email,
+            telephone: contactData.phone,
+            fonction: 'Demandeur accompagnement',
+            recontact: 'Suite à l\'Autodiagnostic rapide',
+            theme: answers.priority,
+            commentaire: `Secteur: ${answers.sector} | Énergie: ${answers.energyType} | Consommation: ${answers.budgetTier}`
+          },
+          generalInfo: {
+            nomEntreprise: contactData.company || 'Entreprise',
+            secteurActivite: answers.sector || 'Général',
+            factureAnnuelle: answers.budgetTier || 'Non précisé'
+          },
+          scores: {
+            globalScore: answers.score || 55,
+            niveau: 'Diagnostic express',
+            priorites: [{ title: answers.priority || 'Efficacité globale', scorePct: 50 }]
+          }
         }),
       });
     } catch (err) {
