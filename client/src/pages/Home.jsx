@@ -405,11 +405,23 @@ export default function Home() {
                 <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#3F7A5A' }}></i>
                 <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Énergie</b>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))', gap: '8px' }}>
-                <div className="lg" role="img" aria-label="Logo EMASOL" style={{ backgroundPosition: '22.222% 0' }}></div>
-                <div className="lg" role="img" aria-label="Logo CER2E" style={{ backgroundPosition: '0.000% 0' }}></div>
-                <div className="lg" role="img" aria-label="Logo HOUDATECH" style={{ backgroundPosition: '44.444% 0' }}></div>
+              <div className="lg" role="img" aria-label="Logo EMASOL" style={{ backgroundPosition: '22.222% 0' }}></div>
+            </div>
+
+            <div className="partner-box">
+              <div className="partner-box-header">
+                <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#3F7A5A' }}></i>
+                <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Énergie</b>
               </div>
+              <div className="lg" role="img" aria-label="Logo CER2E" style={{ backgroundPosition: '0.000% 0' }}></div>
+            </div>
+
+            <div className="partner-box">
+              <div className="partner-box-header">
+                <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#3F7A5A' }}></i>
+                <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Énergie</b>
+              </div>
+              <div className="lg" role="img" aria-label="Logo HOUDATECH" style={{ backgroundPosition: '44.444% 0' }}></div>
             </div>
 
             <div className="partner-box">
@@ -433,11 +445,23 @@ export default function Home() {
                 <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#E8712B' }}></i>
                 <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Projets & Équipements</b>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))', gap: '8px' }}>
-                <div className="lg" role="img" aria-label="Logo RDE" style={{ backgroundPosition: '66.667% 0' }}></div>
-                <div className="lg" role="img" aria-label="Logo YASKAWA" style={{ backgroundPosition: '33.333% 0' }}></div>
-                <div className="lt">APROSI</div>
+              <div className="lg" role="img" aria-label="Logo RDE" style={{ backgroundPosition: '66.667% 0' }}></div>
+            </div>
+
+            <div className="partner-box">
+              <div className="partner-box-header">
+                <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#E8712B' }}></i>
+                <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Projets & Équipements</b>
               </div>
+              <div className="lg" role="img" aria-label="Logo YASKAWA" style={{ backgroundPosition: '33.333% 0' }}></div>
+            </div>
+
+            <div className="partner-box">
+              <div className="partner-box-header">
+                <i style={{ width: 12, height: 12, borderRadius: '50%', background: '#E8712B' }}></i>
+                <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>Projets & Équipements</b>
+              </div>
+              <div className="lt">APROSI</div>
             </div>
           </div>
 

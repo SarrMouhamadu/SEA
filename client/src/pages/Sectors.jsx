@@ -1,213 +1,266 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Factory, Landmark, Fuel, Building, Globe2, ArrowRight, Check } from 'lucide-react';
+import {
+  Globe2, Factory, Landmark, Fuel, Building,
+  ArrowRight, Zap, BarChart3, Shield, Leaf,
+  TrendingUp, FileSearch, Sun, Cpu, Handshake,
+  CheckCircle2, ChevronRight
+} from 'lucide-react';
 
-const sectorIcons = {
-  Factory: Factory,
-  Landmark: Landmark,
-  Fuel: Fuel,
-  Building: Building,
-  Globe2: Globe2
-};
-
-const defaultSectors = [
+/* ─── Données statiques des 3 secteurs principaux ──────────── */
+const PRIMARY_SECTORS = [
   {
     id: 1,
-    slug: 'institutions-publiques',
-    title: 'Institutions Publiques & Gouvernementales',
-    subtitle: 'Ministères, agences étatiques, collectivités territoriales & bailleurs',
-    description: 'Accompagnement institutionnel de haut niveau pour élaborer les politiques publiques, structurer les programmes nationaux d\'efficacité énergétique et déployer les projets financés par les partenaires internationaux.',
-    icon: 'Globe2',
-    servicesList: [
-      'Élaboration de stratégies énergie-climat et industrie verte',
-      'Études sectorielles et diagnostics énergétiques territoriaux',
-      'Appui à la mise en œuvre des CDN et des politiques publiques',
-      'Planification énergétique et feuilles de route de transition',
-      'Structuration de programmes d\'efficacité énergétique',
-      'Appui technique aux projets financés par les partenaires (GIZ, AFD, UE, GCF, etc.)',
-      'Développement de cadres réglementaires et de normes (MEPS, étiquetage, etc.)'
-    ]
+    anchor: 'secteur-public',
+    icon: Globe2,
+    tag: 'MINISTÈRES · AGENCES · COLLECTIVITÉS',
+    title: 'Institutions Publiques',
+    desc: 'Accompagner les politiques publiques vers une transition énergétique durable et mesurable.',
+    expertises: [
+      { icon: Shield,     label: 'Stratégie énergie-climat' },
+      { icon: Zap,        label: 'Programmes d\'efficacité' },
+      { icon: CheckCircle2, label: 'Appui à la mise en œuvre' },
+    ],
+    // Dégradé propre à chaque carte
+    gradient: 'linear-gradient(160deg, #0d2a40 0%, #071321 60%)',
+    accentColor: '#F47721',
+    // Image de fond : photo libre de droit (Unsplash — licence libre)
+    bgUrl: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=70&auto=format&fit=crop',
   },
   {
     id: 2,
-    slug: 'industries-entreprises',
+    anchor: 'industrie',
+    icon: Factory,
+    tag: 'AGROALIMENTAIRE · CIMENTERIES · MINES',
     title: 'Industries & Grandes Entreprises',
-    subtitle: 'Agroalimentaire, cimenteries, chimie, mines & PME-PMI',
-    description: 'Intervention directe sur les procédés de production et utilités industrielles pour réduire durablement la facture énergétique, fiabiliser les installations et engager une décarbonation mesurable.',
-    icon: 'Factory',
-    servicesList: [
-      'Audits énergétiques industriels détaillés instrumentés',
-      'Mise en place de Systèmes de Management de l\'Énergie (ISO 50001)',
-      'Études d\'optimisation des utilités (air comprimé, vapeur, froid, récupération de chaleur)',
-      'Dimensionnement de solutions ENR (solaire PV, thermique, biomasse)',
-      'Plans de décarbonation industrielle et feuilles de route Net-Zero',
-      'Études technico-économiques et business cases bancables',
-      'Accompagnement à la certification environnementale',
-      'Formation opérationnelle et renforcement des capacités'
-    ]
+    desc: 'Optimiser les performances industrielles et accélérer la décarbonation.',
+    expertises: [
+      { icon: FileSearch, label: 'Audits énergétiques' },
+      { icon: Sun,        label: 'Solutions ENR' },
+      { icon: Leaf,       label: 'Décarbonation & Net-Zero' },
+    ],
+    gradient: 'linear-gradient(160deg, #0f1f10 0%, #071321 60%)',
+    accentColor: '#F47721',
+    bgUrl: 'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&q=70&auto=format&fit=crop',
   },
   {
     id: 3,
-    slug: 'institutions-financieres',
+    anchor: 'institutions-financieres',
+    icon: Landmark,
+    tag: 'BANQUES · FONDS · INVESTISSEURS',
     title: 'Institutions Financières',
-    subtitle: 'Banques commerciales, banques de développement & fonds d\'impact',
-    description: 'Expertise technique et climatique pour verdir les portefeuilles de crédit, sécuriser les investissements verts et structurer des instruments financiers innovants.',
-    icon: 'Landmark',
-    servicesList: [
-      'Appui à la structuration de lignes de financement vert',
-      'Élaboration de taxonomies climat et critères d\'éligibilité',
-      'Analyse technique des projets financés',
-      'Due diligence énergétique et environnementale (E&S)',
-      'Développement d\'outils de screening des projets',
-      'MRV (Monitoring Reporting Verification) climat',
-      'Formation des équipes bancaires aux projets d\'énergie durable',
-      'Développement de produits financiers innovants (ESCO, leasing vert…)'
-    ]
+    desc: 'Financer des projets verts, fiables et à fort impact climatique.',
+    expertises: [
+      { icon: TrendingUp, label: 'Éligibilité & taxonomie' },
+      { icon: BarChart3,  label: 'Analyse de projets' },
+      { icon: Handshake,  label: 'Produits financiers verts' },
+    ],
+    gradient: 'linear-gradient(160deg, #0d1a30 0%, #071321 60%)',
+    accentColor: '#F47721',
+    bgUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=70&auto=format&fit=crop',
   },
+];
+
+/* ─── Secteurs secondaires (2 cartes compactes) ─────────────── */
+const SECONDARY_SECTORS = [
   {
     id: 4,
-    slug: 'petrole-gaz-mines',
-    title: 'Pétrole, Gaz et Mines',
-    subtitle: 'Sites d\'extraction, raffineries, dépôts pétroliers & sites isolés',
-    description: 'Solutions d\'efficacité énergétique et de sécurisation des sites isolés et installations hydrocarbures.',
-    icon: 'Fuel',
-    servicesList: [
-      'Réduction du torchage et valorisation des gaz associés',
-      'Efficacité des groupes thermiques autonomes et utilités de site',
-      'Hybridation solaire photovoltaïque des exploitations minières',
-      'Audits de sécurité thermique et conformité ATEX'
-    ]
+    anchor: 'petrole-gaz-mines',
+    icon: Fuel,
+    title: 'Pétrole, Gaz & Mines',
+    subtitle: 'Sites d\'extraction, raffineries & sites isolés',
+    items: [
+      'Réduction du torchage & valorisation des gaz associés',
+      'Hybridation solaire des exploitations minières',
+      'Efficacité des groupes thermiques autonomes',
+      'Audits de sécurité thermique & conformité ATEX',
+    ],
   },
   {
     id: 5,
-    slug: 'batiments-tertiaire',
-    title: 'Bâtiments & Secteur Tertiaire',
+    anchor: 'batiments',
+    icon: Building,
+    title: 'Bâtiments & Tertiaire',
     subtitle: 'Sièges sociaux, hôtellerie, cliniques & centres commerciaux',
-    description: 'Pilotage énergétique global et optimisation du confort thermique des grands ensembles immobiliers.',
-    icon: 'Building',
-    servicesList: [
-      'Audits thermiques des enveloppes et systèmes CVC (climatisation)',
-      'Mise en place de GTB / GTC et smart metering télérelevé',
-      'Intégration d\'énergie solaire en toiture et ombrières de parking',
-      'Démarches d\'éco-labellisation et de certification bâtiment durable'
-    ]
-  }
+    items: [
+      'Audits thermiques des enveloppes & systèmes CVC',
+      'GTB / GTC & smart metering télérelevé',
+      'Énergie solaire en toiture & ombrières',
+      'Éco-labellisation & certification durable',
+    ],
+  },
 ];
 
-const sectorAnchors = {
-  1: 'secteur-public',
-  2: 'industrie',
-  3: 'institutions-financieres',
-  4: 'petrole-gaz-mines',
-  5: 'batiments'
-};
-
-export default function Sectors() {
-  const [sectors, setSectors] = useState(defaultSectors);
-
+/* ─── Hook Intersection Observer pour les animations ───────── */
+function useReveal() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    fetch('http://localhost:5000/api/sectors')
-      .then(res => res.json())
-      .then(json => {
-        if (json.data && json.data.length >= 5) {
-          setSectors(json.data);
-        }
-      })
-      .catch(() => {});
+    if (!ref.current) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    obs.observe(ref.current);
+    return () => obs.disconnect();
   }, []);
+  return [ref, visible];
+}
 
+/* ─── Composant carte secteur principale ────────────────────── */
+function PrimaryCard({ sector, index }) {
+  const [ref, visible] = useReveal();
+  const Icon = sector.icon;
   return (
-    <div className="sectors-page section">
-      <div className="container">
-        <div className="section-title-wrapper">
-          <span className="badge">Champs d'Application</span>
-          <h1 className="section-title">Secteurs d'Intervention</h1>
-          <p className="section-subtitle">
-            Des réponses sur mesure adaptées aux contraintes opérationnelles, thermiques et réglementaires de chaque filière économique.
-          </p>
+    <div
+      ref={ref}
+      id={sector.anchor}
+      className={`sector-primary-card ${visible ? 'sector-revealed' : ''}`}
+      style={{ transitionDelay: `${index * 120}ms`, scrollMarginTop: '90px' }}
+    >
+      {/* Image de fond */}
+      <div
+        className="sector-card-bg"
+        style={{ backgroundImage: `url(${sector.bgUrl})` }}
+        aria-hidden="true"
+      />
+      {/* Overlay dégradé */}
+      <div className="sector-card-overlay" style={{ background: sector.gradient }} aria-hidden="true" />
+
+      {/* Contenu */}
+      <div className="sector-card-body">
+        {/* Icône */}
+        <div className="sector-card-icon-wrap">
+          <Icon size={26} />
         </div>
 
-        <div className="grid-2">
-          {sectors.map((sector) => {
-            const Icon = sectorIcons[sector.icon] || Factory;
-            const anchorId = sectorAnchors[sector.id] || sector.slug;
+        {/* Tag clientèle */}
+        <p className="sector-card-tag">{sector.tag}</p>
+
+        {/* Titre */}
+        <h2 className="sector-card-title">{sector.title}</h2>
+
+        {/* Description */}
+        <p className="sector-card-desc">{sector.desc}</p>
+
+        {/* Expertises clés */}
+        <div className="sector-card-expertises">
+          {sector.expertises.map((exp, i) => {
+            const ExpIcon = exp.icon;
             return (
-              <div 
-                key={sector.id || sector.slug} 
-                id={anchorId}
-                className="card card-interactive" 
-                style={{ display: 'flex', flexDirection: 'column', scrollMarginTop: '100px' }}
-              >
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
-                  <div style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'rgba(232, 113, 43, 0.12)',
-                    color: 'var(--color-orange)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}>
-                    <Icon size={28} />
-                  </div>
-                  <div>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.65rem', color: 'var(--theme-text)', marginBottom: '4px', fontWeight: 700, lineHeight: 1.25 }}>
-                      {sector.title}
-                    </h3>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-                      {sector.subtitle || 'Pôle Sectoriel'}
-                    </span>
-                  </div>
-                </div>
-
-                <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.7', marginBottom: '20px', fontSize: '14.5px' }}>
-                  {sector.description}
-                </p>
-
-                {sector.servicesList && sector.servicesList.length > 0 && (
-                  <div style={{
-                    background: 'var(--theme-surface-alt)',
-                    padding: '18px 20px',
-                    borderRadius: '12px',
-                    marginBottom: '24px',
-                    border: '1px solid var(--theme-border)',
-                    flex: 1
-                  }}>
-                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-orange)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-                      Prestations & Expertises dédiées :
-                    </div>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      {sector.servicesList.map((srv, idx) => (
-                        <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '13.5px', color: 'var(--theme-text)', lineHeight: '1.45' }}>
-                          <Check size={16} color="var(--color-orange)" style={{ flexShrink: 0, marginTop: '2px' }} />
-                          <span>{srv}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-
+              <div key={i} className="sector-expertise-chip">
+                <ExpIcon size={14} className="sector-expertise-icon" />
+                <span>{exp.label}</span>
               </div>
             );
           })}
         </div>
 
-        {/* Bannière de contact sectoriel */}
-        <div className="card" style={{ marginTop: '60px', padding: '40px', background: 'var(--theme-surface-alt)', borderColor: 'var(--theme-border)', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--theme-text)', marginBottom: '12px', fontWeight: 700 }}>
-            Une approche sur mesure pour chaque réalité sectorielle
-          </h2>
-          <p style={{ color: 'var(--theme-text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-            Industriels, banques, ministères ou gestionnaires de grands ensembles : nos ingénieurs adaptent leurs audits et outils de diagnostic aux particularités de vos infrastructures.
-          </p>
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>
-            Consulter un expert sectoriel SESA <ArrowRight size={16} />
-          </Link>
+        {/* CTA */}
+        <Link to="/contact" className="sector-card-cta">
+          Explorer ce secteur <ChevronRight size={16} />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Composant carte secteur secondaire ────────────────────── */
+function SecondaryCard({ sector, index }) {
+  const [ref, visible] = useReveal();
+  const Icon = sector.icon;
+  return (
+    <div
+      ref={ref}
+      id={sector.anchor}
+      className={`sector-secondary-card ${visible ? 'sector-revealed' : ''}`}
+      style={{ transitionDelay: `${index * 100}ms`, scrollMarginTop: '90px' }}
+    >
+      <div className="sector-secondary-header">
+        <div className="sector-secondary-icon-wrap">
+          <Icon size={22} />
+        </div>
+        <div>
+          <h3 className="sector-secondary-title">{sector.title}</h3>
+          <p className="sector-secondary-subtitle">{sector.subtitle}</p>
         </div>
       </div>
+      <ul className="sector-secondary-list">
+        {sector.items.map((item, i) => (
+          <li key={i}>
+            <ChevronRight size={13} className="sector-li-arrow" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ─── Page principale ───────────────────────────────────────── */
+export default function Sectors() {
+  return (
+    <div className="sectors-v2">
+
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="sectors-hero">
+        <div className="sectors-hero-overlay" />
+        <div className="sectors-hero-content container">
+          <span className="sectors-hero-label">NOS SECTEURS</span>
+          <h1 className="sectors-hero-title">
+            Nos secteurs <span className="sectors-hero-accent">d'intervention</span>
+          </h1>
+          <p className="sectors-hero-sub">
+            Des solutions énergétiques et climatiques adaptées à chaque acteur.
+          </p>
+        </div>
+        {/* Vague décorative bas du hero */}
+        <svg className="sectors-hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#071321" />
+        </svg>
+      </section>
+
+      {/* ── SECTEURS PRINCIPAUX ──────────────────────────────── */}
+      <section className="sectors-primary-section">
+        <div className="container">
+          <div className="sectors-primary-grid">
+            {PRIMARY_SECTORS.map((s, i) => (
+              <PrimaryCard key={s.id} sector={s} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTEURS SECONDAIRES ─────────────────────────────── */}
+      <section className="sectors-secondary-section">
+        <div className="container">
+          <div className="sectors-secondary-grid">
+            {SECONDARY_SECTORS.map((s, i) => (
+              <SecondaryCard key={s.id} sector={s} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BANNIÈRE CONTACT ─────────────────────────────────── */}
+      <section className="sectors-cta-section">
+        <div className="container">
+          <div className="sectors-cta-box">
+            <div className="sectors-cta-glow" aria-hidden="true" />
+            <p className="sectors-cta-label">APPROCHE SUR MESURE</p>
+            <h2 className="sectors-cta-title">
+              Chaque secteur mérite une expertise dédiée.
+            </h2>
+            <p className="sectors-cta-desc">
+              Industriels, banques, ministères ou gestionnaires de grands ensembles : nos ingénieurs adaptent leurs audits et outils aux particularités de vos infrastructures.
+            </p>
+            <Link to="/contact" className="sectors-cta-btn">
+              Consulter un expert SESA <ArrowRight size={17} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
