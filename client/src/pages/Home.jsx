@@ -54,7 +54,7 @@ function ExpertiseCarousel() {
     if (!container) return;
 
     let animationFrameId;
-    const speed = 0.85; // Vitesse de lecture continue agréable (~50px/sec)
+    const speed = 0.6; // Vitesse de lecture continue douce et apaisée (~36px/sec)
 
     const step = () => {
       if (!isPaused && container) {
@@ -158,8 +158,8 @@ function ExpertiseCarousel() {
   );
 }
 
-/* ── Compteur avec animation d'incrémentation ────────────────── */
-function AnimatedCounter({ end, duration = 1800, start = 0, prefix = '', suffix = '', trigger = false }) {
+/* ── Compteur avec animation d'incrémentation progressive ──────── */
+function AnimatedCounter({ end, duration = 3200, start = 0, prefix = '', suffix = '', trigger = false }) {
   const [value, setValue] = useState(start);
 
   useEffect(() => {
@@ -168,12 +168,14 @@ function AnimatedCounter({ end, duration = 1800, start = 0, prefix = '', suffix 
     let startTimestamp = null;
     let animId;
 
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    // Easing progressif fluide : départ doux, incrémentation bien visible, atterrissage délicat
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const easedProgress = easeOutCubic(progress);
+      const easedProgress = easeInOutCubic(progress);
       const current = start + (end - start) * easedProgress;
 
       setValue(Math.round(current));
@@ -214,7 +216,7 @@ export default function Home() {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3, rootMargin: '0px 0px -40px 0px' }
     );
 
     if (kpiSectionRef.current) {
@@ -280,7 +282,7 @@ export default function Home() {
                   start={0}
                   end={2015}
                   prefix="Depuis "
-                  duration={1800}
+                  duration={3200}
                   trigger={kpiVisible}
                 />
               </div>
@@ -297,7 +299,7 @@ export default function Home() {
                   end={25}
                   prefix="Jusqu'à -"
                   suffix="%"
-                  duration={1800}
+                  duration={3200}
                   trigger={kpiVisible}
                 />
               </div>
@@ -314,7 +316,7 @@ export default function Home() {
                   end={95}
                   prefix="> "
                   suffix="%"
-                  duration={1800}
+                  duration={3200}
                   trigger={kpiVisible}
                 />
               </div>
@@ -331,7 +333,7 @@ export default function Home() {
                   end={50}
                   prefix="+"
                   suffix=" projets"
-                  duration={1800}
+                  duration={3200}
                   trigger={kpiVisible}
                 />
               </div>
