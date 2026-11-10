@@ -214,10 +214,6 @@ export default function Sectors() {
             Des solutions énergétiques et climatiques adaptées à chaque acteur.
           </p>
         </div>
-        {/* Vague décorative bas du hero */}
-        <svg className="sectors-hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#071321" />
-        </svg>
       </section>
 
       {/* ── SECTEURS PRINCIPAUX ──────────────────────────────── */}
