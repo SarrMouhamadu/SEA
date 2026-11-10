@@ -2886,6 +2886,47 @@
   box-shadow: 0 2px 8px rgba(200, 90, 50, 0.1);
 }
 
+/* Montant en toutes lettres en temps réel */
+.amount-in-words-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(232, 113, 43, 0.08);
+  border: 1px solid rgba(232, 113, 43, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--theme-text);
+  animation: fadeInWords 0.2s ease-out;
+}
+
+@keyframes fadeInWords {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.amount-in-words-pill .words-label {
+  font-weight: 600;
+  color: var(--color-orange);
+  white-space: nowrap;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.amount-in-words-pill .words-text {
+  font-weight: 700;
+  color: var(--theme-text);
+}
+
 /* Sections repliables (details / summary) */
 .autodiag-details-box {
   background: var(--theme-surface);

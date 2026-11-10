@@ -31,6 +31,7 @@ import {
   MODULES_CONFIG, 
   calculateAutoDiagnostic 
 } from '../data/autodiagnosticData';
+import { amountToWordsFCFA, quantityToWords } from '../utils/numberToWords';
 
 const STORAGE_KEY_PROFIL = 'sea_autodiag_profil_v1';
 const STORAGE_KEY_REPONSES = 'sea_autodiag_reponses_v1';
@@ -512,6 +513,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       onChange={handleProfilChange}
                       placeholder="Ex : 50 000 000"
                     />
+                    {amountToWordsFCFA(profil.factureElec) && (
+                      <div className="amount-in-words-pill">
+                        <span className="words-label">En lettres :</span>
+                        <strong className="words-text">{amountToWordsFCFA(profil.factureElec)}</strong>
+                      </div>
+                    )}
                     <div className="quick-presets">
                       <span className="preset-label">Exemples :</span>
                       <button type="button" onClick={() => setProfilValue('factureElec', 25000000)}>25M</button>
@@ -530,6 +537,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       onChange={handleProfilChange}
                       placeholder="Ex : 30 000 000"
                     />
+                    {amountToWordsFCFA(profil.factureComb) && (
+                      <div className="amount-in-words-pill">
+                        <span className="words-label">En lettres :</span>
+                        <strong className="words-text">{amountToWordsFCFA(profil.factureComb)}</strong>
+                      </div>
+                    )}
                     <div className="quick-presets">
                       <span className="preset-label">Exemples :</span>
                       <button type="button" onClick={() => setProfilValue('factureComb', 15000000)}>15M</button>
@@ -548,6 +561,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       onChange={handleProfilChange}
                       placeholder="Ex : 2 400 000"
                     />
+                    {quantityToWords(profil.consoElec, 'kWh / an') && (
+                      <div className="amount-in-words-pill">
+                        <span className="words-label">En lettres :</span>
+                        <strong className="words-text">{quantityToWords(profil.consoElec, 'kWh / an')}</strong>
+                      </div>
+                    )}
                   </div>
 
                   <div className="autodiag-field">
@@ -560,6 +579,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                       onChange={handleProfilChange}
                       placeholder="Ex : 60 000"
                     />
+                    {quantityToWords(profil.qGasoil, 'litres / an') && (
+                      <div className="amount-in-words-pill">
+                        <span className="words-label">En lettres :</span>
+                        <strong className="words-text">{quantityToWords(profil.qGasoil, 'litres / an')}</strong>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -580,6 +605,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                         onChange={handleProfilChange}
                         placeholder="Ex : 350 000"
                       />
+                      {quantityToWords(profil.qFuel, 'litres / an') && (
+                        <div className="amount-in-words-pill">
+                          <span className="words-label">En lettres :</span>
+                          <strong className="words-text">{quantityToWords(profil.qFuel, 'litres / an')}</strong>
+                        </div>
+                      )}
                     </div>
                     <div className="autodiag-field">
                       <label>Solaire photovoltaïque (kWc)</label>
@@ -591,6 +622,12 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                         onChange={handleProfilChange}
                         placeholder="Ex : 150"
                       />
+                      {quantityToWords(profil.solaireKwc, 'kWc') && (
+                        <div className="amount-in-words-pill">
+                          <span className="words-label">En lettres :</span>
+                          <strong className="words-text">{quantityToWords(profil.solaireKwc, 'kWc')}</strong>
+                        </div>
+                      )}
                     </div>
                     <div className="autodiag-field">
                       <label>Les eaux usées sont-elles traitées avant rejet ?</label>
