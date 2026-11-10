@@ -303,7 +303,7 @@ export default function Home() {
                   trigger={kpiVisible}
                 />
               </div>
-              <p className="kpi-desc">De réduction immédiate sur la facture combustible</p>
+              <p className="kpi-desc">De réduction immédiate sur la facture</p>
             </div>
 
             <div className="kpi-card">
