@@ -199,6 +199,7 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`[SERVER] SEnergyS Africa API démarrée sur http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`[SERVER] SEnergyS Africa API démarrée sur http://127.0.0.1:${PORT}`);
 });
+
