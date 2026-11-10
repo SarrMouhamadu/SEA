@@ -824,9 +824,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               <button type="button" onClick={() => setCurrentStep(8)} className="btn-pill btn-pill-outline-gold">
                 <ArrowLeft size={16} /> Revoir les questions
               </button>
-              <button type="button" onClick={() => setCurrentStep(10)} className="btn-pill btn-pill-orange">
-                Voir l'analyse détaillée & alertes <ArrowRight size={16} />
-              </button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
+                  <Printer size={16} /> Imprimer le rapport
+                </button>
+                <button type="button" onClick={() => setCurrentStep(10)} className="btn-pill btn-pill-orange">
+                  Voir l'analyse détaillée & alertes <ArrowRight size={16} />
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -898,9 +903,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               <button type="button" onClick={() => setCurrentStep(9)} className="btn-pill btn-pill-outline-gold">
                 <ArrowLeft size={16} /> Revenir à la synthèse
               </button>
-              <button type="button" onClick={() => setCurrentStep(11)} className="btn-pill btn-pill-orange">
-                Demander un accompagnement <ArrowRight size={16} />
-              </button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
+                  <Printer size={16} /> Imprimer le rapport
+                </button>
+                <button type="button" onClick={() => setCurrentStep(11)} className="btn-pill btn-pill-orange">
+                  Demander un accompagnement <ArrowRight size={16} />
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -1004,7 +1014,7 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                 </button>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
-                    <Printer size={16} /> Imprimer en PDF
+                    <Printer size={16} /> Imprimer le rapport PDF
                   </button>
                   {contactForm.recontact === 'Oui' && (
                     <button type="submit" className="btn-pill btn-pill-orange" disabled={contactStatus.loading}>
@@ -1016,6 +1026,156 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
             </form>
           </div>
         )}
+
+        {/* ========================================================================= */}
+        {/* RAPPORT OFFICIEL D'AUTODIAGNOSTIC POUR IMPRESSION / PDF                     */}
+        {/* ========================================================================= */}
+        <div className="autodiag-print-report" aria-hidden="true">
+          {/* En-tête officiel avec Logo et Métadonnées */}
+          <div className="print-header">
+            <div className="print-header-brand">
+              <img src="/assets/logo/logo-officiel.png" alt="SEnergyS Africa" className="print-logo" />
+              <div>
+                <div className="print-brand-title">SEnergyS Africa</div>
+                <div className="print-brand-subtitle">Ingénierie & Conseil en Développement Durable</div>
+              </div>
+            </div>
+            <div className="print-header-meta">
+              <div className="print-doc-badge">RAPPORT OFFICIEL D'AUTODIAGNOSTIC</div>
+              <div className="print-doc-date">Date : {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+              <div className="print-doc-ref">Réf : SESA-DIAG-{new Date().getFullYear()}-{profil.raisonSociale ? profil.raisonSociale.slice(0, 4).toUpperCase().replace(/[^A-Z0-9]/g, '') : 'ENTR'}</div>
+            </div>
+          </div>
+
+          <div className="print-divider" />
+
+          {/* 1. Identification de l'Organisation */}
+          <div className="print-section">
+            <h3 className="print-section-title">1. Identification de l'Organisation</h3>
+            <table className="print-table-info">
+              <tbody>
+                <tr>
+                  <td style={{ width: '50%' }}><strong>Raison sociale :</strong> {profil.raisonSociale || 'Non renseigné'}</td>
+                  <td style={{ width: '50%' }}><strong>Secteur d'activité :</strong> {profil.secteurActivite || 'Non renseigné'}</td>
+                </tr>
+                <tr>
+                  <td><strong>Localisation :</strong> {[profil.ville, profil.pays].filter(Boolean).join(', ') || 'Sénégal / UEMOA'}</td>
+                  <td><strong>Effectifs :</strong> {profil.trancheEffectif || 'Non renseigné'}</td>
+                </tr>
+                <tr>
+                  <td><strong>Contact référent :</strong> {[profil.nomPrenom, profil.fonction].filter(Boolean).join(' • ') || 'Direction / Responsable Technique'}</td>
+                  <td><strong>Coordonnées :</strong> {[profil.email, profil.telephone].filter(Boolean).join(' | ') || '—'}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* 2. Synthèse de Maturité & Indicateurs d'Impact */}
+          <div className="print-section">
+            <h3 className="print-section-title">2. Synthèse de Maturité & Indicateurs d'Impact</h3>
+            <div className="print-kpi-summary">
+              <div className="print-score-box">
+                <div className="print-score-val">{diagnosticResults.scoreGlobal} / 100</div>
+                <div className="print-score-level">{diagnosticResults.niveauGlobal.niveau}</div>
+                <div className="print-score-desc">« {diagnosticResults.niveauGlobal.desc} »</div>
+              </div>
+
+              <div className="print-kpi-grid">
+                <div className="print-kpi-item">
+                  <div className="print-kpi-label">Émissions Scope 1 (Combustibles)</div>
+                  <div className="print-kpi-val">{diagnosticResults.indicateurs.scope1.toLocaleString('fr-FR')} tCO₂e/an</div>
+                  <div className="print-kpi-sub">Combustibles directs déclarés</div>
+                </div>
+                <div className="print-kpi-item">
+                  <div className="print-kpi-label">Émissions Scope 2 (Électricité)</div>
+                  <div className="print-kpi-val">{diagnosticResults.indicateurs.scope2.toLocaleString('fr-FR')} tCO₂e/an</div>
+                  <div className="print-kpi-sub">Réseau électrique (mix 0,6 kg/kWh)</div>
+                </div>
+                <div className="print-kpi-item">
+                  <div className="print-kpi-label">Facture Énergétique Annuelle</div>
+                  <div className="print-kpi-val">{Math.round(diagnosticResults.indicateurs.factureTotale).toLocaleString('fr-FR')} FCFA</div>
+                  <div className="print-kpi-sub">Consolidation électricité + combustibles</div>
+                </div>
+                <div className="print-kpi-item highlight">
+                  <div className="print-kpi-label">Gisements d'Économies Estimés</div>
+                  <div className="print-kpi-val">
+                    {Math.round(diagnosticResults.indicateurs.economiesBas / 1000000).toLocaleString('fr-FR')} à {Math.round(diagnosticResults.indicateurs.economiesHaut / 1000000).toLocaleString('fr-FR')} M FCFA / an
+                  </div>
+                  <div className="print-kpi-sub">Réduction de facture de {Math.round(diagnosticResults.indicateurs.tauxBas * 100)}% à {Math.round(diagnosticResults.indicateurs.tauxHaut * 100)}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Évaluation par Dimension Technique */}
+          <div className="print-section">
+            <h3 className="print-section-title">3. Évaluation Détaillée par Dimension Technique</h3>
+            <table className="print-table-dimensions">
+              <thead>
+                <tr>
+                  <th style={{ width: '32%' }}>Dimension / Pôle</th>
+                  <th style={{ width: '12%', textAlign: 'center' }}>Score</th>
+                  <th style={{ width: '16%', textAlign: 'center' }}>Maturité</th>
+                  <th style={{ width: '40%' }}>Préconisation Technique</th>
+                </tr>
+              </thead>
+              <tbody>
+                {diagnosticResults.moduleResults.map((mod) => (
+                  <tr key={mod.id}>
+                    <td><strong>{mod.title}</strong></td>
+                    <td style={{ textAlign: 'center' }}><strong>{mod.scorePct}%</strong></td>
+                    <td style={{ textAlign: 'center' }}><span className="print-badge-level">{mod.niveau}</span></td>
+                    <td>{mod.recommandation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* 4. Alertes de Conformité & Opportunités Détectées */}
+          {diagnosticResults.alerts.length > 0 && (
+            <div className="print-section">
+              <h3 className="print-section-title">4. Alertes de Conformité & Opportunités Détectées</h3>
+              <div className="print-alerts-list">
+                {diagnosticResults.alerts.map((alt, i) => (
+                  <div key={i} className="print-alert-item">
+                    <strong>• {alt.title} :</strong> {alt.message}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 5. Plan d'Action Recommandé : Vos 3 Chantiers Prioritaires */}
+          <div className="print-section">
+            <h3 className="print-section-title">5. Plan d'Action Recommandé : Vos 3 Chantiers Prioritaires</h3>
+            <div className="print-priorities-list">
+              {diagnosticResults.priorites.map((p, idx) => (
+                <div key={p.id} className="print-priority-item">
+                  <div className="print-priority-header">
+                    <span className="print-priority-badge">PRIORITÉ N°{idx + 1} ({p.scorePct}%)</span>
+                    <strong>{p.title}</strong>
+                  </div>
+                  <p className="print-priority-desc">{p.recommandation}</p>
+                  <div className="print-priority-solution">
+                    <em>Accompagnement proposé par SEnergyS Africa :</em> <strong>{p.offreSE}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pied de page officiel du rapport */}
+          <div className="print-footer">
+            <div className="print-methodo">
+              <strong>Cadre méthodologique :</strong> Estimations calculées selon les facteurs d'émission GIEC 2006 et le mix électrique Senelec. Ce document est un rapport de diagnostic préliminaire d'aide à la décision. Il permet de calibrer les démarches d'audit énergétique certifié ISO 50001, de dimensionnement EnR ou de structuration de finance climat.
+            </div>
+            <div className="print-footer-brand">
+              <strong>SEnergyS Africa (SESA)</strong> — Société d'ingénierie et de conseil en développement durable<br />
+              Engagement contractuel sur les résultats • contact@senergysafrica.com • +221 77 483 31 31 • Dakar, Sénégal
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
