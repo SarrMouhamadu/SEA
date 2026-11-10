@@ -591,27 +591,10 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
                 {/* Bloc repliable pour les détails combustibles et installations secondaires */}
                 <details className="autodiag-details-box" style={{ marginTop: '16px' }}>
                   <summary className="autodiag-details-summary">
-                    <span>+ Préciser d'autres installations (Solaire, Eaux usées, Déchets, Fuel lourd...)</span>
+                    <span>+ Préciser d'autres installations (Solaire, Eaux usées, Déchets...)</span>
                     <ChevronDown size={15} className="details-arrow" />
                   </summary>
                   <div className="autodiag-form-grid" style={{ marginTop: '14px' }}>
-                    <div className="autodiag-field">
-                      <label>Fuel lourd (Litres)</label>
-                      <input
-                        type="number"
-                        min="0"
-                        name="qFuel"
-                        value={profil.qFuel || ''}
-                        onChange={handleProfilChange}
-                        placeholder="Ex : 350 000"
-                      />
-                      {quantityToWords(profil.qFuel, 'litres / an') && (
-                        <div className="amount-in-words-pill">
-                          <span className="words-label">En lettres :</span>
-                          <strong className="words-text">{quantityToWords(profil.qFuel, 'litres / an')}</strong>
-                        </div>
-                      )}
-                    </div>
                     <div className="autodiag-field">
                       <label>Solaire photovoltaïque (kWc)</label>
                       <input
