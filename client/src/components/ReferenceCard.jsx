@@ -46,15 +46,10 @@ export default function ReferenceCard({ item }) {
         {item.title}
       </h3>
 
-      {/* C. Informations contractuelles (Montant, Période, Durée) */}
-      <div className="ref-contract-block">
-        <div className="ref-contract-amount-row">
-          <span className="ref-contract-label">Montant du contrat</span>
-          <span className="ref-contract-val">{item.contractValue}</span>
-        </div>
-
-        {(item.period || hasDuration) && (
-          <div className="ref-contract-submeta">
+      {/* C. Informations contractuelles (Période, Durée) */}
+      {(item.period || hasDuration) && (
+        <div className="ref-contract-block">
+          <div className="ref-contract-submeta" style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
             {item.period && (
               <span className="ref-meta-item">
                 <Calendar size={13} />
@@ -68,8 +63,8 @@ export default function ReferenceCard({ item }) {
               </span>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* D. Principale réalisation */}
       {item.keyImpact && (

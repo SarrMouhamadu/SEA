@@ -78,10 +78,10 @@ export default function References() {
 
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
-              +280M FCFA
+              Multi-acteurs
             </div>
             <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
-              De contrats d'expertise exécutés
+              Bailleurs, Ministères & Industriels
             </div>
           </div>
 
