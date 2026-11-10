@@ -95,10 +95,6 @@ export default function Services() {
             Une chaîne complète de compétences en ingénierie, conseil stratégique, finance climat et solutions digitales pour concrétiser vos objectifs durables.
           </p>
         </div>
-        {/* Vague décorative bas du hero */}
-        <svg className="services-hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" />
-        </svg>
       </section>
 
       {/* ── LISTE DES PRESTATIONS ────────────────────────────── */}
