@@ -1,12 +1,77 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search, FileCheck2, Building2, Globe2, TrendingUp, Sparkles } from 'lucide-react';
 import ReferenceCard from '../components/ReferenceCard';
 import { officialReferences } from '../data/referencesData';
 
+/* ── Compteur avec animation d'incrémentation progressive ──────── */
+function AnimatedCounter({ end, duration = 2600, start = 0, prefix = '', suffix = '', trigger = false }) {
+  const [value, setValue] = useState(start);
+
+  useEffect(() => {
+    if (!trigger) return;
+
+    let startTimestamp = null;
+    let animId;
+
+    // Easing progressif fluide : départ doux, incrémentation bien visible, atterrissage délicat
+    const easeInOutCubic = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      const current = start + (end - start) * easedProgress;
+
+      setValue(Math.round(current));
+
+      if (progress < 1) {
+        animId = requestAnimationFrame(step);
+      } else {
+        setValue(end);
+      }
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [trigger, end, start, duration]);
+
+  return (
+    <span>
+      {prefix}{trigger ? value : start}{suffix}
+    </span>
+  );
+}
+
 export default function References() {
   const [sectorFilter, setSectorFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const kpiRef = useRef(null);
+  const [kpiVisible, setKpiVisible] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setKpiVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setKpiVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -20px 0px' }
+    );
+
+    if (kpiRef.current) {
+      observer.observe(kpiRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Filtrage combiné par catégorie et recherche par mot-clé, trié par montant décroissant
   const filteredProjects = useMemo(() => {
@@ -61,15 +126,18 @@ export default function References() {
         </div>
 
         {/* Bandeau Chiffres Clés Références */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '16px',
-          marginBottom: '40px'
-        }}>
+        <div
+          ref={kpiRef}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '16px',
+            marginBottom: '40px'
+          }}
+        >
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
-              20
+              <AnimatedCounter end={20} duration={2600} trigger={kpiVisible} />
             </div>
             <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Missions d'ingénierie & conseil
@@ -87,7 +155,7 @@ export default function References() {
 
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
-              100%
+              <AnimatedCounter end={100} suffix="%" duration={2600} trigger={kpiVisible} />
             </div>
             <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Livrables & cadres validés
