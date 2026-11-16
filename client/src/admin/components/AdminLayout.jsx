@@ -45,8 +45,8 @@ export default function AdminLayout() {
   const getPageTitle = () => {
     if (location.pathname === '/admin' || location.pathname === '/admin/') return 'Tableau de bord';
     if (location.pathname.startsWith('/admin/diagnostics')) return 'Autodiagnostics Industriels';
-    if (location.pathname.startsWith('/admin/contacts')) return 'Messages & Demandes de contact';
     if (location.pathname.startsWith('/admin/visites')) return 'Audience & Statistiques de visites';
+    if (location.pathname.startsWith('/admin/contacts')) return 'Contacts & Demandes reçues';
     return 'Administration';
   };
 
@@ -90,24 +90,24 @@ export default function AdminLayout() {
           </NavLink>
 
           <NavLink
-            to="/admin/contacts"
-            className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Mail size={18} />
-            <span>Messages reçus</span>
-            {badgeCounts.unreadContacts > 0 && (
-              <span className="admin-nav-badge highlight">{badgeCounts.unreadContacts}</span>
-            )}
-          </NavLink>
-
-          <NavLink
             to="/admin/visites"
             className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}
             onClick={() => setMobileMenuOpen(false)}
           >
             <BarChart3 size={18} />
             <span>Visites & Analytics</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/contacts"
+            className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Mail size={18} />
+            <span>Contacts</span>
+            {badgeCounts.unreadContacts > 0 && (
+              <span className="admin-nav-badge highlight">{badgeCounts.unreadContacts}</span>
+            )}
           </NavLink>
         </nav>
 
@@ -181,3 +181,4 @@ export default function AdminLayout() {
     </div>
   );
 }
+

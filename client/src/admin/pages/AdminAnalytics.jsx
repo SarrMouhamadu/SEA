@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   BarChart3,
   Users,
@@ -11,7 +12,9 @@ import {
   Calendar,
   Layers,
   ArrowUpRight,
-  Target
+  Target,
+  Mail,
+  ArrowRight
 } from 'lucide-react';
 import '../admin.css';
 
@@ -280,6 +283,23 @@ export default function AdminAnalytics() {
           </div>
         </div>
 
+      </div>
+
+      {/* Section Contact après Visites & Analytics */}
+      <div className="admin-panel" style={{ marginTop: 24, padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', background: 'linear-gradient(135deg, rgba(232, 113, 43, 0.08) 0%, rgba(13, 42, 64, 0.4) 100%)', borderColor: 'rgba(232, 113, 43, 0.25)' }}>
+        <div>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Mail size={18} color="var(--admin-primary)" />
+            Demandes de contact & Prospects qualifiés
+          </h3>
+          <p style={{ fontSize: 13, color: 'var(--admin-text-muted)', margin: 0 }}>
+            {totalContacts} messages reçus et formulaires de contact enregistrés sur la plateforme.
+          </p>
+        </div>
+        <Link to="/admin/contacts" className="admin-btn admin-btn-primary" style={{ textDecoration: 'none' }}>
+          <span>Consulter les contacts</span>
+          <ArrowRight size={15} />
+        </Link>
       </div>
     </div>
   );
