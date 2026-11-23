@@ -18,8 +18,13 @@
 
 # Protection des fichiers de configuration et base de données JSON
 <FilesMatch "(\.json|\.env|\.sql|\.log|\.ovhconfig)$">
-  Order allow,deny
-  Deny from all
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
 </FilesMatch>
 
 # En-têtes de sécurité
