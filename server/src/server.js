@@ -1,8 +1,56 @@
 const http = require('http');
 const url = require('url');
+const fs = require('fs');
+const path = require('path');
 const storage = require('./services/storage');
 
 const PORT = process.env.PORT || 5001;
+const DIST_DIR = path.resolve(__dirname, '../../client/dist');
+
+const mimeTypes = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.webp': 'image/webp',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf'
+};
+
+function serveStatic(req, res, pathname) {
+  let safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
+  let filePath = path.join(DIST_DIR, safePath);
+
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(DIST_DIR, 'index.html');
+  }
+
+  if (!fs.existsSync(filePath)) {
+    return sendJson(res, 404, { success: false, message: 'Fichier introuvable' });
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      return res.end('Erreur serveur');
+    }
+    res.writeHead(200, {
+      'Content-Type': contentType,
+      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000, immutable'
+    });
+    res.end(content);
+  });
+}
 
 // Données publiques par défaut
 const defaultCompany = {
@@ -281,6 +329,11 @@ const server = http.createServer(async (req, res) => {
     // 11. Public: Company
     if (pathname === '/api/company' && method === 'GET') {
       return sendJson(res, 200, { success: true, data: defaultCompany });
+    }
+
+    // En production : si la route n'est pas une route API et que client/dist existe, on sert le frontend React
+    if (!pathname.startsWith('/api') && fs.existsSync(DIST_DIR)) {
+      return serveStatic(req, res, pathname);
     }
 
     // Route 404

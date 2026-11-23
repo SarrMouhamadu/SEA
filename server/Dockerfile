@@ -9,4 +9,5 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["node", "src/index.js"]
+# Utilisation du serveur unifié avec gestion des routes et persistance
+CMD ["node", "src/server.js"]
