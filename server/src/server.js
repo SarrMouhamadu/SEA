@@ -359,10 +359,54 @@ const server = http.createServer(async (req, res) => {
     // 9. Public: POST /api/diagnostics
     if (pathname === '/api/diagnostics' && method === 'POST') {
       const body = await parseBody(req);
-      if (!body.contact || !body.contact.nom || !body.contact.email) {
-        return sendJson(res, 400, { success: false, message: 'Coordonnées (nom et email) obligatoires.' });
-      }
-      const saved = storage.addDiagnostic(body);
+      const contact = body.contact || {};
+      const generalInfo = body.generalInfo || {};
+      const scores = body.scores || {};
+
+      const nom = contact.nom || contact.name || contact.nomPrenom || 'Répondant Autodiagnostic';
+      const email = contact.email || 'contact-autodiag@senergysafrica.com';
+      const telephone = contact.telephone || contact.phone || '';
+      const nomEntreprise = generalInfo.nomEntreprise || contact.company || 'Entreprise non précisée';
+      const secteur = generalInfo.secteurActivite || 'Industrie & Énergie';
+      const scoreGlobal = scores.globalScore || scores.scoreGlobal || 50;
+      const niveau = scores.niveau || 'Évaluation standard';
+
+      const saved = storage.addDiagnostic({
+        contact: {
+          nom,
+          email,
+          telephone,
+          fonction: contact.fonction || '',
+          recontact: contact.recontact || 'Oui',
+          theme: contact.theme || 'Transition Énergétique',
+          echeance: contact.echeance || '',
+          commentaire: contact.commentaire || contact.message || ''
+        },
+        generalInfo: {
+          nomEntreprise,
+          secteurActivite: secteur,
+          pays: generalInfo.pays || 'Sénégal',
+          region: generalInfo.region || '',
+          factureAnnuelle: generalInfo.factureAnnuelle || ''
+        },
+        scores: {
+          globalScore: scoreGlobal,
+          niveau: niveau,
+          priorites: scores.priorites || []
+        },
+        reponses: body.reponses || []
+      });
+
+      // Notification miroir dans les messages de contact
+      storage.addContact({
+        name: nom,
+        email: email,
+        phone: telephone,
+        company: nomEntreprise,
+        subject: `[AUTODIAGNOSTIC] Score ${scoreGlobal}/100 - ${nomEntreprise}`,
+        message: `Nouvel autodiagnostic soumis en ligne :\n- Contact : ${nom}\n- Entreprise : ${nomEntreprise} (${secteur})\n- Email : ${email}\n- Téléphone : ${telephone || 'Non renseigné'}\n- Score : ${scoreGlobal}/100 (${niveau})`
+      });
+
       return sendJson(res, 201, {
         success: true,
         message: 'Votre autodiagnostic a été enregistré avec succès.',

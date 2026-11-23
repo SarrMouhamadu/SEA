@@ -34,34 +34,54 @@ export default function AutoDiagnosticModal({ isOpen, onClose }) {
     e.preventDefault();
     setSubmitting(true);
 
+    const contactNom = contactData.name?.trim() || 'Répondant Autodiagnostic Rapide';
+    const contactEmail = contactData.email?.trim() || 'contact@autodiag.sn';
+    const contactTel = contactData.phone?.trim() || '';
+    const entreprise = contactData.company?.trim() || 'Entreprise non précisée';
+
     try {
+      // 1. Enregistrement de l'autodiagnostic structuré pour l'administration
       await fetch('/api/diagnostics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contact: {
-            nom: contactData.name,
-            email: contactData.email,
-            telephone: contactData.phone,
-            fonction: 'Demandeur accompagnement',
-            recontact: 'Suite à l\'Autodiagnostic rapide',
-            theme: answers.priority,
+            nom: contactNom,
+            email: contactEmail,
+            telephone: contactTel,
+            fonction: 'Responsable',
+            recontact: 'Oui (demande accompagnement express)',
+            theme: answers.priority || 'Efficacité globale',
             commentaire: `Secteur: ${answers.sector} | Énergie: ${answers.energyType} | Consommation: ${answers.budgetTier}`
           },
           generalInfo: {
-            nomEntreprise: contactData.company || 'Entreprise',
-            secteurActivite: answers.sector || 'Général',
+            nomEntreprise: entreprise,
+            secteurActivite: answers.sector || 'Industrie & Services',
             factureAnnuelle: answers.budgetTier || 'Non précisé'
           },
           scores: {
-            globalScore: answers.score || 55,
-            niveau: 'Diagnostic express',
-            priorites: [{ title: answers.priority || 'Efficacité globale', scorePct: 50 }]
+            globalScore: 58,
+            niveau: 'Diagnostic Express',
+            priorites: [{ title: answers.priority || 'Efficacité énergétique', scorePct: 60 }]
           }
         }),
       });
+
+      // 2. Envoi comme message de contact pour notification instantanée dans le dashboard admin
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: contactNom,
+          email: contactEmail,
+          phone: contactTel,
+          company: entreprise,
+          subject: `[AUTODIAGNOSTIC EXPRESS] ${entreprise}`,
+          message: `Demande d'accompagnement express soumise via la modal :\n- Contact : ${contactNom}\n- Entreprise : ${entreprise}\n- Email : ${contactEmail}\n- Téléphone : ${contactTel}\n- Secteur : ${answers.sector}\n- Priorité : ${answers.priority}\n- Énergie : ${answers.energyType}\n- Consommation : ${answers.budgetTier}`
+        })
+      });
     } catch (err) {
-      console.log('Soumission locale enregistrée');
+      console.error('Erreur transmission modal autodiagnostic:', err);
     }
 
     setSubmitting(false);

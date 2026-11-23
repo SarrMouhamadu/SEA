@@ -88,12 +88,29 @@ export default function AutoDiagnostic() {
 
   // Demande de contact
   const [contactForm, setContactForm] = useState({
+    nom: '',
+    email: '',
+    telephone: '',
+    fonction: '',
+    nomEntreprise: '',
     recontact: 'Oui',
     theme: '',
     echeance: '',
     message: ''
   });
   const [contactStatus, setContactStatus] = useState({ loading: false, success: false, message: '' });
+
+  // Synchronisation des coordonnées du contact depuis le profil
+  useEffect(() => {
+    setContactForm(prev => ({
+      ...prev,
+      nom: prev.nom || profil.nomPrenom || '',
+      email: prev.email || profil.email || '',
+      telephone: prev.telephone || profil.telephone || '',
+      fonction: prev.fonction || profil.fonction || '',
+      nomEntreprise: prev.nomEntreprise || profil.raisonSociale || ''
+    }));
+  }, [profil]);
 
   // Sauvegarde automatique
   useEffect(() => {
@@ -159,82 +176,112 @@ export default function AutoDiagnostic() {
     e.preventDefault();
     setContactStatus({ loading: true, success: false, message: '' });
 
-    const payload = {
-      name: profil.nomPrenom || 'Répondant Autodiagnostic',
-      email: profil.email || 'non-renseigne@autodiag.sn',
-      phone: profil.telephone || '',
-      company: profil.raisonSociale || '',
-      subject: `[AUTODIAGNOSTIC] Score ${diagnosticResults.scoreGlobal}/100 - ${profil.raisonSociale || 'Entreprise'}`,
-      message: `RÉSULTATS DE L'AUTODIAGNOSTIC :
-Score Global : ${diagnosticResults.scoreGlobal}/100 (${diagnosticResults.niveauGlobal.niveau})
-Émissions Scopes 1 & 2 : ${diagnosticResults.indicateurs.totalScopes1Et2} tCO2e/an
-Facture énergétique : ${diagnosticResults.indicateurs.factureTotale.toLocaleString('fr-FR')} FCFA/an
-Fourchette d'économies : ${diagnosticResults.indicateurs.economiesBas.toLocaleString('fr-FR')} à ${diagnosticResults.indicateurs.economiesHaut.toLocaleString('fr-FR')} FCFA/an
+    const finalNom = contactForm.nom?.trim() || profil.nomPrenom?.trim() || 'Répondant Autodiagnostic';
+    const finalEmail = contactForm.email?.trim() || profil.email?.trim();
+    const finalTel = contactForm.telephone?.trim() || profil.telephone?.trim() || '';
+    const finalFonction = contactForm.fonction?.trim() || profil.fonction?.trim() || '';
+    const finalEntreprise = contactForm.nomEntreprise?.trim() || profil.raisonSociale?.trim() || 'Entreprise non précisée';
+    const finalSecteur = profil.secteurActivite || 'Industrie & Énergie';
+    const finalFacture = diagnosticResults.indicateurs?.factureTotale
+      ? `${diagnosticResults.indicateurs.factureTotale.toLocaleString('fr-FR')} FCFA/an`
+      : (profil.factureElec ? `${profil.factureElec} FCFA/an` : 'Non renseigné');
+    const finalScore = diagnosticResults.scoreGlobal || 0;
+    const finalNiveau = diagnosticResults.niveauGlobal?.niveau || 'Diagnostic complété';
 
-PRIORITÉS IDENTIFIÉES :
-1. ${diagnosticResults.priorites[0]?.title} (${diagnosticResults.priorites[0]?.scorePct}%)
-2. ${diagnosticResults.priorites[1]?.title} (${diagnosticResults.priorites[1]?.scorePct}%)
-3. ${diagnosticResults.priorites[2]?.title} (${diagnosticResults.priorites[2]?.scorePct}%)
+    if (!finalEmail) {
+      setContactStatus({
+        loading: false,
+        success: false,
+        message: "Veuillez renseigner votre adresse e-mail professionnelle pour transmettre votre demande."
+      });
+      return;
+    }
+
+    const payload = {
+      name: finalNom,
+      email: finalEmail,
+      phone: finalTel,
+      company: finalEntreprise,
+      subject: `[AUTODIAGNOSTIC] Score ${finalScore}/100 - ${finalEntreprise}`,
+      message: `RÉSULTATS DE L'AUTODIAGNOSTIC :
+Score Global : ${finalScore}/100 (${finalNiveau})
+Entreprise : ${finalEntreprise}
+Secteur : ${finalSecteur}
+Contact : ${finalNom} (${finalFonction || 'Responsable'})
+Email : ${finalEmail}
+Téléphone : ${finalTel}
+Facture énergétique : ${finalFacture}
 
 DEMANDE D'ÉCHANGE :
 Recontact souhaité : ${contactForm.recontact}
-Thème prioritaire : ${contactForm.theme || diagnosticResults.priorites[0]?.title}
+Thème prioritaire : ${contactForm.theme || diagnosticResults.priorites?.[0]?.title || 'Efficacité globale'}
 Échéance / Contrainte : ${contactForm.echeance || 'Non précisée'}
 Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
     };
 
     try {
-      // 1. Enregistrement de l'autodiagnostic structuré pour l'administration
-      await fetch('/api/diagnostics', {
+      // 1. Enregistrement de l'autodiagnostic structuré pour l'administration (/api/diagnostics)
+      const diagRes = await fetch('/api/diagnostics', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contact: {
-            nom: contactForm.nom,
-            email: contactForm.email,
-            telephone: contactForm.telephone,
-            fonction: contactForm.fonction,
+            nom: finalNom,
+            email: finalEmail,
+            telephone: finalTel,
+            fonction: finalFonction,
             recontact: contactForm.recontact,
-            theme: contactForm.theme || diagnosticResults.priorites[0]?.title,
-            echeance: contactForm.echeance,
-            commentaire: contactForm.message
+            theme: contactForm.theme || diagnosticResults.priorites?.[0]?.title || 'Efficacité globale',
+            echeance: contactForm.echeance || '',
+            commentaire: contactForm.message || ''
           },
           generalInfo: {
-            nomEntreprise: generalInfo.nomEntreprise,
-            secteurActivite: generalInfo.secteurActivite,
-            pays: generalInfo.pays,
-            region: generalInfo.region,
-            factureAnnuelle: generalInfo.factureAnnuelle
+            nomEntreprise: finalEntreprise,
+            secteurActivite: finalSecteur,
+            pays: profil.pays || 'Sénégal',
+            region: profil.ville || '',
+            factureAnnuelle: finalFacture
           },
           scores: {
-            globalScore: diagnosticResults.globalScore,
-            niveau: diagnosticResults.appreciation?.level,
-            priorites: diagnosticResults.priorites?.map(p => ({
+            globalScore: finalScore,
+            niveau: finalNiveau,
+            priorites: (diagnosticResults.priorites || []).map(p => ({
               title: p.title,
               scorePct: p.scorePct,
               recommendation: p.recommendation
             }))
-          }
+          },
+          reponses: reponses
         })
       });
 
-      // 2. Message de contact également
-      const res = await fetch('/api/contact', {
+      // 2. Message de contact également (/api/contact) pour notification immédiate dans le dashboard
+      const contactRes = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (data.success) {
-        setContactStatus({ loading: false, success: true, message: "Votre demande d'accompagnement et vos résultats ont été transmis avec succès. Notre équipe prendra contact avec vous." });
+      const data = await contactRes.json();
+
+      if (diagRes.ok || contactRes.ok) {
+        setContactStatus({
+          loading: false,
+          success: true,
+          message: "Votre autodiagnostic et vos coordonnées ont été transmis avec succès. Notre équipe prendra contact avec vous dans les plus brefs délais."
+        });
       } else {
-        setContactStatus({ loading: false, success: false, message: data.message || "Erreur lors de l'envoi." });
+        setContactStatus({
+          loading: false,
+          success: false,
+          message: data.message || "Erreur lors de la transmission. Veuillez réessayer."
+        });
       }
     } catch (err) {
+      console.error('Erreur transmission autodiagnostic:', err);
       setContactStatus({
         loading: false,
-        success: true,
-        message: "Votre synthèse a bien été enregistrée. Notre équipe SEnergyS Africa prendra contact avec vous."
+        success: false,
+        message: "Une erreur réseau est survenue lors de l'envoi. Veuillez vérifier votre connexion et réessayer."
       });
     }
   };
@@ -976,6 +1023,53 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
 
                     {contactForm.recontact === 'Oui' && (
                       <>
+                        <div className="autodiag-field">
+                          <label>Nom et Prénom <span className="req">*</span></label>
+                          <input
+                            type="text"
+                            name="nom"
+                            required
+                            value={contactForm.nom}
+                            onChange={(e) => setContactForm({ ...contactForm, nom: e.target.value })}
+                            placeholder="Ex : Moussa Diop"
+                          />
+                        </div>
+
+                        <div className="autodiag-field">
+                          <label>Email professionnel <span className="req">*</span></label>
+                          <input
+                            type="email"
+                            name="email"
+                            required
+                            value={contactForm.email}
+                            onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                            placeholder="m.diop@entreprise.sn"
+                          />
+                        </div>
+
+                        <div className="autodiag-field">
+                          <label>Téléphone / WhatsApp <span className="req">*</span></label>
+                          <input
+                            type="tel"
+                            name="telephone"
+                            required
+                            value={contactForm.telephone}
+                            onChange={(e) => setContactForm({ ...contactForm, telephone: e.target.value })}
+                            placeholder="+221 77 000 00 00"
+                          />
+                        </div>
+
+                        <div className="autodiag-field">
+                          <label>Entreprise / Raison sociale</label>
+                          <input
+                            type="text"
+                            name="nomEntreprise"
+                            value={contactForm.nomEntreprise}
+                            onChange={(e) => setContactForm({ ...contactForm, nomEntreprise: e.target.value })}
+                            placeholder="Ex : Société Agroalimentaire du Sénégal"
+                          />
+                        </div>
+
                         <div className="autodiag-field">
                           <label>Thème prioritaire d'échange</label>
                           <select 

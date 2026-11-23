@@ -536,21 +536,83 @@ if ($path === 'contact' && $method === 'POST') {
 // ── 11. PUBLIC : AUTODIAGNOSTIC ─────────────────────────────
 if ($path === 'diagnostics' && $method === 'POST') {
     $contact = isset($body['contact']) ? $body['contact'] : array();
-    if (empty($contact['nom']) || empty($contact['email'])) {
-        sendJson(array('success' => false, 'message' => 'Coordonnées (nom et email) obligatoires.'), 400);
-    }
+    $generalInfo = isset($body['generalInfo']) ? $body['generalInfo'] : array();
+    $scores = isset($body['scores']) ? $body['scores'] : array();
+
+    $nom = !empty($contact['nom']) ? $contact['nom'] : (!empty($contact['name']) ? $contact['name'] : (!empty($contact['nomPrenom']) ? $contact['nomPrenom'] : ''));
+    $email = !empty($contact['email']) ? $contact['email'] : '';
+    $tel = !empty($contact['telephone']) ? $contact['telephone'] : (!empty($contact['phone']) ? $contact['phone'] : '');
+    $fonction = !empty($contact['fonction']) ? $contact['fonction'] : '';
+    $recontact = !empty($contact['recontact']) ? $contact['recontact'] : 'Oui';
+    $theme = !empty($contact['theme']) ? $contact['theme'] : 'Transition Énergétique';
+    $echeance = !empty($contact['echeance']) ? $contact['echeance'] : '';
+    $commentaire = !empty($contact['commentaire']) ? $contact['commentaire'] : (!empty($contact['message']) ? $contact['message'] : '');
+
+    $entreprise = !empty($generalInfo['nomEntreprise']) ? $generalInfo['nomEntreprise'] : (!empty($contact['company']) ? $contact['company'] : (!empty($generalInfo['company']) ? $generalInfo['company'] : 'Entreprise non précisée'));
+    $secteur = !empty($generalInfo['secteurActivite']) ? $generalInfo['secteurActivite'] : 'Industrie & Énergie';
+    $pays = !empty($generalInfo['pays']) ? $generalInfo['pays'] : 'Sénégal';
+    $region = !empty($generalInfo['region']) ? $generalInfo['region'] : '';
+    $facture = !empty($generalInfo['factureAnnuelle']) ? $generalInfo['factureAnnuelle'] : '';
+
+    $scoreGlobal = isset($scores['globalScore']) ? intval($scores['globalScore']) : (isset($scores['scoreGlobal']) ? intval($scores['scoreGlobal']) : 50);
+    $niveau = !empty($scores['niveau']) ? $scores['niveau'] : 'Évaluation standard';
+
+    $cleanContact = array(
+        'nom' => $nom ?: 'Répondant Autodiagnostic',
+        'email' => $email ?: 'contact-autodiag@senergysafrica.com',
+        'telephone' => $tel,
+        'fonction' => $fonction,
+        'recontact' => $recontact,
+        'theme' => $theme,
+        'echeance' => $echeance,
+        'commentaire' => $commentaire
+    );
+
+    $cleanGeneralInfo = array(
+        'nomEntreprise' => $entreprise,
+        'secteurActivite' => $secteur,
+        'pays' => $pays,
+        'region' => $region,
+        'factureAnnuelle' => $facture
+    );
+
+    $cleanScores = array(
+        'globalScore' => $scoreGlobal,
+        'niveau' => $niveau,
+        'priorites' => isset($scores['priorites']) ? $scores['priorites'] : array()
+    );
+
     $newDiag = array(
         'id' => 'diag-' . time() . '-' . mt_rand(100, 999),
-        'contact' => $contact,
+        'contact' => $cleanContact,
+        'generalInfo' => $cleanGeneralInfo,
+        'scores' => $cleanScores,
         'reponses' => isset($body['reponses']) ? $body['reponses'] : array(),
-        'resultats' => isset($body['resultats']) ? $body['resultats'] : array(),
         'status' => 'new',
         'created_at' => date('c')
     );
+
     if (!isset($db['diagnostics'])) $db['diagnostics'] = array();
     array_unshift($db['diagnostics'], $newDiag);
+
+    // Notification miroir dans les messages de contact pour visibilité immédiate dans le Dashboard
+    $newContactNotif = array(
+        'id' => 'c-' . time() . '-' . mt_rand(100, 999),
+        'name' => $cleanContact['nom'],
+        'email' => $cleanContact['email'],
+        'phone' => $cleanContact['telephone'],
+        'company' => $cleanGeneralInfo['nomEntreprise'],
+        'subject' => "[AUTODIAGNOSTIC] Score " . $scoreGlobal . "/100 - " . $cleanGeneralInfo['nomEntreprise'],
+        'message' => "Nouvel autodiagnostic soumis en ligne :\n- Contact : " . $cleanContact['nom'] . ($cleanContact['fonction'] ? " (" . $cleanContact['fonction'] . ")" : "") . "\n- Entreprise : " . $cleanGeneralInfo['nomEntreprise'] . " (" . $cleanGeneralInfo['secteurActivite'] . ")\n- Email : " . $cleanContact['email'] . "\n- Téléphone : " . ($cleanContact['telephone'] ?: 'Non renseigné') . "\n- Score Global : " . $scoreGlobal . "/100 (" . $niveau . ")\n- Facture énergétique : " . ($cleanGeneralInfo['factureAnnuelle'] ?: 'Non renseignée') . "\n- Recontact : " . $cleanContact['recontact'] . "\n- Thème : " . $cleanContact['theme'] . "\n- Échéance : " . ($cleanContact['echeance'] ?: 'Non précisée') . "\n- Commentaire : " . ($cleanContact['commentaire'] ?: 'Aucun commentaire') . "\n\n(Détail complet disponible dans l'onglet Autodiagnostics)",
+        'status' => 'new',
+        'created_at' => date('c')
+    );
+
+    if (!isset($db['contacts'])) $db['contacts'] = array();
+    array_unshift($db['contacts'], $newContactNotif);
+
     writeDB($dbFile, $db);
-    sendJson(array('success' => true, 'message' => 'Autodiagnostic enregistré.', 'data' => $newDiag), 201);
+    sendJson(array('success' => true, 'message' => 'Autodiagnostic enregistré avec succès.', 'data' => $newDiag), 201);
 }
 
 // ── 12. PUBLIC : ANALYTICS ──────────────────────────────────
