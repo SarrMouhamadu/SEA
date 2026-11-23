@@ -18,48 +18,7 @@ import {
   Users
 } from 'lucide-react';
 
-const OPEN_POSITIONS = [
-  {
-    id: 'pos-1',
-    title: 'Ingénieur Efficacité Énergétique & Procédés Thermiques',
-    pole: 'Énergie Durable & Industrie',
-    location: 'Diamniadio / Dakar (Sénégal) & Déplacements régionaux',
-    type: 'CDI - Temps Plein',
-    experience: '3 à 5 ans d’expérience',
-    description: 'Vous piloterez des missions d’audit énergétique instrumenté (ISO 50001), des études de récupération de chaleur fatale et l’optimisation des chaudières et réseaux vapeur industriels.',
-    tags: ['ISO 50001', 'Thermique industrielle', 'Audit instrumenté', 'Décarbonation']
-  },
-  {
-    id: 'pos-2',
-    title: 'Consultant Senior Finance Durable, Climat & ESG',
-    pole: 'Finance Durable & Climat',
-    location: 'Dakar (Sénégal) / Télétravail partiel possible',
-    type: 'CDI - Temps Plein',
-    experience: '4 à 7 ans d’expérience',
-    description: 'Accompagnement d’institutions financières, banques régionales et fonds verts dans l’évaluation des risques climatiques, les systèmes ESMS et l’éligibilité aux financements climat.',
-    tags: ['Taxonomie Verte', 'ESMS', 'Fonds Verts Climat', 'Marchés Carbone']
-  },
-  {
-    id: 'pos-3',
-    title: 'Technicien Supérieur Combustion & Brûleurs Industriels',
-    pole: 'Production Propre',
-    location: 'Dakar & Sites industriels (Sénégal & Sous-région)',
-    type: 'CDI - Temps Plein',
-    experience: '2 à 5 ans d’expérience',
-    description: 'Installation, réglage de combustion, mise en service et maintenance préventive/curative des brûleurs gaz, fioul lourd et bicarburation haute performance.',
-    tags: ['Brûleurs TBG/TBL', 'Régulation O₂', 'Maintenance industrielle', 'Éco-efficacité']
-  },
-  {
-    id: 'pos-4',
-    title: 'Chef de Projet Énergies Renouvelables & Hybridation',
-    pole: 'Énergie Durable',
-    location: 'Dakar & Missions UEMOA',
-    type: 'CDI - Temps Plein',
-    experience: '3 ans minimum',
-    description: 'Dimensionnement technique et suivi de réalisation de centrales solaires photovoltaïques en toiture industrielle, ombrières et systèmes hybrides diesel-solaire.',
-    tags: ['PV Syst / AutoCAD', 'Hybridation solaire', 'AMO EnR', 'Rentabilité LCOE']
-  }
-];
+const OPEN_POSITIONS = [];
 
 export default function Careers() {
   const [openPositions, setOpenPositions] = useState(OPEN_POSITIONS);
@@ -80,12 +39,12 @@ export default function Careers() {
     fetch('/api/careers/jobs')
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setOpenPositions(data.data);
         }
       })
       .catch((err) => {
-        console.warn('Impossible de charger les offres depuis l’API, utilisation des offres par défaut:', err);
+        console.warn('Impossible de charger les offres depuis l’API:', err);
       })
       .finally(() => {
         setLoadingPositions(false);
@@ -233,18 +192,24 @@ export default function Careers() {
             la décarbonation industrielle et l'impact climatique concret en Afrique de l'Ouest.
           </p>
           <div style={{ marginTop: '24px', display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-            <a href="#offres" className="btn-pill btn-pill-orange">
-              Voir nos opportunités <ArrowRight size={16} />
+            <a href="#formulaire-candidature" className="btn-pill btn-pill-orange">
+              Déposer une candidature spontanée <ArrowRight size={16} />
             </a>
-            <a href="#formulaire-candidature" className="btn-pill btn-pill-outline-gold">
-              Candidature spontanée
-            </a>
+            {openPositions.length > 0 ? (
+              <a href="#offres" className="btn-pill btn-pill-outline-gold">
+                Voir nos opportunités ({openPositions.length})
+              </a>
+            ) : (
+              <a href="#valeurs" className="btn-pill btn-pill-outline-gold">
+                Découvrir nos métiers
+              </a>
+            )}
           </div>
         </div>
       </section>
 
       {/* ── POURQUOI REJOINDRE SESA ───────────────────────────────── */}
-      <section className="careers-values-section">
+      <section id="valeurs" className="careers-values-section">
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 40px auto' }}>
             <span className="section-label" style={{ color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '12px', fontWeight: 700 }}>
@@ -320,16 +285,44 @@ export default function Careers() {
               </h2>
             </div>
             <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)' }}>
-              {openPositions.length} {openPositions.length > 1 ? 'offres actuellement à pourvoir' : 'offre actuellement à pourvoir'}
+              {openPositions.length === 0
+                ? 'Aucune opportunité ouverte pour le moment'
+                : (openPositions.length > 1 ? `${openPositions.length} offres actuellement à pourvoir` : '1 offre actuellement à pourvoir')}
             </span>
           </div>
 
           <div className="careers-jobs-list">
             {openPositions.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px', background: 'var(--theme-surface-alt)', borderRadius: 'var(--radius-md)' }}>
-                <p style={{ color: 'var(--theme-text-muted)', fontSize: '15px' }}>
-                  Aucune offre spécifique ouverte pour le moment. Vous pouvez néanmoins déposer une candidature spontanée ci-dessous.
+              <div style={{
+                textAlign: 'center',
+                padding: '48px 24px',
+                background: 'var(--theme-surface-alt)',
+                border: '1px solid var(--theme-border)',
+                borderRadius: 'var(--radius-lg)'
+              }}>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(237, 107, 35, 0.12)',
+                  color: 'var(--color-orange)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '16px'
+                }}>
+                  <Briefcase size={28} />
+                </div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '10px', color: 'var(--theme-text)' }}>
+                  Aucune offre d'emploi n'est ouverte pour le moment
+                </h3>
+                <p style={{ color: 'var(--theme-text-muted)', fontSize: '14.5px', maxWidth: '580px', margin: '0 auto 24px auto', lineHeight: 1.6 }}>
+                  Il n’y a pas de poste vacant immédiatement ouvert, mais nous sommes constamment en quête de talents engagés pour accélérer la transition énergétique et écologique en Afrique.
+                  N’hésitez pas à nous soumettre votre <strong>candidature spontanée</strong> !
                 </p>
+                <a href="#formulaire-candidature" className="btn-pill btn-pill-orange">
+                  Déposer une candidature spontanée <ArrowRight size={15} />
+                </a>
               </div>
             ) : (
               openPositions.map((job) => (
@@ -418,11 +411,11 @@ export default function Careers() {
                     onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                     required
                   >
+                    <option value="Candidature Spontanée">Candidature Spontanée (Profil général)</option>
+                    <option value="Stage PFE / Alternance">Stage de Fin d’Études / Alternance</option>
                     {openPositions.map((p) => (
                       <option key={p.id} value={p.title}>{p.title}</option>
                     ))}
-                    <option value="Candidature Spontanée">Candidature Spontanée (Profil général)</option>
-                    <option value="Stage PFE / Alternance">Stage de Fin d’Études / Alternance</option>
                   </select>
                 </div>
 

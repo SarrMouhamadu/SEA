@@ -3,56 +3,8 @@ const path = require('path');
 
 const DB_FILE = path.join(__dirname, '../../data/db.json');
 
-const defaultJobOffers = [
-  {
-    id: 'job-1',
-    title: 'Ingénieur Efficacité Énergétique & Procédés Thermiques',
-    pole: 'Énergie Durable & Industrie',
-    location: 'Diamniadio / Dakar (Sénégal) & Déplacements régionaux',
-    type: 'CDI - Temps Plein',
-    experience: '3 à 5 ans d’expérience',
-    description: 'Vous piloterez des missions d’audit énergétique instrumenté (ISO 50001), des études de récupération de chaleur fatale et l’optimisation des chaudières et réseaux vapeur industriels.',
-    tags: ['ISO 50001', 'Thermique industrielle', 'Audit instrumenté', 'Décarbonation'],
-    active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'job-2',
-    title: 'Consultant Senior Finance Durable, Climat & ESG',
-    pole: 'Finance Durable & Climat',
-    location: 'Dakar (Sénégal) / Télétravail partiel possible',
-    type: 'CDI - Temps Plein',
-    experience: '4 à 7 ans d’expérience',
-    description: 'Accompagnement d’institutions financières, banques régionales et fonds verts dans l’évaluation des risques climatiques, les systèmes ESMS et l’éligibilité aux financements climat.',
-    tags: ['Taxonomie Verte', 'ESMS', 'Fonds Verts Climat', 'Marchés Carbone'],
-    active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'job-3',
-    title: 'Technicien Supérieur Combustion & Brûleurs Industriels',
-    pole: 'Production Propre',
-    location: 'Dakar & Sites industriels (Sénégal & Sous-région)',
-    type: 'CDI - Temps Plein',
-    experience: '2 à 5 ans d’expérience',
-    description: 'Installation, réglage de combustion, mise en service et maintenance préventive/curative des brûleurs gaz, fioul lourd et bicarburation haute performance.',
-    tags: ['Brûleurs TBG/TBL', 'Régulation O₂', 'Maintenance industrielle', 'Éco-efficacité'],
-    active: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'job-4',
-    title: 'Chef de Projet Énergies Renouvelables & Hybridation',
-    pole: 'Énergie Durable',
-    location: 'Dakar & Missions UEMOA',
-    type: 'CDI - Temps Plein',
-    experience: '3 ans minimum',
-    description: 'Dimensionnement technique et suivi de réalisation de centrales solaires photovoltaïques en toiture industrielle, ombrières et systèmes hybrides diesel-solaire.',
-    tags: ['PV Syst / AutoCAD', 'Hybridation solaire', 'AMO EnR', 'Rentabilité LCOE'],
-    active: true,
-    created_at: new Date().toISOString()
-  }
-];
+// Liste des offres d'emploi par défaut (vide initialement)
+const defaultJobOffers = [];
 
 // Données initiales vierges
 const initialData = {
