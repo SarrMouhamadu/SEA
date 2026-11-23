@@ -1,0 +1,13 @@
+{
+  "admin": {
+    "email": "admin@senergysafrica.com",
+    "password": "admin123",
+    "name": "Administrateur SESA",
+    "role": "Super Admin"
+  },
+  "contacts": [],
+  "diagnostics": [],
+  "visits": [],
+  "careers": [],
+  "jobs": []
+}
