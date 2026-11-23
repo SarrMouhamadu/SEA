@@ -14,8 +14,11 @@ import {
   Calendar,
   ChevronRight,
   Briefcase,
-  Newspaper
+  Newspaper,
+  Printer,
+  Download
 } from 'lucide-react';
+import { printDiagnosticReport } from '../../utils/diagnosticReportGenerator';
 import '../admin.css';
 
 export default function AdminDashboard() {
@@ -294,13 +297,22 @@ export default function AdminDashboard() {
                         {formatDate(d.created_at)}
                       </td>
                       <td>
-                        <button
-                          onClick={() => setSelectedDiag(d)}
-                          className="admin-btn-icon"
-                          title="Voir le diagnostic complet"
-                        >
-                          <Eye size={16} />
-                        </button>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          <button
+                            onClick={() => printDiagnosticReport(d)}
+                            className="admin-btn-icon"
+                            title="Télécharger / Imprimer le rapport officiel (PDF)"
+                          >
+                            <Printer size={15} />
+                          </button>
+                          <button
+                            onClick={() => setSelectedDiag(d)}
+                            className="admin-btn-icon"
+                            title="Voir le diagnostic complet"
+                          >
+                            <Eye size={15} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -543,6 +555,17 @@ export default function AdminDashboard() {
               )}
             </div>
             <div className="admin-modal-footer">
+              <button
+                type="button"
+                onClick={() => printDiagnosticReport(selectedDiag)}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginRight: 'auto' }}
+                title="Générer et télécharger le rapport officiel au format PDF"
+              >
+                <Printer size={16} />
+                Télécharger le rapport (PDF)
+              </button>
+
               <a
                 href={`mailto:${selectedDiag.contact?.email}?subject=Suite à votre autodiagnostic SEnergyS Africa`}
                 className="admin-btn admin-btn-primary"

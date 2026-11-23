@@ -12,8 +12,11 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
-  ChevronDown
+  ChevronDown,
+  Printer,
+  FileText
 } from 'lucide-react';
+import { printDiagnosticReport } from '../../utils/diagnosticReportGenerator';
 import '../admin.css';
 
 export default function AdminDiagnostics() {
@@ -263,6 +266,13 @@ export default function AdminDiagnostics() {
                     <td>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button
+                          onClick={() => printDiagnosticReport(d)}
+                          className="admin-btn-icon"
+                          title="Télécharger / Imprimer le rapport officiel (PDF)"
+                        >
+                          <Printer size={15} />
+                        </button>
+                        <button
                           onClick={() => setSelectedDiag(d)}
                           className="admin-btn-icon"
                           title="Voir la synthèse complète"
@@ -417,6 +427,17 @@ export default function AdminDiagnostics() {
                   <option value="archived">Archivé</option>
                 </select>
               </div>
+
+              <button
+                type="button"
+                onClick={() => printDiagnosticReport(selectedDiag)}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                title="Générer et télécharger le rapport officiel au format PDF"
+              >
+                <Printer size={16} />
+                Télécharger le rapport (PDF)
+              </button>
 
               <a
                 href={`mailto:${selectedDiag.contact?.email}?subject=Suite à votre autodiagnostic SEnergyS Africa (${selectedDiag.generalInfo?.nomEntreprise || ''})`}
