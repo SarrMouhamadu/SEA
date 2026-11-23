@@ -1,0 +1,21 @@
+{
+  "name": "sea-senergys-africa",
+  "version": "1.0.0",
+  "description": "SEnergyS Africa - Plateforme officielle (Frontend React & Backend Node.js)",
+  "scripts": {
+    "dev": "npm run dev --prefix client",
+    "start": "npm run dev --prefix client",
+    "server": "node server/src/server.js",
+    "client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client"
+  },
+  "keywords": [
+    "senergys",
+    "africa",
+    "react",
+    "node",
+    "api"
+  ],
+  "author": "SEnergyS Africa",
+  "license": "ISC"
+}
