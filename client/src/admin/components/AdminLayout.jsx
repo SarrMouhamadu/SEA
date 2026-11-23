@@ -11,7 +11,8 @@ import {
   Activity,
   Menu,
   X,
-  Briefcase
+  Briefcase,
+  Newspaper
 } from 'lucide-react';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import '../admin.css';
@@ -46,6 +47,7 @@ export default function AdminLayout() {
 
   const getPageTitle = () => {
     if (location.pathname === '/admin' || location.pathname === '/admin/') return 'Tableau de bord';
+    if (location.pathname.startsWith('/admin/articles')) return 'Articles & Actualités';
     if (location.pathname.startsWith('/admin/diagnostics')) return 'Autodiagnostics Industriels';
     if (location.pathname.startsWith('/admin/visites')) return 'Audience & Statistiques de visites';
     if (location.pathname.startsWith('/admin/contacts')) return 'Contacts & Demandes reçues';
@@ -78,6 +80,15 @@ export default function AdminLayout() {
           >
             <LayoutDashboard size={18} />
             <span>Tableau de bord</span>
+          </NavLink>
+
+          <NavLink
+            to="/admin/articles"
+            className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Newspaper size={18} />
+            <span>Articles & Actualités</span>
           </NavLink>
 
           <NavLink

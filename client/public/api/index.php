@@ -52,12 +52,57 @@ function sendJson($data, $status = 200) {
     exit;
 }
 
+function getDefaultArticles() {
+    return array(
+        array(
+            'id' => 'art-1',
+            'title' => "Participation au Forum Énergie & Climat d'Afrique de l'Ouest",
+            'category' => 'Événement',
+            'date' => '15 Octobre 2026',
+            'summary' => "SEnergyS Africa est intervenue lors de la table ronde sur la décarbonation des filières industrielles et l'accès aux financements climat concessionnels.",
+            'content' => "SEnergyS Africa a pris part aux travaux de haut niveau du Forum Énergie & Climat d'Afrique de l'Ouest. Nos experts ont partagé leurs retours d'expérience sur la mise en œuvre de diagnostics énergétiques industriels et la structuration de plans de transition bas-carbone.\n\nLes échanges ont notamment porté sur la mobilisation des guichets de refinancement vert et les opportunités offertes par le marché carbone (Article 6) pour accélérer l'investissement dans les technologies propres en zone UEMOA.",
+            'location' => 'Dakar, Sénégal',
+            'author' => 'Direction Technique SESA',
+            'imageUrl' => '',
+            'published' => true,
+            'created_at' => '2026-10-15T10:00:00Z'
+        ),
+        array(
+            'id' => 'art-2',
+            'title' => "Lancement de la plateforme propriétaire e-Audit pour les PME-PMI",
+            'category' => 'Innovation',
+            'date' => '28 Septembre 2026',
+            'summary' => "Notre outil digital permet désormais aux équipes techniques d'accélérer les diagnostics énergétiques terrain et de suivre en direct leurs ratios de performance ISO 50001.",
+            'content' => "Dans le cadre de son pôle Innovation et Outils Digitaux, SEnergyS Africa déploie officiellement sa suite logicielle e-Audit.\n\nCette solution permet un recueil automatisé des données de consommation sur site, l'analyse en temps réel des courbes de charge thermique et électrique, et l'édition instantanée des plans de comptage conformes aux exigences de la norme ISO 50001.",
+            'location' => 'Diamniadio, Sénégal',
+            'author' => 'Équipe R&D SESA',
+            'imageUrl' => '',
+            'published' => true,
+            'created_at' => '2026-09-28T09:00:00Z'
+        ),
+        array(
+            'id' => 'art-3',
+            'title' => "Atelier de Renforcement des Capacités : Analyse des Projets Verts pour Banques",
+            'category' => 'Formation',
+            'date' => '12 Septembre 2026',
+            'summary' => "Formation certifiante dispensée à plus de 40 analystes et gestionnaires de risques de banques partenaires sur les critères d'éligibilité et la taxonomie verte.",
+            'content' => "SEnergyS Africa a animé un cycle intensif de formation dédié aux cadres dirigeants et analystes crédits du secteur bancaire ouest-africain.\n\nAu programme : méthodologies d'évaluation des risques environnementaux et sociaux (E&S), calcul des tonnes de CO2 évitées par projet, et conformité avec les taxonomies des bailleurs internationaux (GCF, AFD, BAD).",
+            'location' => "Abidjan, Côte d'Ivoire",
+            'author' => 'Pôle Finance Durable SESA',
+            'imageUrl' => '',
+            'published' => true,
+            'created_at' => '2026-09-12T14:30:00Z'
+        )
+    );
+}
+
 $db = readDB($dbFile);
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Extraction du chemin après /api
+// Extraction du chemin après /api ou /index.php
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = preg_replace('#^.*?/api/?#i', '', $uri);
+$path = preg_replace('#^.*?index\.php/?#i', '', $path);
 $path = trim($path, '/');
 
 // Récupération du body JSON
@@ -120,6 +165,7 @@ if ($path === 'admin/dashboard' && $method === 'GET') {
     $contacts = isset($db['contacts']) ? $db['contacts'] : array();
     $diagnostics = isset($db['diagnostics']) ? $db['diagnostics'] : array();
     $careers = isset($db['careers']) ? $db['careers'] : array();
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
 
     $cleanCareers = array();
     foreach ($careers as $c) {
@@ -143,6 +189,7 @@ if ($path === 'admin/dashboard' && $method === 'GET') {
         'newDiagnostics' => 0,
         'totalCareers' => count($careers),
         'newCareers' => 0,
+        'totalArticles' => count($articles),
         'conversionRate' => $conversionRate,
         'topPages' => array(
             array('path' => '/', 'count' => max(1, $totalVisits)),
@@ -334,7 +381,94 @@ if (preg_match('#^admin/jobs/([^/]+)$#', $path, $m)) {
     }
 }
 
-// ── 8. PUBLIC : OFFRES D'EMPLOI ─────────────────────────────
+// ── 7bis. ADMIN : ARTICLES & ACTUALITÉS ─────────────────────
+if ($path === 'admin/articles' && $method === 'GET') {
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
+    sendJson(array('success' => true, 'data' => $articles));
+}
+
+if ($path === 'admin/articles' && $method === 'POST') {
+    if (empty($body['title'])) {
+        sendJson(array('success' => false, 'message' => "Le titre de l'article est obligatoire."), 400);
+    }
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
+    $newArticle = array(
+        'id' => 'art-' . time() . '-' . mt_rand(100, 999),
+        'title' => $body['title'],
+        'category' => !empty($body['category']) ? $body['category'] : 'Actualité',
+        'date' => !empty($body['date']) ? $body['date'] : date('d/m/Y'),
+        'summary' => isset($body['summary']) ? $body['summary'] : '',
+        'content' => isset($body['content']) ? $body['content'] : '',
+        'location' => !empty($body['location']) ? $body['location'] : 'Dakar, Sénégal',
+        'author' => !empty($body['author']) ? $body['author'] : 'Direction Technique SESA',
+        'imageUrl' => isset($body['imageUrl']) ? $body['imageUrl'] : '',
+        'published' => isset($body['published']) ? (bool)$body['published'] : true,
+        'created_at' => date('c')
+    );
+    array_unshift($articles, $newArticle);
+    $db['articles'] = $articles;
+    writeDB($dbFile, $db);
+    sendJson(array('success' => true, 'message' => "Article publié avec succès", 'data' => $newArticle), 201);
+}
+
+if (preg_match('#^admin/articles/([^/]+)$#', $path, $m)) {
+    $id = $m[1];
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
+    if ($method === 'GET') {
+        foreach ($articles as $a) {
+            if ($a['id'] == $id) {
+                sendJson(array('success' => true, 'data' => $a));
+            }
+        }
+        sendJson(array('success' => false, 'message' => 'Article non trouvé'), 404);
+    }
+    if ($method === 'PATCH') {
+        foreach ($articles as &$a) {
+            if ($a['id'] == $id) {
+                if (isset($body['title'])) $a['title'] = $body['title'];
+                if (isset($body['category'])) $a['category'] = $body['category'];
+                if (isset($body['date'])) $a['date'] = $body['date'];
+                if (isset($body['summary'])) $a['summary'] = $body['summary'];
+                if (isset($body['content'])) $a['content'] = $body['content'];
+                if (isset($body['location'])) $a['location'] = $body['location'];
+                if (isset($body['author'])) $a['author'] = $body['author'];
+                if (isset($body['imageUrl'])) $a['imageUrl'] = $body['imageUrl'];
+                if (isset($body['published'])) $a['published'] = (bool)$body['published'];
+                $db['articles'] = $articles;
+                writeDB($dbFile, $db);
+                sendJson(array('success' => true, 'message' => "Article mis à jour", 'data' => $a));
+            }
+        }
+        sendJson(array('success' => false, 'message' => 'Article non trouvé'), 404);
+    }
+    if ($method === 'DELETE') {
+        $db['articles'] = array_values(array_filter($articles, function($a) use ($id) { return $a['id'] != $id; }));
+        writeDB($dbFile, $db);
+        sendJson(array('success' => true, 'message' => "Article supprimé"));
+    }
+}
+
+// ── 8. PUBLIC : ARTICLES & ACTUALITÉS ───────────────────────
+if ($path === 'articles' && $method === 'GET') {
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
+    $published = array_values(array_filter($articles, function($a) {
+        return !isset($a['published']) || $a['published'] !== false;
+    }));
+    sendJson(array('success' => true, 'data' => $published));
+}
+
+if (preg_match('#^articles/([^/]+)$#', $path, $m)) {
+    $id = $m[1];
+    $articles = isset($db['articles']) && is_array($db['articles']) ? $db['articles'] : getDefaultArticles();
+    foreach ($articles as $a) {
+        if ($a['id'] == $id && (!isset($a['published']) || $a['published'] !== false)) {
+            sendJson(array('success' => true, 'data' => $a));
+        }
+    }
+    sendJson(array('success' => false, 'message' => 'Article non trouvé ou non publié'), 404);
+}
+
+// ── 8bis. PUBLIC : OFFRES D'EMPLOI ──────────────────────────
 if ($path === 'careers/jobs' && $method === 'GET') {
     $jobs = isset($db['jobs']) ? $db['jobs'] : array();
     $active = array();

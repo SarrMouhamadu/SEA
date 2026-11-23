@@ -10,6 +10,7 @@ import AdminDiagnostics from './admin/pages/AdminDiagnostics';
 import AdminContacts from './admin/pages/AdminContacts';
 import AdminAnalytics from './admin/pages/AdminAnalytics';
 import AdminCareers from './admin/pages/AdminCareers';
+import AdminArticles from './admin/pages/AdminArticles';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -72,6 +73,7 @@ export default function App() {
               }
             >
               <Route index element={<AdminDashboard />} />
+              <Route path="articles" element={<AdminArticles />} />
               <Route path="diagnostics" element={<AdminDiagnostics />} />
               <Route path="contacts" element={<AdminContacts />} />
               <Route path="carrieres" element={<AdminCareers />} />

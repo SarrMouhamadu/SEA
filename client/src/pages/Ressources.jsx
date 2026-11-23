@@ -1,31 +1,37 @@
-import React, { useState } from 'react';
-import { Calendar, FileText, Download, ArrowRight, BookOpen, Tag, Newspaper, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, FileText, Download, ArrowRight, BookOpen, Tag, Newspaper, MapPin, X, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const newsList = [
+const defaultNewsList = [
   {
-    id: 1,
+    id: "art-1",
     title: "Participation au Forum Énergie & Climat d'Afrique de l'Ouest",
     category: "Événement",
     date: "15 Octobre 2026",
     summary: "SEnergyS Africa est intervenue lors de la table ronde sur la décarbonation des filières industrielles et l'accès aux financements climat concessionnels.",
-    location: "Dakar, Sénégal"
+    content: "SEnergyS Africa a pris part aux travaux de haut niveau du Forum Énergie & Climat d'Afrique de l'Ouest. Nos experts ont partagé leurs retours d'expérience sur la mise en œuvre de diagnostics énergétiques industriels et la structuration de plans de transition bas-carbone.\n\nLes échanges ont notamment porté sur la mobilisation des guichets de refinancement vert et les opportunités offertes par le marché carbone (Article 6) pour accélérer l'investissement dans les technologies propres en zone UEMOA.",
+    location: "Dakar, Sénégal",
+    author: "Direction Technique SESA"
   },
   {
-    id: 2,
+    id: "art-2",
     title: "Lancement de la plateforme propriétaire e-Audit pour les PME-PMI",
     category: "Innovation",
     date: "28 Septembre 2026",
     summary: "Notre outil digital permet désormais aux équipes techniques d'accélérer les diagnostics énergétiques terrain et de suivre en direct leurs ratios de performance ISO 50001.",
-    location: "Diamniadio, Sénégal"
+    content: "Dans le cadre de son pôle Innovation et Outils Digitaux, SEnergyS Africa déploie officiellement sa suite logicielle e-Audit.\n\nCette solution permet un recueil automatisé des données de consommation sur site, l'analyse en temps réel des courbes de charge thermique et électrique, et l'édition instantanée des plans de comptage conformes aux exigences de la norme ISO 50001.",
+    location: "Diamniadio, Sénégal",
+    author: "Équipe R&D SESA"
   },
   {
-    id: 3,
+    id: "art-3",
     title: "Atelier de Renforcement des Capacités : Analyse des Projets Verts pour Banques",
     category: "Formation",
     date: "12 Septembre 2026",
     summary: "Formation certifiante dispensée à plus de 40 analystes et gestionnaires de risques de banques partenaires sur les critères d'éligibilité et la taxonomie verte.",
-    location: "Abidjan, Côte d'Ivoire"
+    content: "SEnergyS Africa a animé un cycle intensif de formation dédié aux cadres dirigeants et analystes crédits du secteur bancaire ouest-africain.\n\nAu programme : méthodologies d'évaluation des risques environnementaux et sociaux (E&S), calcul des tonnes de CO2 évitées par projet, et conformité avec les taxonomies des bailleurs internationaux (GCF, AFD, BAD).",
+    location: "Abidjan, Côte d'Ivoire",
+    author: "Pôle Finance Durable SESA"
   }
 ];
 
@@ -70,6 +76,19 @@ const publicationsList = [
 
 export default function Ressources() {
   const [pubFilter, setPubFilter] = useState('all');
+  const [articles, setArticles] = useState(defaultNewsList);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/articles')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setArticles(json.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredPubs = pubFilter === 'all'
     ? publicationsList
@@ -99,11 +118,11 @@ export default function Ressources() {
           </div>
 
           <div className="grid-3">
-            {newsList.map((item) => (
+            {articles.map((item) => (
               <div key={item.id} className="card card-interactive" style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                   <span className="badge" style={{ fontSize: '11px', padding: '4px 10px' }}>
-                    {item.category}
+                    {item.category || 'Actualité'}
                   </span>
                   <span style={{ fontSize: '12px', color: 'var(--theme-text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Calendar size={13} /> {item.date}
@@ -120,11 +139,16 @@ export default function Ressources() {
 
                 <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--theme-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '12px', color: 'var(--color-orange)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    <MapPin size={12} style={{ flexShrink: 0 }} /> {item.location}
+                    <MapPin size={12} style={{ flexShrink: 0 }} /> {item.location || 'Dakar, Sénégal'}
                   </span>
-                  <Link to="/contact" className="nav-dropdown-item" style={{ padding: '4px 8px', fontSize: '12px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    En savoir plus <ArrowRight size={13} />
-                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedArticle(item)}
+                    className="nav-dropdown-item"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', fontSize: '12px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--color-navy)' }}
+                  >
+                    Lire l'article <ArrowRight size={13} />
+                  </button>
                 </div>
               </div>
             ))}
@@ -216,6 +240,101 @@ export default function Ressources() {
             Recevoir nos prochaines publications techniques <ArrowRight size={16} />
           </Link>
         </div>
+
+        {/* Modal de Lecture Complète d'Article */}
+        {selectedArticle && (
+          <div
+            onClick={() => setSelectedArticle(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px'
+            }}
+          >
+            <div
+              className="card"
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: '720px',
+                width: '100%',
+                maxHeight: '88vh',
+                overflowY: 'auto',
+                padding: '32px',
+                position: 'relative',
+                background: 'var(--theme-card-bg)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                borderRadius: '16px'
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedArticle(null)}
+                style={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 20,
+                  background: 'var(--theme-border)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: 36,
+                  height: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: 'var(--theme-text)'
+                }}
+                aria-label="Fermer"
+              >
+                <X size={18} />
+              </button>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+                <span className="badge" style={{ fontSize: '12px', padding: '4px 10px' }}>
+                  {selectedArticle.category || 'Actualité'}
+                </span>
+                <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <Calendar size={13} /> {selectedArticle.date}
+                </span>
+                {selectedArticle.location && (
+                  <span style={{ fontSize: '13px', color: 'var(--color-orange)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <MapPin size={13} /> {selectedArticle.location}
+                  </span>
+                )}
+              </div>
+
+              <h2 style={{ fontSize: '1.7rem', color: 'var(--theme-text)', lineHeight: 1.35, marginBottom: 16 }}>
+                {selectedArticle.title}
+              </h2>
+
+              {selectedArticle.summary && (
+                <div style={{ padding: '16px 20px', background: 'rgba(235, 130, 60, 0.08)', borderLeft: '3px solid var(--color-orange)', borderRadius: 8, marginBottom: 24, fontStyle: 'italic', color: 'var(--theme-text)', lineHeight: 1.6 }}>
+                  {selectedArticle.summary}
+                </div>
+              )}
+
+              <div style={{ color: 'var(--theme-text)', lineHeight: 1.8, fontSize: '15px', whiteSpace: 'pre-line', marginBottom: 28 }}>
+                {selectedArticle.content || selectedArticle.summary}
+              </div>
+
+              <div style={{ paddingTop: 20, borderTop: '1px solid var(--theme-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+                <span style={{ fontSize: '13px', color: 'var(--theme-text-muted)', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <User size={14} color="var(--color-orange)" />
+                  Rédigé par : <strong>{selectedArticle.author || 'SEnergyS Africa'}</strong>
+                </span>
+                <Link to="/contact" className="btn btn-primary btn-sm" onClick={() => setSelectedArticle(null)}>
+                  Nous contacter à ce sujet <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

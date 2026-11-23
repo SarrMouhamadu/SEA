@@ -9,5 +9,43 @@
   "diagnostics": [],
   "visits": [],
   "careers": [],
-  "jobs": []
+  "jobs": [],
+  "articles": [
+    {
+      "id": "art-1",
+      "title": "Participation au Forum Énergie & Climat d'Afrique de l'Ouest",
+      "category": "Événement",
+      "date": "15 Octobre 2026",
+      "summary": "SEnergyS Africa est intervenue lors de la table ronde sur la décarbonation des filières industrielles et l'accès aux financements climat concessionnels.",
+      "content": "SEnergyS Africa a pris part aux travaux de haut niveau du Forum Énergie & Climat d'Afrique de l'Ouest. Nos experts ont partagé leurs retours d'expérience sur la mise en œuvre de diagnostics énergétiques industriels et la structuration de plans de transition bas-carbone.\n\nLes échanges ont notamment porté sur la mobilisation des guichets de refinancement vert et les opportunités offertes par le marché carbone (Article 6) pour accélérer l'investissement dans les technologies propres en zone UEMOA.",
+      "location": "Dakar, Sénégal",
+      "author": "Direction Technique SESA",
+      "published": true,
+      "created_at": "2026-10-15T10:00:00Z"
+    },
+    {
+      "id": "art-2",
+      "title": "Lancement de la plateforme propriétaire e-Audit pour les PME-PMI",
+      "category": "Innovation",
+      "date": "28 Septembre 2026",
+      "summary": "Notre outil digital permet désormais aux équipes techniques d'accélérer les diagnostics énergétiques terrain et de suivre en direct leurs ratios de performance ISO 50001.",
+      "content": "Dans le cadre de son pôle Innovation et Outils Digitaux, SEnergyS Africa déploie officiellement sa suite logicielle e-Audit.\n\nCette solution permet un recueil automatisé des données de consommation sur site, l'analyse en temps réel des courbes de charge thermique et électrique, et l'édition instantanée des plans de comptage conformes aux exigences de la norme ISO 50001.",
+      "location": "Diamniadio, Sénégal",
+      "author": "Équipe R&D SESA",
+      "published": true,
+      "created_at": "2026-09-28T09:00:00Z"
+    },
+    {
+      "id": "art-3",
+      "title": "Atelier de Renforcement des Capacités : Analyse des Projets Verts pour Banques",
+      "category": "Formation",
+      "date": "12 Septembre 2026",
+      "summary": "Formation certifiante dispensée à plus de 40 analystes et gestionnaires de risques de banques partenaires sur les critères d'éligibilité et la taxonomie verte.",
+      "content": "SEnergyS Africa a animé un cycle intensif de formation dédié aux cadres dirigeants et analystes crédits du secteur bancaire ouest-africain.\n\nAu programme : méthodologies d'évaluation des risques environnementaux et sociaux (E&S), calcul des tonnes de CO2 évitées par projet, et conformité avec les taxonomies des bailleurs internationaux (GCF, AFD, BAD).",
+      "location": "Abidjan, Côte d'Ivoire",
+      "author": "Pôle Finance Durable SESA",
+      "published": true,
+      "created_at": "2026-09-12T14:30:00Z"
+    }
+  ]
 }

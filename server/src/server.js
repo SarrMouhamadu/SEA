@@ -268,6 +268,57 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, { success: true, message: 'Offre d’emploi supprimée' });
     }
 
+    // 7quater. Admin: Articles & Actualités (Gestion par l'administrateur)
+    if (pathname === '/api/admin/articles' && method === 'GET') {
+      const articles = storage.getArticles({ publishedOnly: false });
+      return sendJson(res, 200, { success: true, data: articles });
+    }
+
+    if (pathname === '/api/admin/articles' && method === 'POST') {
+      const body = await parseBody(req);
+      if (!body.title) {
+        return sendJson(res, 400, { success: false, message: 'Le titre de l’article est obligatoire.' });
+      }
+      const created = storage.addArticle(body);
+      return sendJson(res, 201, { success: true, message: 'Article publié avec succès', data: created });
+    }
+
+    if (pathname.startsWith('/api/admin/articles/') && method === 'GET') {
+      const id = pathname.replace('/api/admin/articles/', '');
+      const article = storage.getArticleById(id);
+      if (!article) return sendJson(res, 404, { success: false, message: 'Article non trouvé' });
+      return sendJson(res, 200, { success: true, data: article });
+    }
+
+    if (pathname.startsWith('/api/admin/articles/') && method === 'PATCH') {
+      const id = pathname.replace('/api/admin/articles/', '');
+      const body = await parseBody(req);
+      const updated = storage.updateArticle(id, body);
+      if (!updated) return sendJson(res, 404, { success: false, message: 'Article non trouvé' });
+      return sendJson(res, 200, { success: true, message: 'Article mis à jour', data: updated });
+    }
+
+    if (pathname.startsWith('/api/admin/articles/') && method === 'DELETE') {
+      const id = pathname.replace('/api/admin/articles/', '');
+      storage.deleteArticle(id);
+      return sendJson(res, 200, { success: true, message: 'Article supprimé' });
+    }
+
+    // Public: GET /api/articles
+    if (pathname === '/api/articles' && method === 'GET') {
+      const articles = storage.getArticles({ publishedOnly: true });
+      return sendJson(res, 200, { success: true, data: articles });
+    }
+
+    if (pathname.startsWith('/api/articles/') && method === 'GET') {
+      const id = pathname.replace('/api/articles/', '');
+      const article = storage.getArticleById(id);
+      if (!article || article.published === false) {
+        return sendJson(res, 404, { success: false, message: 'Article non trouvé ou non publié' });
+      }
+      return sendJson(res, 200, { success: true, data: article });
+    }
+
     // 8. Public: GET /api/careers/jobs (Liste des postes ouverts actifs)
     if (pathname === '/api/careers/jobs' && method === 'GET') {
       const jobs = storage.getJobOffers({ activeOnly: true });

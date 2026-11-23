@@ -13,7 +13,8 @@ import {
   Building,
   Calendar,
   ChevronRight,
-  Briefcase
+  Briefcase,
+  Newspaper
 } from 'lucide-react';
 import '../admin.css';
 
@@ -152,6 +153,22 @@ export default function AdminDashboard() {
             <span>Ratio leads générés / visites globales</span>
           </div>
         </div>
+      </div>
+
+      {/* Raccourcis Rapides de Gestion */}
+      <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+        <Link to="/admin/articles" className="admin-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', fontWeight: 600 }}>
+          <Newspaper size={16} color="var(--color-orange)" />
+          <span>Articles & Actualités ({analytics.totalArticles || 3})</span>
+        </Link>
+        <Link to="/admin/carrieres" className="admin-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', fontWeight: 600 }}>
+          <Briefcase size={16} color="var(--admin-accent-blue)" />
+          <span>Offres & Recrutement ({analytics.totalCareers || 0})</span>
+        </Link>
+        <Link to="/admin/diagnostics" className="admin-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', fontWeight: 600 }}>
+          <ClipboardCheck size={16} color="var(--admin-primary)" />
+          <span>Autodiagnostics ({analytics.totalDiagnostics || 0})</span>
+        </Link>
       </div>
 
       {/* Grille : Graphique d'audience & Résumé d'activité */}
