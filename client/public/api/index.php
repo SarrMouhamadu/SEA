@@ -437,7 +437,7 @@ if ($path === 'analytics/visit' && $method === 'POST') {
     sendJson(array('success' => true, 'visitId' => $visit['id']));
 }
 
-// ── 13. PUBLIC : COMPANY ────────────────────────────────────
+// ── 13. PUBLIC : COMPANY & SERVICES ─────────────────────────
 if ($path === 'company' && $method === 'GET') {
     sendJson(array(
         'success' => true,
@@ -450,6 +450,27 @@ if ($path === 'company' && $method === 'GET') {
             'address' => 'P2ID · Bâtiment APROSI, 3ème étage · Diamniadio, Sénégal'
         )
     ));
+}
+
+if ($path === 'services' && $method === 'GET') {
+    sendJson(array(
+        'success' => true,
+        'data' => array(
+            array('id' => 1, 'slug' => 'ingenierie-energie-environnement', 'title' => 'Ingénierie Énergie & Environnement', 'summary' => 'Audit, diagnostic, conception et intégration de systèmes EnR.', 'icon' => 'Zap'),
+            array('id' => 2, 'slug' => 'conseil-strategique-developpement-durable', 'title' => 'Conseil Stratégique Développement Durable', 'summary' => 'RSE, production propre et mise à niveau environnementale.', 'icon' => 'Flame'),
+            array('id' => 3, 'slug' => 'finance-climatique-marches-carbone', 'title' => 'Finance Climatique & Marchés Carbone', 'summary' => 'Fonds climat, MRV et structuration de projets verts.', 'icon' => 'TrendingUp'),
+            array('id' => 4, 'slug' => 'management-projet-amo', 'title' => 'Management de Projet et AMO', 'summary' => 'Pilotage, coordination technique et suivi de performance.', 'icon' => 'Building2'),
+            array('id' => 5, 'slug' => 'innovation-outils-digitaux', 'title' => 'Innovation et Outils Digitaux', 'summary' => 'e-audit, e-learning, digitalisation des Systèmes de Management de l\'Énergie.', 'icon' => 'Zap'),
+            array('id' => 6, 'slug' => 'renforcement-capacites-formations', 'title' => 'Renforcement de Capacités & Formations', 'summary' => 'Programmes certifiants pour cadres et techniciens.', 'icon' => 'GraduationCap')
+        )
+    ));
+}
+
+// ── 14. PUBLIC : JOBS ALIAS ─────────────────────────────────
+if ($path === 'jobs' && $method === 'GET') {
+    $jobs = isset($db['jobs']) ? $db['jobs'] : array();
+    $active = array_values(array_filter($jobs, function($j) { return !empty($j['active']); }));
+    sendJson(array('success' => true, 'data' => $active));
 }
 
 // Route inconnue

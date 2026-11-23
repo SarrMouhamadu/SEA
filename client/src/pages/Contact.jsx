@@ -6,7 +6,7 @@ export default function Contact() {
   const [company, setCompany] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/company')
+    fetch('/api/company')
       .then(res => res.json())
       .then(json => setCompany(json.data || {}))
       .catch(() => {});

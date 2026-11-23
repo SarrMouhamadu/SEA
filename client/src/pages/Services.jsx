@@ -71,7 +71,7 @@ export default function Services() {
   const [services, setServices] = useState(defaultServices);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/services')
+    fetch('/api/services')
       .then(res => res.json())
       .then(json => {
         if (json.data && json.data.length >= 6) {

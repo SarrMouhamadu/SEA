@@ -61,7 +61,7 @@ export default function About() {
   const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/company')
+    fetch('/api/company')
       .then(res => res.json())
       .then(json => setCompany(json.data || {}))
       .catch(() => {});
