@@ -52,6 +52,22 @@
   --color-text-dark: #F6F1E7;
 }
 
+/* Variables dynamiques de Thème - LIGHT */
+[data-theme="light"] {
+  --theme-bg: #F6F1E7;
+  --theme-bg-alt: #EADFC9;
+  --theme-surface: #FFFFFF;
+  --theme-surface-alt: #F1E8D9;
+  --theme-text: #2B1B10;
+  --theme-text-muted: #64554A;
+  --theme-border: #E0D3BE;
+  --theme-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  --color-sand: #F6F1E7;
+  --color-sand-dark: #EADFC9;
+  --color-text-dark: #2B1B10;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, Sparkles, ArrowRight, ChevronDown } from 'lucide-react';
+import { Menu, X, Sparkles, ArrowRight, ChevronDown, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import AutoDiagnosticModal from './AutoDiagnosticModal';
 import ContactForm from './ContactForm';
 
@@ -21,6 +22,7 @@ function DropdownLink({ to, anchor, children, onClick }) {
 }
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [diagOpen,   setDiagOpen]   = useState(false);
   const [contactOpen,setContactOpen] = useState(false);
@@ -162,13 +164,26 @@ export default function Navbar() {
             </NavLink>
           </nav>
 
-          {/* CTAs */}
+          {/* CTAs & Theme Toggle */}
           <div className="nav-ctas-group">
             <Link to="/autodiagnostic" className="btn-pill btn-pill-outline-gold nav-btn-diag" title="Outil d'évaluation en 15 minutes">
-              <Sparkles size={15} /> Autodiagnostic
+              <Sparkles size={13} /> Autodiagnostic
             </Link>
             <button onClick={() => setContactOpen(true)} className="btn-pill btn-pill-orange nav-btn-contact">
               Nous contacter
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="theme-toggle-btn"
+              title={theme === 'dark' ? 'Passer au mode clair' : 'Passer au mode sombre'}
+              aria-label={theme === 'dark' ? 'Passer au mode clair' : 'Passer au mode sombre'}
+            >
+              {theme === 'dark' ? (
+                <Sun size={15} className="theme-toggle-icon sun" />
+              ) : (
+                <Moon size={15} className="theme-toggle-icon moon" />
+              )}
             </button>
           </div>
 
@@ -206,8 +221,32 @@ export default function Navbar() {
             </nav>
 
             <div className="mobile-cta-box">
+              {/* Bascule Thème Mobile */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '10px 14px',
+                background: 'rgba(255,255,255,0.05)',
+                borderRadius: 'var(--radius-sm)',
+                marginBottom: '14px',
+                border: '1px solid rgba(246,241,231,0.08)'
+              }}>
+                <span style={{ fontSize: '13.5px', color: 'var(--color-sand)', fontWeight: 500 }}>
+                  Mode d'affichage ({theme === 'dark' ? 'Sombre' : 'Clair'})
+                </span>
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="theme-toggle-btn"
+                  aria-label="Basculer le mode sombre ou clair"
+                >
+                  {theme === 'dark' ? <Sun size={16} className="theme-toggle-icon sun" /> : <Moon size={16} className="theme-toggle-icon moon" />}
+                </button>
+              </div>
+
               <Link to="/autodiagnostic" onClick={() => setMobileOpen(false)} className="btn-pill btn-pill-outline-gold" style={{ width: '100%', justifyContent: 'center' }}>
-                <Sparkles size={15} /> Autodiagnostic (15 min)
+                <Sparkles size={14} /> Autodiagnostic (15 min)
               </Link>
               <button onClick={() => { setMobileOpen(false); setContactOpen(true); }} className="btn-pill btn-pill-orange" style={{ width: '100%', justifyContent: 'center', marginTop: '10px' }}>
                 Nous contacter

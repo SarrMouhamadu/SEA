@@ -2,56 +2,62 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-function getAutomaticTheme() {
-  // 1. Détection de la préférence système (téléphone ou ordinateur)
-  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
+function getInitialTheme() {
+  if (typeof window !== 'undefined') {
+    // 1. Priorité au choix mémorisé par l'utilisateur
+    const saved = localStorage.getItem('sea_theme');
+    if (saved === 'dark' || saved === 'light') {
+      return saved;
+    }
+    // 2. Détection de la préférence du système d'exploitation
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
   }
-  // 2. Détection selon l'heure locale : sombre entre 19h et 7h
+  // 3. Détection par défaut selon l'heure (sombre entre 19h et 7h)
   const hour = new Date().getHours();
   return (hour >= 19 || hour < 7) ? 'dark' : 'light';
 }
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(getAutomaticTheme);
+  const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
-    const applyTheme = () => {
-      const current = getAutomaticTheme();
-      setTheme(current);
-      document.documentElement.setAttribute('data-theme', current);
-    };
+    // Applique l'attribut data-theme à l'élément racine <html>
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
-    applyTheme();
-
-    // Écoute des changements de préférence du système (ex: passage jour/nuit automatique du téléphone)
-    const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
-    if (mediaQuery?.addEventListener) {
-      mediaQuery.addEventListener('change', applyTheme);
-    } else if (mediaQuery?.addListener) {
-      mediaQuery.addListener(applyTheme);
-    }
-
-    // Actualisation selon l'heure toutes les 10 minutes
-    const interval = setInterval(applyTheme, 10 * 60 * 1000);
-
-    return () => {
-      if (mediaQuery?.removeEventListener) {
-        mediaQuery.removeEventListener('change', applyTheme);
-      } else if (mediaQuery?.removeListener) {
-        mediaQuery.removeListener(applyTheme);
+  // Fonction de bascule directe entre mode clair et mode sombre
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('sea_theme', next);
       }
-      clearInterval(interval);
-    };
-  }, []);
+      return next;
+    });
+  };
+
+  const setExplicitTheme = (mode) => {
+    if (mode === 'dark' || mode === 'light') {
+      setTheme(mode);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('sea_theme', mode);
+      }
+    }
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: setExplicitTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  return useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
 }
