@@ -51,10 +51,10 @@ const defaultServices = [
     id: 6,
     slug: 'formation-renforcement-capacites',
     title: 'Formation & Renforcement des Capacités',
-    summary: 'Programmes sur-mesure et transfert de compétences certifiant.',
-    description: 'Programmes certifiants de renforcement des capacités pour cadres techniques, industriels et équipes bancaires : thermique industrielle, audits ISO 50001 et analyse de projets d\'énergie durable.',
+    summary: 'Programmes sur-mesure, synergies universitaires et transfert de compétences certifiant.',
+    description: 'Programmes certifiants de renforcement des capacités développés en synergie avec les universités partenaires et les instituts technologiques : thermique industrielle, audits ISO 50001 et analyse de projets d\'énergie durable.',
     icon: 'GraduationCap',
-    highlights: ['Formation des équipes industrielles & thermiciens', 'Formation des équipes bancaires aux projets énergie', 'Programmes sur mesure avec bancs de test pratiques', 'Transfert de compétences durable']
+    highlights: ['Partenariats universitaires & recherche appliquée', 'Formation des équipes industrielles & thermiciens', 'Formation des équipes bancaires aux projets énergie', 'Programmes sur mesure avec bancs de test pratiques']
   }
 ];
 

@@ -46,6 +46,7 @@ export default function AutoDiagnostic() {
   // 11 = Demande d'accompagnement
   const [currentStep, setCurrentStep] = useState(1);
   const [profileSubStep, setProfileSubStep] = useState(1);
+  const [resultsTab, setResultsTab] = useState('priorites'); // 'priorites' | 'dimensions' | 'alertes' | 'contact'
 
   // Sections repliables optionnelles
   const [showAdvancedCombustibles, setShowAdvancedCombustibles] = useState(false);
@@ -238,15 +239,13 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
     }
   };
 
-  const progressPercent = Math.min(100, Math.round(((currentStep - 1) / 10) * 100));
+  const progressPercent = Math.min(100, Math.round(((currentStep - 1) / 8) * 100));
 
   const getStepLabel = () => {
     if (currentStep === 1) return "Démarrage";
     if (currentStep === 2) return `Profil (${profileSubStep}/2)`;
     if (currentStep >= 3 && currentStep <= 8) return `Module ${currentStep - 2}/6`;
-    if (currentStep === 9) return "Synthèse";
-    if (currentStep === 10) return "Analyse & Alertes";
-    return "Finalisation";
+    return "Résultats & Restitution";
   };
 
   return (
@@ -749,14 +748,14 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
         })()}
 
         {/* ========================================================================= */}
-        {/* ÉCRAN 9 : SYNTHÈSE & CALCUL DES RÉSULTATS                                  */}
+        {/* ÉCRAN RÉSULTATS : HUB UNIFIÉ & AÉRÉ (NON SATURÉ)                          */}
         {/* ========================================================================= */}
-        {currentStep === 9 && (
+        {currentStep >= 9 && (
           <div className="autodiag-page-card autodiag-fade-in">
-            <div className="autodiag-badge-category">Partie C — Synthèse Globale</div>
-            <h2 className="autodiag-title-screen">Résultats et indicateurs d'impact</h2>
+            <div className="autodiag-badge-category">Partie C — Restitution & Résultats</div>
+            <h2 className="autodiag-title-screen">Bilan d'Impact & Chantiers de Performance</h2>
             <p className="autodiag-subtext">
-              Synthèse calculée automatiquement à partir de vos réponses et déclarations énergétiques.
+              Synthèse analytique et priorités d'ingénierie calculées à partir de vos déclarations et réponses aux 6 modules.
             </p>
 
             {/* Score Global Hero */}
@@ -820,61 +819,55 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               ⚠️ <strong>Note méthodologique :</strong> Estimations indicatives fondées sur les facteurs d'émission GIEC 2006 et le mix électrique Senelec. Elles ne remplacent pas un audit énergétique approfondi ni un bilan carbone certifié.
             </div>
 
-            <div className="autodiag-footer-nav">
-              <button type="button" onClick={() => setCurrentStep(8)} className="btn-pill btn-pill-outline-gold">
-                <ArrowLeft size={16} /> Revoir les questions
+            {/* Onglets Intuitifs pour aérer la vue et éliminer toute saturation */}
+            <div className="autodiag-results-tabs" role="tablist">
+              <button
+                type="button"
+                className={`autodiag-results-tab ${resultsTab === 'priorites' ? 'active' : ''}`}
+                onClick={() => setResultsTab('priorites')}
+              >
+                <span>🎯 3 Chantiers Prioritaires</span>
               </button>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
-                  <Printer size={16} /> Imprimer le rapport
-                </button>
-                <button type="button" onClick={() => setCurrentStep(10)} className="btn-pill btn-pill-orange">
-                  Voir l'analyse détaillée & alertes <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* ÉCRAN 10 : ANALYSE DÉTAILLÉE PAR MODULE & ALERTES STRATÉGIQUES             */}
-        {/* ========================================================================= */}
-        {currentStep === 10 && (
-          <div className="autodiag-page-card autodiag-fade-in">
-            <div className="autodiag-badge-category">Diagnostic Approfondi</div>
-            <h2 className="autodiag-title-screen">Maturité par dimension & Alertes de conformité</h2>
-
-            {/* Tableau des 6 dimensions */}
-            <div className="autodiag-dim-table">
-              {diagnosticResults.moduleResults.map((mod) => (
-                <div className="autodiag-dim-row" key={mod.id}>
-                  <div className="autodiag-dim-title">
-                    <strong>{mod.title}</strong>
-                    <div className="autodiag-dim-desc">{mod.recommandation}</div>
-                  </div>
-                  <div className="autodiag-dim-progress-wrap">
-                    <div className="autodiag-dim-progress-bar">
-                      <div className="autodiag-dim-progress-fill" style={{ width: `${mod.scorePct}%` }}></div>
-                    </div>
-                  </div>
-                  <div className="autodiag-dim-badge-box">
-                    <span className="autodiag-dim-pct">{mod.scorePct} %</span>
-                    <span className="autodiag-dim-level">{mod.niveau}</span>
-                  </div>
-                </div>
-              ))}
+              <button
+                type="button"
+                className={`autodiag-results-tab ${resultsTab === 'dimensions' ? 'active' : ''}`}
+                onClick={() => setResultsTab('dimensions')}
+              >
+                <span>📊 Détail des 6 Dimensions</span>
+              </button>
+              <button
+                type="button"
+                className={`autodiag-results-tab ${resultsTab === 'alertes' ? 'active' : ''}`}
+                onClick={() => setResultsTab('alertes')}
+              >
+                <span>⚠️ Alertes Réglementaires</span>
+                {diagnosticResults.alerts.length > 0 && (
+                  <span className="tab-badge">{diagnosticResults.alerts.length}</span>
+                )}
+              </button>
+              <button
+                type="button"
+                className={`autodiag-results-tab ${resultsTab === 'contact' ? 'active' : ''}`}
+                onClick={() => setResultsTab('contact')}
+              >
+                <span>✉️ Accompagnement & Restitution</span>
+              </button>
             </div>
 
-            {/* Alertes & Opportunités Conditionnelles */}
-            {diagnosticResults.alerts.length > 0 && (
-              <div style={{ marginTop: '24px' }}>
-                <h3 className="autodiag-section-title">Alertes & Opportunités Stratégiques Identifiées</h3>
-                <div className="autodiag-alerts-stack">
-                  {diagnosticResults.alerts.map((alt, i) => (
-                    <div key={i} className={`autodiag-alert-box alert-${alt.type}`}>
-                      <AlertTriangle size={18} className="flex-shrink-0" />
-                      <div>
-                        <strong>{alt.title} :</strong> {alt.message}
+            {/* VUE 1 : 3 CHANTIERS PRIORITAIRES */}
+            {resultsTab === 'priorites' && (
+              <div className="autodiag-fade-in" style={{ marginTop: '12px' }}>
+                <h3 className="autodiag-section-title" style={{ marginBottom: '14px' }}>
+                  Vos 3 Chantiers Prioritaires Recommandés
+                </h3>
+                <div className="autodiag-priorities-grid">
+                  {diagnosticResults.priorites.map((p, idx) => (
+                    <div className="autodiag-priority-card" key={p.id}>
+                      <span className="priority-rank">PRIORITÉ {idx + 1} ({p.scorePct}%)</span>
+                      <h4>{p.title}</h4>
+                      <p className="priority-rec">{p.recommandation}</p>
+                      <div className="priority-service">
+                        <strong>Offre SEnergyS :</strong> {p.offreSE}
                       </div>
                     </div>
                   ))}
@@ -882,148 +875,179 @@ Commentaire du client : ${contactForm.message || 'Aucun commentaire'}`
               </div>
             )}
 
-            {/* 3 Priorités d'Accompagnement */}
-            <div style={{ marginTop: '24px' }}>
-              <h3 className="autodiag-section-title">Vos 3 Chantiers Prioritaires Recommandés</h3>
-              <div className="autodiag-priorities-grid">
-                {diagnosticResults.priorites.map((p, idx) => (
-                  <div className="autodiag-priority-card" key={p.id}>
-                    <span className="priority-rank">PRIORITÉ {idx + 1} ({p.scorePct}%)</span>
-                    <h4>{p.title}</h4>
-                    <p className="priority-rec">{p.recommandation}</p>
-                    <div className="priority-service">
-                      <strong>Offre SEnergyS :</strong> {p.offreSE}
+            {/* VUE 2 : DÉTAIL DES 6 DIMENSIONS */}
+            {resultsTab === 'dimensions' && (
+              <div className="autodiag-fade-in" style={{ marginTop: '12px' }}>
+                <h3 className="autodiag-section-title" style={{ marginBottom: '14px' }}>
+                  Maturité par Dimension & Préconisations Techniques
+                </h3>
+                <div className="autodiag-dim-table">
+                  {diagnosticResults.moduleResults.map((mod) => (
+                    <div className="autodiag-dim-row" key={mod.id}>
+                      <div className="autodiag-dim-title">
+                        <strong>{mod.title}</strong>
+                        <div className="autodiag-dim-desc">{mod.recommandation}</div>
+                      </div>
+                      <div className="autodiag-dim-progress-wrap">
+                        <div className="autodiag-dim-progress-bar">
+                          <div className="autodiag-dim-progress-fill" style={{ width: `${mod.scorePct}%` }}></div>
+                        </div>
+                      </div>
+                      <div className="autodiag-dim-badge-box">
+                        <span className="autodiag-dim-pct">{mod.scorePct} %</span>
+                        <span className="autodiag-dim-level">{mod.niveau}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="autodiag-footer-nav">
-              <button type="button" onClick={() => setCurrentStep(9)} className="btn-pill btn-pill-outline-gold">
-                <ArrowLeft size={16} /> Revenir à la synthèse
+            {/* VUE 3 : ALERTES DE CONFORMITÉ & CLIMAT */}
+            {resultsTab === 'alertes' && (
+              <div className="autodiag-fade-in" style={{ marginTop: '12px' }}>
+                <h3 className="autodiag-section-title" style={{ marginBottom: '14px' }}>
+                  Alertes de Conformité & Opportunités Stratégiques
+                </h3>
+                {diagnosticResults.alerts.length > 0 ? (
+                  <div className="autodiag-alerts-stack">
+                    {diagnosticResults.alerts.map((alt, i) => (
+                      <div key={i} className={`autodiag-alert-box alert-${alt.type}`}>
+                        <AlertTriangle size={20} className="flex-shrink-0" />
+                        <div>
+                          <strong style={{ display: 'block', marginBottom: '2px' }}>{alt.title}</strong>
+                          <span>{alt.message}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="autodiag-disclaimer" style={{ background: 'var(--theme-surface-alt)', padding: '20px', textAlign: 'center' }}>
+                    ✅ Aucune alerte critique détectée. Votre profil énergétique et vos paramètres actuels ne présentent pas de risque de non-conformité immédiat.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* VUE 4 : DEMANDE D'ACCOMPAGNEMENT */}
+            {resultsTab === 'contact' && (
+              <div className="autodiag-fade-in" style={{ marginTop: '12px' }}>
+                <h3 className="autodiag-section-title" style={{ marginBottom: '8px' }}>
+                  Échange avec un Expert & Concrétisation
+                </h3>
+                <p className="autodiag-subtext" style={{ marginBottom: '20px' }}>
+                  Conservez votre synthèse ou sollicitez l'expertise de SEnergyS Africa pour concrétiser vos réductions d'émissions et structurer vos démarches.
+                </p>
+
+                <form onSubmit={handleContactSubmit}>
+                  {contactStatus.message && (
+                    <div className={`autodiag-status-banner ${contactStatus.success ? 'status-success' : 'status-error'}`}>
+                      {contactStatus.success ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
+                      <span>{contactStatus.message}</span>
+                    </div>
+                  )}
+
+                  <div className="autodiag-form-grid">
+                    <div className="autodiag-field" style={{ gridColumn: '1 / -1' }}>
+                      <label>Souhaitez-vous être recontacté par SEnergyS Africa ?</label>
+                      <div style={{ display: 'flex', gap: '20px', marginTop: '6px' }}>
+                        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                          <input
+                            type="radio"
+                            name="recontact"
+                            value="Oui"
+                            checked={contactForm.recontact === 'Oui'}
+                            onChange={(e) => setContactForm({ ...contactForm, recontact: e.target.value })}
+                          />
+                          <span>Oui, je souhaite échanger avec un expert</span>
+                        </label>
+                        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                          <input
+                            type="radio"
+                            name="recontact"
+                            value="Non"
+                            checked={contactForm.recontact === 'Non'}
+                            onChange={(e) => setContactForm({ ...contactForm, recontact: e.target.value })}
+                          />
+                          <span>Non, imprimer / sauvegarder uniquement le rapport</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {contactForm.recontact === 'Oui' && (
+                      <>
+                        <div className="autodiag-field">
+                          <label>Thème prioritaire d'échange</label>
+                          <select 
+                            name="theme" 
+                            value={contactForm.theme || diagnosticResults.priorites[0]?.title || ''} 
+                            onChange={(e) => setContactForm({ ...contactForm, theme: e.target.value })}
+                          >
+                            {MODULES_CONFIG.map(m => (
+                              <option key={m.id} value={m.title}>
+                                {m.title} {m.id === diagnosticResults.priorites[0]?.id ? '(Priorité n°1)' : ''}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="autodiag-field">
+                          <label>Échéance ou contrainte clé</label>
+                          <input
+                            type="text"
+                            name="echeance"
+                            value={contactForm.echeance}
+                            onChange={(e) => setContactForm({ ...contactForm, echeance: e.target.value })}
+                            placeholder="Ex : Exigence client UE fin 2026, audit 2027..."
+                          />
+                        </div>
+
+                        <div className="autodiag-field" style={{ gridColumn: '1 / -1' }}>
+                          <label>Commentaire ou besoin spécifique</label>
+                          <textarea
+                            rows="3"
+                            name="message"
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                            placeholder="Précisez votre contexte ou vos attentes..."
+                          ></textarea>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="autodiag-contact-box">
+                    <MapPin size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} />
+                    <strong>SEnergyS Africa :</strong> Cabinet d'ingénierie et de conseil en transition énergétique et durable • Diamniadio, Sénégal.
+                  </div>
+
+                  {contactForm.recontact === 'Oui' && (
+                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                      <button type="submit" className="btn-pill btn-pill-orange" disabled={contactStatus.loading}>
+                        <Send size={16} /> {contactStatus.loading ? 'Envoi en cours...' : 'Transmettre ma demande'}
+                      </button>
+                    </div>
+                  )}
+                </form>
+              </div>
+            )}
+
+            {/* Navigation Bas de Page */}
+            <div className="autodiag-footer-nav" style={{ marginTop: '28px' }}>
+              <button type="button" onClick={() => setCurrentStep(8)} className="btn-pill btn-pill-outline-gold">
+                <ArrowLeft size={16} /> Revoir les questions
               </button>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
-                  <Printer size={16} /> Imprimer le rapport
+                  <Printer size={16} /> Imprimer le rapport PDF
                 </button>
-                <button type="button" onClick={() => setCurrentStep(11)} className="btn-pill btn-pill-orange">
-                  Demander un accompagnement <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ========================================================================= */}
-        {/* ÉCRAN 11 : DEMANDE D'ACCOMPAGNEMENT & IMPRESSION PDF                       */}
-        {/* ========================================================================= */}
-        {currentStep === 11 && (
-          <div className="autodiag-page-card autodiag-fade-in">
-            <div className="autodiag-badge-category">Finalisation & Passer à l'Action</div>
-            <h2 className="autodiag-title-screen">Demande d'accompagnement & Restitution</h2>
-            <p className="autodiag-subtext">
-              Conservez votre synthèse ou sollicitez l'expertise de SEnergyS Africa pour concrétiser vos réductions d'émissions et structurer vos démarches.
-            </p>
-
-            <form onSubmit={handleContactSubmit}>
-              {contactStatus.message && (
-                <div className={`autodiag-status-banner ${contactStatus.success ? 'status-success' : 'status-error'}`}>
-                  {contactStatus.success ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
-                  <span>{contactStatus.message}</span>
-                </div>
-              )}
-
-              <div className="autodiag-form-grid">
-                <div className="autodiag-field" style={{ gridColumn: '1 / -1' }}>
-                  <label>Souhaitez-vous être recontacté par SEnergyS Africa ?</label>
-                  <div style={{ display: 'flex', gap: '20px', marginTop: '6px' }}>
-                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input
-                        type="radio"
-                        name="recontact"
-                        value="Oui"
-                        checked={contactForm.recontact === 'Oui'}
-                        onChange={(e) => setContactForm({ ...contactForm, recontact: e.target.value })}
-                      />
-                      <span>Oui, je souhaite échanger avec un expert</span>
-                    </label>
-                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input
-                        type="radio"
-                        name="recontact"
-                        value="Non"
-                        checked={contactForm.recontact === 'Non'}
-                        onChange={(e) => setContactForm({ ...contactForm, recontact: e.target.value })}
-                      />
-                      <span>Non, imprimer / sauvegarder uniquement le rapport</span>
-                    </label>
-                  </div>
-                </div>
-
-                {contactForm.recontact === 'Oui' && (
-                  <>
-                    <div className="autodiag-field">
-                      <label>Thème prioritaire d'échange</label>
-                      <select 
-                        name="theme" 
-                        value={contactForm.theme || diagnosticResults.priorites[0]?.title || ''} 
-                        onChange={(e) => setContactForm({ ...contactForm, theme: e.target.value })}
-                      >
-                        {MODULES_CONFIG.map(m => (
-                          <option key={m.id} value={m.title}>
-                            {m.title} {m.id === diagnosticResults.priorites[0]?.id ? '(Priorité n°1)' : ''}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="autodiag-field">
-                      <label>Échéance ou contrainte clé</label>
-                      <input
-                        type="text"
-                        name="echeance"
-                        value={contactForm.echeance}
-                        onChange={(e) => setContactForm({ ...contactForm, echeance: e.target.value })}
-                        placeholder="Ex : Exigence client UE fin 2026, audit 2027..."
-                      />
-                    </div>
-
-                    <div className="autodiag-field" style={{ gridColumn: '1 / -1' }}>
-                      <label>Commentaire ou besoin spécifique</label>
-                      <textarea
-                        rows="3"
-                        name="message"
-                        value={contactForm.message}
-                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                        placeholder="Précisez votre contexte ou vos attentes..."
-                      ></textarea>
-                    </div>
-                  </>
+                {resultsTab !== 'contact' && (
+                  <button type="button" onClick={() => setResultsTab('contact')} className="btn-pill btn-pill-orange">
+                    Demander un accompagnement <ArrowRight size={16} />
+                  </button>
                 )}
               </div>
-
-              <div className="autodiag-contact-box">
-                <MapPin size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} />
-                <strong>SEnergyS Africa :</strong> Cabinet d'ingénierie et de conseil en transition énergétique et durable • Dakar, Sénégal.
-              </div>
-
-              <div className="autodiag-footer-nav">
-                <button type="button" onClick={() => setCurrentStep(10)} className="btn-pill btn-pill-outline-gold">
-                  <ArrowLeft size={16} /> Précédent
-                </button>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button type="button" onClick={() => window.print()} className="btn-pill btn-pill-outline-gold">
-                    <Printer size={16} /> Imprimer le rapport PDF
-                  </button>
-                  {contactForm.recontact === 'Oui' && (
-                    <button type="submit" className="btn-pill btn-pill-orange" disabled={contactStatus.loading}>
-                      <Send size={16} /> {contactStatus.loading ? 'Envoi...' : 'Transmettre ma demande'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </form>
+            </div>
           </div>
         )}
 

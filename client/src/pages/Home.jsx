@@ -465,7 +465,7 @@ export default function Home() {
             </div>
           </div>
 
-          <h3 className="partners-subheading">Clients, Bailleurs & Partenaires Institutionnels</h3>
+          <h3 className="partners-subheading">Clients, Bailleurs, Universités & Partenaires Institutionnels</h3>
           <PartnerCarousel />
         </div>
       </section>

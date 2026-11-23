@@ -12,7 +12,8 @@ import {
   AlertTriangle,
   Building,
   Calendar,
-  ChevronRight
+  ChevronRight,
+  Briefcase
 } from 'lucide-react';
 import '../admin.css';
 
@@ -27,11 +28,14 @@ export default function AdminDashboard() {
       unreadContacts: 0,
       totalDiagnostics: 0,
       newDiagnostics: 0,
+      totalCareers: 0,
+      newCareers: 0,
       conversionRate: 0,
       dailyTraffic: []
     },
     recentContacts: [],
-    recentDiagnostics: []
+    recentDiagnostics: [],
+    recentCareers: []
   });
 
   const [selectedDiag, setSelectedDiag] = useState(null);
@@ -52,7 +56,7 @@ export default function AdminDashboard() {
       });
   }, []);
 
-  const { analytics, recentContacts, recentDiagnostics } = data;
+  const { analytics, recentContacts, recentDiagnostics, recentCareers = [] } = data;
   const maxDailyCount = Math.max(...(analytics.dailyTraffic?.map(d => d.count) || [1]), 10);
 
   const formatDate = (isoStr) => {
@@ -340,6 +344,75 @@ export default function AdminDashboard() {
                         >
                           <Eye size={16} />
                         </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Table : Dernières Candidatures Recrutement */}
+        <div className="admin-panel" style={{ gridColumn: '1 / -1' }}>
+          <div className="admin-panel-header">
+            <h3 className="admin-panel-title">
+              <Briefcase size={18} color="var(--color-orange)" />
+              Dernières candidatures reçues (RH & Talents)
+            </h3>
+            <Link to="/admin/carrieres" className="admin-btn-secondary" style={{ padding: '6px 12px', fontSize: 12 }}>
+              Gérer les candidatures ({analytics.totalCareers || 0})
+            </Link>
+          </div>
+          <div className="admin-table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Candidat</th>
+                  <th>Poste visé</th>
+                  <th>Expérience & Localisation</th>
+                  <th>Date</th>
+                  <th>Statut</th>
+                  <th style={{ textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentCareers.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: 'center', color: 'var(--admin-text-subtle)' }}>
+                      Aucune candidature reçue pour le moment
+                    </td>
+                  </tr>
+                ) : (
+                  recentCareers.map((car) => (
+                    <tr key={car.id}>
+                      <td>
+                        <div style={{ fontWeight: 600, color: '#fff' }}>{car.fullName}</div>
+                        <div style={{ fontSize: 12, color: 'var(--admin-text-muted)' }}>{car.email}</div>
+                      </td>
+                      <td style={{ color: 'var(--color-orange)', fontWeight: 500 }}>
+                        {car.position}
+                      </td>
+                      <td style={{ fontSize: 12 }}>
+                        <div>{car.experience || '—'}</div>
+                        <div style={{ fontSize: 11, color: 'var(--admin-text-muted)' }}>{car.location || '—'}</div>
+                      </td>
+                      <td style={{ fontSize: 12, color: 'var(--admin-text-subtle)' }}>
+                        {formatDate(car.created_at)}
+                      </td>
+                      <td>
+                        <span className={`admin-status-badge status-${car.status === 'nouveau' ? 'new' : car.status === 'entretien' ? 'contacted' : 'pending'}`}>
+                          {car.status}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <Link
+                          to="/admin/carrieres"
+                          className="admin-btn-icon"
+                          title="Examiner la candidature"
+                        >
+                          <Eye size={16} />
+                        </Link>
                       </td>
                     </tr>
                   ))

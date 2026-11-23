@@ -9,6 +9,7 @@ import AdminDashboard from './admin/pages/AdminDashboard';
 import AdminDiagnostics from './admin/pages/AdminDiagnostics';
 import AdminContacts from './admin/pages/AdminContacts';
 import AdminAnalytics from './admin/pages/AdminAnalytics';
+import AdminCareers from './admin/pages/AdminCareers';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -18,6 +19,7 @@ import Services from './pages/Services';
 import Sectors from './pages/Sectors';
 import References from './pages/References';
 import Contact from './pages/Contact';
+import Careers from './pages/Careers';
 import Ressources from './pages/Ressources';
 import AutoDiagnostic from './pages/AutoDiagnostic';
 import Maintenance from './pages/Maintenance';
@@ -72,6 +74,7 @@ export default function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="diagnostics" element={<AdminDiagnostics />} />
               <Route path="contacts" element={<AdminContacts />} />
+              <Route path="carrieres" element={<AdminCareers />} />
               <Route path="visites" element={<AdminAnalytics />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Route>
@@ -91,6 +94,7 @@ export default function App() {
                       <Route path="/references" element={<References />} />
                       <Route path="/produits" element={<References />} />
                       <Route path="/ressources" element={<Ressources />} />
+                      <Route path="/carrieres" element={<Careers />} />
                       <Route path="/autodiagnostic" element={<AutoDiagnostic />} />
                       <Route path="/contact" element={<Contact />} />
                     </Routes>

@@ -86,19 +86,13 @@ export default function References() {
           (project.clientBadge && project.clientBadge.toLowerCase().includes(q)) ||
           (project.country && project.country.toLowerCase().includes(q)) ||
           (project.keyImpact && project.keyImpact.toLowerCase().includes(q)) ||
+          (project.summary && project.summary.toLowerCase().includes(q)) ||
           (project.objectives && project.objectives.some(obj => obj.toLowerCase().includes(q)))
         );
 
         return matchesSector && matchesSearch;
       })
-      .sort((a, b) => {
-        // Le projet du Bénin toujours en 1ère position
-        const isBeninA = a.country?.toLowerCase().includes('bénin') || a.country?.toLowerCase().includes('benin') || a.id === 20;
-        const isBeninB = b.country?.toLowerCase().includes('bénin') || b.country?.toLowerCase().includes('benin') || b.id === 20;
-        if (isBeninA && !isBeninB) return -1;
-        if (!isBeninA && isBeninB) return 1;
-        return (b.amountValue || 0) - (a.amountValue || 0);
-      });
+      .sort((a, b) => a.id - b.id);
   }, [sectorFilter, searchQuery]);
 
   const counts = useMemo(() => {
@@ -121,7 +115,7 @@ export default function References() {
           <span className="badge">Contrats & Réalisations Officielles</span>
           <h1 className="section-title">Nos Références & Missions Réalisées</h1>
           <p className="section-subtitle">
-            Consultez les 20 projets contractuels majeurs conduits par SEnergyS Africa auprès des bailleurs internationaux, ministères, collectivités et leaders industriels.
+            Consultez les 18 projets et missions de référence majeurs conduits par SEnergyS Africa auprès des bailleurs internationaux, ministères, collectivités et leaders industriels.
           </p>
         </div>
 
@@ -137,7 +131,7 @@ export default function References() {
         >
           <div className="card" style={{ padding: '20px', textAlign: 'center', background: 'var(--theme-surface-alt)' }}>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '32px', color: 'var(--theme-text)', fontWeight: 700 }}>
-              <AnimatedCounter end={20} duration={2600} trigger={kpiVisible} />
+              <AnimatedCounter end={18} duration={2600} trigger={kpiVisible} />
             </div>
             <div style={{ fontSize: '13px', color: 'var(--theme-text-muted)', fontWeight: 500, marginTop: '4px' }}>
               Missions d'ingénierie & conseil

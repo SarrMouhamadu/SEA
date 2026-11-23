@@ -156,6 +156,10 @@ export default function Navbar() {
             </NavLink>
 
             <NavDropdown to="/ressources" label="Ressources" sections={ressourcesSections} />
+
+            <NavLink to="/carrieres" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+              Carrières
+            </NavLink>
           </nav>
 
           {/* CTAs */}
@@ -194,6 +198,11 @@ export default function Navbar() {
               </NavLink>
 
               <MobileSection to="/ressources" label="Ressources" sections={ressourcesSections}  open={mRessources} setOpen={setMRessources} />
+
+              <NavLink to="/carrieres" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`} onClick={handleMobileNavClick}>
+                <span>Carrières & Recrutement</span>
+                <ArrowRight size={15} className="mobile-nav-arrow" />
+              </NavLink>
             </nav>
 
             <div className="mobile-cta-box">

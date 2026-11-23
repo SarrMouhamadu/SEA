@@ -24,10 +24,24 @@ export function AdminAuthProvider({ children }) {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({
+          email: (email || '').trim(),
+          password: (password || '').trim()
+        })
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get('content-type') || '';
+      let data = {};
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        if (res.status >= 500 || text.includes('<!DOCTYPE') || text.includes('Proxy error')) {
+          throw new Error('Le serveur API est indisponible. Veuillez vous assurer que le backend est démarré.');
+        }
+        throw new Error('Réponse serveur inattendue.');
+      }
+
       if (!res.ok || !data.success) {
         throw new Error(data.message || 'Identifiants invalides');
       }
@@ -40,7 +54,16 @@ export function AdminAuthProvider({ children }) {
       return { success: true };
     } catch (err) {
       setLoading(false);
-      return { success: false, message: err.message };
+      let msg = err.message || '';
+      if (
+        msg.includes('did not match the expected pattern') ||
+        msg.includes('Unexpected token') ||
+        msg.includes('Failed to fetch') ||
+        msg.includes('NetworkError')
+      ) {
+        msg = 'Impossible de contacter le serveur. Assurez-vous que le serveur backend est en cours d’exécution.';
+      }
+      return { success: false, message: msg };
     }
   };
 

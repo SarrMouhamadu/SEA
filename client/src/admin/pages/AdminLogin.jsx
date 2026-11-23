@@ -24,18 +24,12 @@ export default function AdminLogin() {
       return;
     }
 
-    const res = await login(email, password);
+    const res = await login(email.trim(), password.trim());
     if (res.success) {
       navigate(from, { replace: true });
     } else {
       setError(res.message || 'Identifiants invalides');
     }
-  };
-
-  const fillDemo = () => {
-    setEmail('admin@senergysafrica.com');
-    setPassword('admin123');
-    setError('');
   };
 
   return (
@@ -133,29 +127,6 @@ export default function AdminLogin() {
             )}
           </button>
         </form>
-
-        <div className="admin-demo-box">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-            <b style={{ color: 'var(--admin-primary)', fontSize: 12 }}>Identifiants par défaut :</b>
-            <button
-              type="button"
-              onClick={fillDemo}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--admin-primary)',
-                fontWeight: 600,
-                fontSize: 12,
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
-            >
-              Remplir automatiquement
-            </button>
-          </div>
-          <div>Email : <code style={{ color: '#fff' }}>admin@senergysafrica.com</code></div>
-          <div>Mot de passe : <code style={{ color: '#fff' }}>admin123</code></div>
-        </div>
 
         <div style={{ marginTop: 24, textAlign: 'center' }}>
           <a

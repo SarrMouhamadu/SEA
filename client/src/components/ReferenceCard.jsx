@@ -46,6 +46,13 @@ export default function ReferenceCard({ item }) {
         {item.title}
       </h3>
 
+      {/* Description / Synthèse officielle */}
+      {item.summary && (
+        <p className="ref-summary-text">
+          {item.summary}
+        </p>
+      )}
+
       {/* C. Informations contractuelles (Période, Durée) */}
       {(item.period || hasDuration) && (
         <div className="ref-contract-block">

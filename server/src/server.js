@@ -20,7 +20,14 @@ const defaultCompany = {
 function parseBody(req) {
   return new Promise((resolve) => {
     let body = '';
-    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('data', chunk => {
+      body += chunk.toString();
+      // Limite à 15 Mo pour supporter les CV en PDF / Base64
+      if (body.length > 15 * 1024 * 1024) {
+        req.destroy();
+        resolve({});
+      }
+    });
     req.on('end', () => {
       try {
         resolve(body ? JSON.parse(body) : {});
@@ -98,9 +105,13 @@ const server = http.createServer(async (req, res) => {
       const analytics = storage.getAnalytics();
       const recentContacts = storage.getContacts().slice(0, 5);
       const recentDiagnostics = storage.getDiagnostics().slice(0, 5);
+      const recentCareers = storage.getCareers().map(c => {
+        const { cvData, ...rest } = c;
+        return { ...rest, cvAvailable: !!cvData };
+      }).slice(0, 5);
       return sendJson(res, 200, {
         success: true,
-        data: { analytics, recentContacts, recentDiagnostics }
+        data: { analytics, recentContacts, recentDiagnostics, recentCareers }
       });
     }
 
@@ -148,6 +159,88 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/api/admin/analytics' && method === 'GET') {
       const analytics = storage.getAnalytics();
       return sendJson(res, 200, { success: true, data: analytics });
+    }
+
+    // 7bis. Admin: Careers (Recrutement & Candidatures)
+    if (pathname === '/api/admin/careers' && method === 'GET') {
+      const careers = storage.getCareers().map(c => {
+        const { cvData, ...rest } = c;
+        return { ...rest, cvAvailable: !!cvData };
+      });
+      return sendJson(res, 200, { success: true, data: careers });
+    }
+
+    if (pathname.startsWith('/api/admin/careers/') && method === 'GET') {
+      const id = pathname.replace('/api/admin/careers/', '');
+      const career = storage.getCareerById(id);
+      if (!career) return sendJson(res, 404, { success: false, message: 'Candidature non trouvée' });
+      return sendJson(res, 200, { success: true, data: career });
+    }
+
+    if (pathname.startsWith('/api/admin/careers/') && method === 'PATCH') {
+      const id = pathname.replace('/api/admin/careers/', '');
+      const body = await parseBody(req);
+      const updated = storage.updateCareerStatus(id, body.status, body.notes);
+      if (!updated) return sendJson(res, 404, { success: false, message: 'Candidature non trouvée' });
+      return sendJson(res, 200, { success: true, data: updated });
+    }
+
+    if (pathname.startsWith('/api/admin/careers/') && method === 'DELETE') {
+      const id = pathname.replace('/api/admin/careers/', '');
+      storage.deleteCareer(id);
+      return sendJson(res, 200, { success: true, message: 'Candidature supprimée' });
+    }
+
+    // 7ter. Admin: Offres d'Emploi (Gestion complète par l'administrateur)
+    if (pathname === '/api/admin/jobs' && method === 'GET') {
+      const jobs = storage.getJobOffers({ activeOnly: false });
+      return sendJson(res, 200, { success: true, data: jobs });
+    }
+
+    if (pathname === '/api/admin/jobs' && method === 'POST') {
+      const body = await parseBody(req);
+      if (!body.title) {
+        return sendJson(res, 400, { success: false, message: 'L’intitulé du poste est obligatoire.' });
+      }
+      const created = storage.addJobOffer(body);
+      return sendJson(res, 201, { success: true, message: 'Offre d’emploi créée avec succès', data: created });
+    }
+
+    if (pathname.startsWith('/api/admin/jobs/') && method === 'PATCH') {
+      const id = pathname.replace('/api/admin/jobs/', '');
+      const body = await parseBody(req);
+      const updated = storage.updateJobOffer(id, body);
+      if (!updated) return sendJson(res, 404, { success: false, message: 'Offre non trouvée' });
+      return sendJson(res, 200, { success: true, message: 'Offre d’emploi mise à jour', data: updated });
+    }
+
+    if (pathname.startsWith('/api/admin/jobs/') && method === 'DELETE') {
+      const id = pathname.replace('/api/admin/jobs/', '');
+      storage.deleteJobOffer(id);
+      return sendJson(res, 200, { success: true, message: 'Offre d’emploi supprimée' });
+    }
+
+    // 8. Public: GET /api/careers/jobs (Liste des postes ouverts actifs)
+    if (pathname === '/api/careers/jobs' && method === 'GET') {
+      const jobs = storage.getJobOffers({ activeOnly: true });
+      return sendJson(res, 200, { success: true, data: jobs });
+    }
+
+    // 8bis. Public: POST /api/careers/apply
+    if (pathname === '/api/careers/apply' && method === 'POST') {
+      const body = await parseBody(req);
+      if (!body.fullName || !body.email || !body.motivation) {
+        return sendJson(res, 400, {
+          success: false,
+          message: 'Nom complet, adresse email et lettre de motivation sont obligatoires.'
+        });
+      }
+      const saved = storage.addCareer(body);
+      return sendJson(res, 201, {
+        success: true,
+        message: 'Votre candidature a bien été reçue. Notre équipe des ressources humaines l’examinera avec attention.',
+        data: { id: saved.id, fullName: saved.fullName }
+      });
     }
 
     // 8. Public: POST /api/contact

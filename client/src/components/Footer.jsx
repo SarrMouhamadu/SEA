@@ -68,11 +68,11 @@ export default function Footer() {
             <h4 className="footer-heading">Entreprise</h4>
             <ul className="footer-list">
               <li>
-                <Link to="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Link to="/carrieres" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   Carrières & Recrutement <ArrowUpRight size={13} />
                 </Link>
               </li>
-              <li><Link to="/contact">Partenariats institutionnels</Link></li>
+              <li><Link to="/contact">Partenariats institutionnels & Universités</Link></li>
               <li><Link to="/contact">Mentions légales & Confidentialité</Link></li>
               <li><Link to="/contact">Rapport d'impact ESG</Link></li>
             </ul>

@@ -40,6 +40,10 @@ export const partnersList = [
   { id: 39, name: "Energeco Afrique", category: "Efficacité Énergétique", logo: "/assets/partners/logos/energeco.jpg" },
   { id: 40, name: "Schüller", category: "Équipements & Utilités", logo: "/assets/partners/logos/schuller.png" },
   { id: 41, name: "FINEKIP", category: "Finance & Comptabilité", logo: "/assets/partners/logos/finekip.png" },
-  { id: 42, name: "G3A", category: "Développement Durable", logo: "/assets/partners/logos/g3a.jpg" }
+  { id: 42, name: "G3A", category: "Développement Durable", logo: "/assets/partners/logos/g3a.jpg" },
+  { id: 43, name: "UCAD (Université Cheikh Anta Diop)", category: "Université & Partenaire Institutionnel", logo: "/assets/partners/ucad.jpg" },
+  { id: 44, name: "Senelec", category: "Opérateur Électrique & Institutionnel", logo: "/assets/partners/senelec.jpg" },
+  { id: 45, name: "AXA Assurances", category: "Assurance & Risques Climat", logo: "/assets/partners/axa.jpeg" },
+  { id: 46, name: "Toyota Sénégal", category: "Mobilité Industrielle & Équipements", logo: "/assets/partners/toyota.png" }
 ];
 

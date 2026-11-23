@@ -408,7 +408,7 @@ export default function About() {
             </span>
           </div>
           <p style={{ color: 'var(--theme-text-muted)', lineHeight: '1.6', marginBottom: '20px', maxWidth: '680px' }}>
-            Nous collaborons avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les équipementiers industriels de référence et les acteurs institutionnels majeurs.
+            Nous collaborons étroitement avec les bailleurs internationaux (GIZ, AFD, UE, GCF), les universités et grandes institutions de formation et de recherche (UCAD, écoles d'ingénieurs), les ministères, agences étatiques et équipementiers industriels majeurs.
           </p>
           <Link
             to="/contact"

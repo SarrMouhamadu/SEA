@@ -10,7 +10,8 @@ import {
   Shield,
   Activity,
   Menu,
-  X
+  X,
+  Briefcase
 } from 'lucide-react';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import '../admin.css';
@@ -20,7 +21,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [badgeCounts, setBadgeCounts] = useState({ unreadContacts: 0, newDiagnostics: 0 });
+  const [badgeCounts, setBadgeCounts] = useState({ unreadContacts: 0, newDiagnostics: 0, newCareers: 0 });
 
   useEffect(() => {
     // Récupérer les compteurs non lus pour les badges du menu
@@ -30,7 +31,8 @@ export default function AdminLayout() {
         if (data.success && data.data?.analytics) {
           setBadgeCounts({
             unreadContacts: data.data.analytics.unreadContacts || 0,
-            newDiagnostics: data.data.analytics.newDiagnostics || 0
+            newDiagnostics: data.data.analytics.newDiagnostics || 0,
+            newCareers: data.data.analytics.newCareers || 0
           });
         }
       })
@@ -47,6 +49,7 @@ export default function AdminLayout() {
     if (location.pathname.startsWith('/admin/diagnostics')) return 'Autodiagnostics Industriels';
     if (location.pathname.startsWith('/admin/visites')) return 'Audience & Statistiques de visites';
     if (location.pathname.startsWith('/admin/contacts')) return 'Contacts & Demandes reçues';
+    if (location.pathname.startsWith('/admin/carrieres')) return 'Recrutement & Candidatures';
     return 'Administration';
   };
 
@@ -107,6 +110,18 @@ export default function AdminLayout() {
             <span>Contacts</span>
             {badgeCounts.unreadContacts > 0 && (
               <span className="admin-nav-badge highlight">{badgeCounts.unreadContacts}</span>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/admin/carrieres"
+            className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Briefcase size={18} />
+            <span>Candidatures RH</span>
+            {badgeCounts.newCareers > 0 && (
+              <span className="admin-nav-badge highlight">{badgeCounts.newCareers}</span>
             )}
           </NavLink>
         </nav>

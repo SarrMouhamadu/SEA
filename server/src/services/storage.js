@@ -3,7 +3,58 @@ const path = require('path');
 
 const DB_FILE = path.join(__dirname, '../../data/db.json');
 
-// Données initiales vierges (sans données fictives)
+const defaultJobOffers = [
+  {
+    id: 'job-1',
+    title: 'Ingénieur Efficacité Énergétique & Procédés Thermiques',
+    pole: 'Énergie Durable & Industrie',
+    location: 'Diamniadio / Dakar (Sénégal) & Déplacements régionaux',
+    type: 'CDI - Temps Plein',
+    experience: '3 à 5 ans d’expérience',
+    description: 'Vous piloterez des missions d’audit énergétique instrumenté (ISO 50001), des études de récupération de chaleur fatale et l’optimisation des chaudières et réseaux vapeur industriels.',
+    tags: ['ISO 50001', 'Thermique industrielle', 'Audit instrumenté', 'Décarbonation'],
+    active: true,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'job-2',
+    title: 'Consultant Senior Finance Durable, Climat & ESG',
+    pole: 'Finance Durable & Climat',
+    location: 'Dakar (Sénégal) / Télétravail partiel possible',
+    type: 'CDI - Temps Plein',
+    experience: '4 à 7 ans d’expérience',
+    description: 'Accompagnement d’institutions financières, banques régionales et fonds verts dans l’évaluation des risques climatiques, les systèmes ESMS et l’éligibilité aux financements climat.',
+    tags: ['Taxonomie Verte', 'ESMS', 'Fonds Verts Climat', 'Marchés Carbone'],
+    active: true,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'job-3',
+    title: 'Technicien Supérieur Combustion & Brûleurs Industriels',
+    pole: 'Production Propre',
+    location: 'Dakar & Sites industriels (Sénégal & Sous-région)',
+    type: 'CDI - Temps Plein',
+    experience: '2 à 5 ans d’expérience',
+    description: 'Installation, réglage de combustion, mise en service et maintenance préventive/curative des brûleurs gaz, fioul lourd et bicarburation haute performance.',
+    tags: ['Brûleurs TBG/TBL', 'Régulation O₂', 'Maintenance industrielle', 'Éco-efficacité'],
+    active: true,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'job-4',
+    title: 'Chef de Projet Énergies Renouvelables & Hybridation',
+    pole: 'Énergie Durable',
+    location: 'Dakar & Missions UEMOA',
+    type: 'CDI - Temps Plein',
+    experience: '3 ans minimum',
+    description: 'Dimensionnement technique et suivi de réalisation de centrales solaires photovoltaïques en toiture industrielle, ombrières et systèmes hybrides diesel-solaire.',
+    tags: ['PV Syst / AutoCAD', 'Hybridation solaire', 'AMO EnR', 'Rentabilité LCOE'],
+    active: true,
+    created_at: new Date().toISOString()
+  }
+];
+
+// Données initiales vierges
 const initialData = {
   admin: {
     email: 'admin@senergysafrica.com',
@@ -13,6 +64,8 @@ const initialData = {
   },
   contacts: [],
   diagnostics: [],
+  careers: [],
+  jobs: defaultJobOffers,
   visits: []
 };
 
@@ -148,6 +201,130 @@ module.exports = {
     return true;
   },
 
+  // Candidatures & Recrutement (Carrières)
+  getCareers() {
+    const db = readDB();
+    return (db.careers || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  },
+
+  getCareerById(id) {
+    const db = readDB();
+    return (db.careers || []).find(c => c.id === id) || null;
+  },
+
+  addCareer(data) {
+    const db = readDB();
+    const newCareer = {
+      id: 'car-' + Date.now(),
+      fullName: data.fullName || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      location: data.location || '',
+      position: data.position || 'Candidature Spontanée',
+      experience: data.experience || '',
+      linkedin: data.linkedin || '',
+      motivation: data.motivation || '',
+      cvName: data.cvName || '',
+      cvType: data.cvType || 'application/pdf',
+      cvSize: data.cvSize || 0,
+      cvData: data.cvData || '', // Base64 data URL
+      status: 'nouveau', // 'nouveau' | 'en_revue' | 'entretien' | 'retenu' | 'refuse'
+      notes: '',
+      created_at: new Date().toISOString()
+    };
+    db.careers = db.careers || [];
+    db.careers.unshift(newCareer);
+    writeDB(db);
+    return newCareer;
+  },
+
+  updateCareerStatus(id, status, notes) {
+    const db = readDB();
+    const index = (db.careers || []).findIndex(c => c.id === id);
+    if (index !== -1) {
+      if (status !== undefined) db.careers[index].status = status;
+      if (notes !== undefined) db.careers[index].notes = notes;
+      writeDB(db);
+      return db.careers[index];
+    }
+    return null;
+  },
+
+  deleteCareer(id) {
+    const db = readDB();
+    db.careers = (db.careers || []).filter(c => c.id !== id);
+    writeDB(db);
+    return true;
+  },
+
+  // Offres d'Emploi (Gestion par l'administrateur)
+  getJobOffers({ activeOnly = false } = {}) {
+    const db = readDB();
+    const jobs = db.jobs || defaultJobOffers;
+    if (activeOnly) {
+      return jobs.filter(j => j.active !== false);
+    }
+    return jobs;
+  },
+
+  getJobOfferById(id) {
+    const db = readDB();
+    const jobs = db.jobs || defaultJobOffers;
+    return jobs.find(j => j.id === id) || null;
+  },
+
+  addJobOffer(data) {
+    const db = readDB();
+    db.jobs = db.jobs || [...defaultJobOffers];
+    const newJob = {
+      id: 'job-' + Date.now(),
+      title: data.title || 'Nouvelle opportunité',
+      pole: data.pole || 'Énergie Durable',
+      location: data.location || 'Dakar, Sénégal',
+      type: data.type || 'CDI - Temps Plein',
+      experience: data.experience || '',
+      description: data.description || '',
+      tags: Array.isArray(data.tags)
+        ? data.tags
+        : (data.tags ? data.tags.split(',').map(t => t.trim()).filter(Boolean) : []),
+      active: data.active !== false,
+      created_at: new Date().toISOString()
+    };
+    db.jobs.unshift(newJob);
+    writeDB(db);
+    return newJob;
+  },
+
+  updateJobOffer(id, data) {
+    const db = readDB();
+    db.jobs = db.jobs || [...defaultJobOffers];
+    const index = db.jobs.findIndex(j => j.id === id);
+    if (index !== -1) {
+      if (data.title !== undefined) db.jobs[index].title = data.title;
+      if (data.pole !== undefined) db.jobs[index].pole = data.pole;
+      if (data.location !== undefined) db.jobs[index].location = data.location;
+      if (data.type !== undefined) db.jobs[index].type = data.type;
+      if (data.experience !== undefined) db.jobs[index].experience = data.experience;
+      if (data.description !== undefined) db.jobs[index].description = data.description;
+      if (data.tags !== undefined) {
+        db.jobs[index].tags = Array.isArray(data.tags)
+          ? data.tags
+          : data.tags.split(',').map(t => t.trim()).filter(Boolean);
+      }
+      if (data.active !== undefined) db.jobs[index].active = Boolean(data.active);
+      writeDB(db);
+      return db.jobs[index];
+    }
+    return null;
+  },
+
+  deleteJobOffer(id) {
+    const db = readDB();
+    db.jobs = (db.jobs || defaultJobOffers).filter(j => j.id !== id);
+    writeDB(db);
+    return true;
+  },
+
   // Visites & Analytics
   recordVisit(visitData) {
     const db = readDB();
@@ -220,7 +397,7 @@ module.exports = {
       dailyTraffic.push({ date: dateStr, label: dayLabel, count });
     }
 
-    const totalLeads = contacts.length + diagnostics.length;
+    const totalLeads = contacts.length + diagnostics.length + (db.careers || []).length;
     const conversionRate = totalVisits > 0 ? ((totalLeads / totalVisits) * 100).toFixed(1) : 0;
 
     return {
@@ -231,6 +408,8 @@ module.exports = {
       unreadContacts: contacts.filter(c => c.status === 'new').length,
       totalDiagnostics: diagnostics.length,
       newDiagnostics: diagnostics.filter(d => d.status === 'new').length,
+      totalCareers: (db.careers || []).length,
+      newCareers: (db.careers || []).filter(c => c.status === 'nouveau').length,
       conversionRate,
       topPages,
       deviceCounts,
