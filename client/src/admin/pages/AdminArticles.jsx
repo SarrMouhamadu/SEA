@@ -413,8 +413,17 @@ export default function AdminArticles() {
       ) : viewMode === 'table' ? (
         /* VUE TABLEAU RESPONSIVE */
         <div className="admin-panel">
-          <div className="admin-table-container">
-            <table className="admin-table">
+          <div className="admin-table-container" tabIndex={0} role="region" aria-label="Liste des articles">
+            <table
+              className="admin-table admin-table-responsive"
+              style={{
+                '--label-1': '"Article & Titre"',
+                '--label-2': '"Catégorie"',
+                '--label-3': '"Date & Lieu"',
+                '--label-4': '"Statut"',
+                '--label-5': '"Actions"'
+              }}
+            >
               <thead>
                 <tr>
                   <th style={{ width: '40%' }}>Article & Titre</th>
@@ -518,7 +527,7 @@ export default function AdminArticles() {
         </div>
       ) : (
         /* VUE CARTES */
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 20 }}>
+        <div className="admin-articles-grid">
           {filteredArticles.map(article => (
             <div
               key={article.id}

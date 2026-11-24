@@ -181,8 +181,19 @@ export default function AdminDiagnostics() {
 
       {/* Table */}
       <div className="admin-panel">
-        <div className="admin-table-container">
-          <table className="admin-table">
+        <div className="admin-table-container" tabIndex={0} role="region" aria-label="Liste des autodiagnostics">
+          <table
+            className="admin-table admin-table-responsive"
+            style={{
+              '--label-1': '"Date"',
+              '--label-2': '"Contact Lead"',
+              '--label-3': '"Entreprise & Secteur"',
+              '--label-4': '"Facture Énergie"',
+              '--label-5': '"Score Global"',
+              '--label-6': '"Statut"',
+              '--label-7': '"Actions"'
+            }}
+          >
             <thead>
               <tr>
                 <th>Date</th>
@@ -196,13 +207,13 @@ export default function AdminDiagnostics() {
             </thead>
             <tbody>
               {loading ? (
-                <tr>
+                <tr className="admin-table-empty-row">
                   <td colSpan="7" style={{ textAlign: 'center', padding: 40 }}>
                     <div className="admin-spinner" style={{ margin: '0 auto' }} />
                   </td>
                 </tr>
               ) : filteredDiagnostics.length === 0 ? (
-                <tr>
+                <tr className="admin-table-empty-row">
                   <td colSpan="7" style={{ textAlign: 'center', padding: 40, color: 'var(--admin-text-subtle)' }}>
                     Aucun autodiagnostic ne correspond aux critères
                   </td>

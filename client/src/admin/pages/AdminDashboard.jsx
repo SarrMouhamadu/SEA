@@ -159,7 +159,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Raccourcis Rapides de Gestion */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+      <div className="admin-quick-links">
         <Link to="/admin/articles" className="admin-btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 18px', fontWeight: 600 }}>
           <Newspaper size={16} color="var(--color-orange)" />
           <span>Articles & Actualités ({analytics.totalArticles || 3})</span>
@@ -188,19 +188,21 @@ export default function AdminDashboard() {
             </Link>
           </div>
           <div className="admin-panel-body">
-            <div className="admin-chart-container">
-              {analytics.dailyTraffic?.map((day, idx) => {
-                const heightPct = Math.max(12, Math.round((day.count / maxDailyCount) * 100));
-                return (
-                  <div key={idx} className="admin-chart-col" title={`${day.label}: ${day.count} visites`}>
-                    <span className="admin-chart-count">{day.count}</span>
-                    <div className="admin-chart-bar-wrap">
-                      <div className="admin-chart-bar" style={{ height: `${heightPct}%` }} />
+            <div className="admin-chart-scroll">
+              <div className="admin-chart-container">
+                {analytics.dailyTraffic?.map((day, idx) => {
+                  const heightPct = Math.max(12, Math.round((day.count / maxDailyCount) * 100));
+                  return (
+                    <div key={idx} className="admin-chart-col" title={`${day.label}: ${day.count} visites`}>
+                      <span className="admin-chart-count">{day.count}</span>
+                      <div className="admin-chart-bar-wrap">
+                        <div className="admin-chart-bar" style={{ height: `${heightPct}%` }} />
+                      </div>
+                      <span className="admin-chart-label">{day.label.split(' ')[0]}</span>
                     </div>
-                    <span className="admin-chart-label">{day.label.split(' ')[0]}</span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -249,7 +251,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* 2 Colonnes : Derniers Autodiagnostics & Derniers Messages */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: 24 }}>
+      <div className="admin-two-col-grid">
         
         {/* Table : Derniers Autodiagnostics */}
         <div className="admin-panel">
@@ -262,8 +264,16 @@ export default function AdminDashboard() {
               Tout voir ({analytics.totalDiagnostics})
             </Link>
           </div>
-          <div className="admin-table-container">
-            <table className="admin-table">
+          <div className="admin-table-container" tabIndex={0} role="region" aria-label="Derniers autodiagnostics industriels">
+            <table
+              className="admin-table admin-table-responsive"
+              style={{
+                '--label-1': '"Contact & Entreprise"',
+                '--label-2': '"Score"',
+                '--label-3': '"Date"',
+                '--label-4': '"Action"'
+              }}
+            >
               <thead>
                 <tr>
                   <th>Contact & Entreprise</th>
@@ -274,7 +284,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {recentDiagnostics.length === 0 ? (
-                  <tr>
+                  <tr className="admin-table-empty-row">
                     <td colSpan="4" style={{ textAlign: 'center', color: 'var(--admin-text-subtle)' }}>
                       Aucun diagnostic pour le moment
                     </td>
@@ -333,8 +343,16 @@ export default function AdminDashboard() {
               Tout voir ({analytics.totalContacts})
             </Link>
           </div>
-          <div className="admin-table-container">
-            <table className="admin-table">
+          <div className="admin-table-container" tabIndex={0} role="region" aria-label="Derniers messages reçus">
+            <table
+              className="admin-table admin-table-responsive"
+              style={{
+                '--label-1': '"Expéditeur & Entreprise"',
+                '--label-2': '"Sujet"',
+                '--label-3': '"Date"',
+                '--label-4': '"Action"'
+              }}
+            >
               <thead>
                 <tr>
                   <th>Expéditeur & Entreprise</th>
@@ -345,7 +363,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {recentContacts.length === 0 ? (
-                  <tr>
+                  <tr className="admin-table-empty-row">
                     <td colSpan="4" style={{ textAlign: 'center', color: 'var(--admin-text-subtle)' }}>
                       Aucun message pour le moment
                     </td>
@@ -359,7 +377,7 @@ export default function AdminDashboard() {
                           {c.company || c.email}
                         </div>
                       </td>
-                      <td style={{ maxWidth: 180, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <td className="admin-cell-truncate">
                         {c.subject}
                       </td>
                       <td style={{ fontSize: 12, color: 'var(--admin-text-subtle)' }}>
@@ -393,8 +411,18 @@ export default function AdminDashboard() {
               Gérer les candidatures ({analytics.totalCareers || 0})
             </Link>
           </div>
-          <div className="admin-table-container">
-            <table className="admin-table">
+          <div className="admin-table-container" tabIndex={0} role="region" aria-label="Dernières candidatures reçues">
+            <table
+              className="admin-table admin-table-responsive"
+              style={{
+                '--label-1': '"Candidat"',
+                '--label-2': '"Poste visé"',
+                '--label-3': '"Expérience & Localisation"',
+                '--label-4': '"Date"',
+                '--label-5': '"Statut"',
+                '--label-6': '"Action"'
+              }}
+            >
               <thead>
                 <tr>
                   <th>Candidat</th>
@@ -407,7 +435,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {recentCareers.length === 0 ? (
-                  <tr>
+                  <tr className="admin-table-empty-row">
                     <td colSpan="6" style={{ textAlign: 'center', color: 'var(--admin-text-subtle)' }}>
                       Aucune candidature reçue pour le moment
                     </td>

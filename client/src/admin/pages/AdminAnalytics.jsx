@@ -148,33 +148,35 @@ export default function AdminAnalytics() {
           </span>
         </div>
         <div className="admin-panel-body">
-          <div className="admin-chart-container" style={{ height: 220 }}>
-            {dailyTraffic.map((day, idx) => {
-              const heightPct = Math.max(10, Math.round((day.count / maxDailyCount) * 100));
-              return (
-                <div key={idx} className="admin-chart-col" title={`${day.label}: ${day.count} visites`}>
-                  <span className="admin-chart-count">{day.count}</span>
-                  <div className="admin-chart-bar-wrap">
-                    <div
-                      className="admin-chart-bar"
-                      style={{
-                        height: `${heightPct}%`,
-                        background: idx === dailyTraffic.length - 1
-                          ? 'linear-gradient(180deg, #10B981 0%, rgba(16, 185, 129, 0.5) 100%)'
-                          : 'linear-gradient(180deg, #F47721 0%, rgba(244, 119, 33, 0.4) 100%)'
-                      }}
-                    />
+          <div className="admin-chart-scroll">
+            <div className="admin-chart-container" style={{ height: 220 }}>
+              {dailyTraffic.map((day, idx) => {
+                const heightPct = Math.max(10, Math.round((day.count / maxDailyCount) * 100));
+                return (
+                  <div key={idx} className="admin-chart-col" title={`${day.label}: ${day.count} visites`}>
+                    <span className="admin-chart-count">{day.count}</span>
+                    <div className="admin-chart-bar-wrap">
+                      <div
+                        className="admin-chart-bar"
+                        style={{
+                          height: `${heightPct}%`,
+                          background: idx === dailyTraffic.length - 1
+                            ? 'linear-gradient(180deg, #10B981 0%, rgba(16, 185, 129, 0.5) 100%)'
+                            : 'linear-gradient(180deg, #F47721 0%, rgba(244, 119, 33, 0.4) 100%)'
+                        }}
+                      />
+                    </div>
+                    <span className="admin-chart-label">{day.label.split(' ')[0]}</span>
                   </div>
-                  <span className="admin-chart-label">{day.label.split(' ')[0]}</span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* 2 Colonnes : Pages les plus vues & Répartition Appareils / Provenance */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: 24, marginBottom: 32 }}>
+      <div className="admin-two-col-grid" style={{ marginBottom: 32 }}>
         
         {/* Pages les plus consultées */}
         <div className="admin-panel">
@@ -196,14 +198,14 @@ export default function AdminAnalytics() {
                 const sharePct = totalVisits > 0 ? Math.round((page.count / totalVisits) * 100) : 0;
                 return (
                   <div key={idx} style={{ marginBottom: 16 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6, fontSize: 13.5 }}>
-                      <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6, marginBottom: 6, fontSize: 13.5 }}>
+                      <div style={{ minWidth: 0 }}>
                         <span style={{ fontWeight: 600, color: '#fff' }}>
                           {pageNames[page.path] || page.path}
                         </span>
                         <code style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 8 }}>{page.path}</code>
                       </div>
-                      <div style={{ textAlign: 'right' }}>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
                         <b style={{ color: '#fff' }}>{page.count} vues</b>
                         <span style={{ fontSize: 11, color: 'var(--admin-text-subtle)', marginLeft: 6 }}>({sharePct}%)</span>
                       </div>
@@ -237,7 +239,7 @@ export default function AdminAnalytics() {
             {/* Appareils */}
             <div className="admin-detail-group">
               <h4>Répartition par Appareil</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, textAlign: 'center', marginTop: 10 }}>
+              <div className="admin-devices-grid">
                 <div style={{ padding: 12, background: 'rgba(255,255,255,0.03)', borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>
                   <Monitor size={22} style={{ color: 'var(--admin-accent-blue)', margin: '0 auto 6px' }} />
                   <div style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>{desktopPct}%</div>

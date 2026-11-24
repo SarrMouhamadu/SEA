@@ -346,19 +346,22 @@ export default function AdminCareers() {
   return (
     <div>
       {/* ── BARRE D'ONGLETS RH & RECRUTEMENT ────────────────────────── */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: 'var(--admin-surface)',
-        border: '1px solid var(--admin-border)',
-        borderRadius: 10,
-        padding: '8px 12px',
-        marginBottom: 24,
-        flexWrap: 'wrap',
-        gap: 12
-      }}>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+      <div
+        className="admin-tabs-bar"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: 'var(--admin-surface)',
+          border: '1px solid var(--admin-border)',
+          borderRadius: 10,
+          padding: '8px 12px',
+          marginBottom: 24,
+          flexWrap: 'wrap',
+          gap: 12
+        }}
+      >
+        <div className="admin-tabs-group" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
             type="button"
             className={`admin-btn ${activeTab === 'applications' ? 'admin-btn-primary' : 'admin-btn-secondary'}`}
@@ -456,9 +459,9 @@ export default function AdminCareers() {
 
           {/* Filtres Candidatures */}
           <div className="admin-card" style={{ marginBottom: 20, padding: '16px 20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center', flex: 1, minWidth: 260 }}>
-                <div className="admin-input-wrap" style={{ flex: 1, margin: 0 }}>
+            <div className="admin-filter-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
+              <div className="admin-filter-row" style={{ display: 'flex', gap: 12, alignItems: 'center', flex: 1, minWidth: 220, flexWrap: 'wrap' }}>
+                <div className="admin-input-wrap" style={{ flex: 1, minWidth: 180, margin: 0 }}>
                   <Search className="admin-input-icon" size={16} />
                   <input
                     type="text"
@@ -471,7 +474,7 @@ export default function AdminCareers() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Filter size={16} style={{ color: 'var(--admin-text-muted)' }} />
+                  <Filter size={16} style={{ color: 'var(--admin-text-muted)', flexShrink: 0 }} />
                   <select
                     className="admin-form-input"
                     value={statusFilter}
@@ -489,7 +492,7 @@ export default function AdminCareers() {
               </div>
 
               <div style={{ display: 'flex', gap: 10 }}>
-                <button type="button" onClick={exportCSV} className="admin-btn admin-btn-secondary" title="Exporter au format Excel / CSV">
+                <button type="button" onClick={exportCSV} className="admin-btn admin-btn-secondary" style={{ width: '100%' }} title="Exporter au format Excel / CSV">
                   <Download size={15} />
                   <span>Exporter CSV</span>
                 </button>
@@ -513,8 +516,19 @@ export default function AdminCareers() {
                 </p>
               </div>
             ) : (
-              <div className="admin-table-wrap">
-                <table className="admin-table">
+              <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Liste des candidatures">
+                <table
+                  className="admin-table admin-table-responsive"
+                  style={{
+                    '--label-1': '"Candidat"',
+                    '--label-2': '"Poste Sollicité"',
+                    '--label-3': '"Expérience & Lieu"',
+                    '--label-4': '"Date"',
+                    '--label-5': '"CV"',
+                    '--label-6': '"Statut"',
+                    '--label-7': '"Actions"'
+                  }}
+                >
                   <thead>
                     <tr>
                       <th>Candidat</th>
@@ -641,8 +655,8 @@ export default function AdminCareers() {
 
           {/* Recherche & Filtre des Offres */}
           <div className="admin-card" style={{ marginBottom: 20, padding: '16px 20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
-              <div className="admin-input-wrap" style={{ flex: 1, minWidth: 260, margin: 0 }}>
+            <div className="admin-filter-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14 }}>
+              <div className="admin-input-wrap" style={{ flex: 1, minWidth: 200, margin: 0 }}>
                 <Search className="admin-input-icon" size={16} />
                 <input
                   type="text"
@@ -682,8 +696,18 @@ export default function AdminCareers() {
                 </p>
               </div>
             ) : (
-              <div className="admin-table-wrap">
-                <table className="admin-table">
+              <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Liste des offres d'emploi">
+                <table
+                  className="admin-table admin-table-responsive"
+                  style={{
+                    '--label-1': '"Intitulé du Poste & Pôle"',
+                    '--label-2': '"Type & Expérience"',
+                    '--label-3': '"Lieu"',
+                    '--label-4': '"Mots-clés"',
+                    '--label-5': '"Visibilité Publique"',
+                    '--label-6': '"Actions"'
+                  }}
+                >
                   <thead>
                     <tr>
                       <th>Intitulé du Poste & Pôle</th>
@@ -822,7 +846,7 @@ export default function AdminCareers() {
                   </div>
                 )}
 
-                <div className="admin-form-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
+                <div className="admin-form-grid">
                   {/* Titre du poste */}
                   <div className="admin-form-group" style={{ gridColumn: '1 / -1', margin: 0 }}>
                     <label className="admin-form-label">Intitulé du poste *</label>
@@ -936,13 +960,7 @@ export default function AdminCareers() {
                 </div>
               </div>
 
-              <div style={{
-                borderTop: '1px solid var(--admin-border)',
-                padding: '16px 24px',
-                display: 'flex',
-                justifyContent: 'flex-end',
-                gap: 10
-              }}>
+              <div className="admin-modal-footer">
                 <button
                   type="button"
                   onClick={() => setJobModalOpen(false)}
